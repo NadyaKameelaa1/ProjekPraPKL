@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Kamar | Javast - Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="kamar.css">
+
+</head>
+<body>
+    
+    <div class="navbar">
+        <div class="logo">
+            <img src="logo/Logo_Javast.png" alt="Logo_Javast">
+
+        </div>
+        <div>
+            <button class="button" onclick="window.location.href='login.html'"> 
+                <i class="fas fa-user"></i> Log Out
+            </button>
+        </div>
+
+    </div>
+    
+<div class="dashboard">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <br><br><br><br><br>
+            <h1><b>ADMIN PANEL</b></h1>
+        </div>
+        <div class="sidebar-menu">
+            <div class="menu-item" onclick="window.location.href='dashboard.html'">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </div>
+            <div class="menu-item" onclick="window.location.href='users.html'">
+                <i class="fas fa-users"></i> Users
+            </div>
+            <div class="menu-item" onclick="window.location.href='hotels.html'">
+                <i class="fas fa-hotel"></i> Hotel
+            </div>
+            <div class="menu-item active" onclick="window.location.href='kamar.html'">
+                <i class="fas fa-bed"></i> Kamar
+            </div>
+            <div class="menu-item" onclick="window.location.href='kontak.html'">
+                <i class="fas fa-envelope"></i> Kontak Kami
+            </div>
+            <div class="menu-item" onclick="window.location.href='booking.html'">
+                <i class="fas fa-calendar-check"></i> Booking <i class="fa-solid fa-caret-up"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-content">
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="header">
+        <h1>KAMAR</h1>
+    </div>
+    <div class="header-2">
+        <h1>Pilihan Kamar</h1>
+    </div>
+
+    <div class="table-controls">
+        <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" id="userSearch" placeholder="Cari id kamar, id hotel, nama kamar, tipe kasur, ukuran, fasilitas, harga, jumlah kamar, tamu, deskripsi...">
+        </div>
+
+         <button class="btn-add">
+            <i class="fas fa-plus"></i> Tambah
+        </button> 
+    </div>
+    
+    
+
+    <div class="table-container">
+        <table class="crud-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Id hotel</th>
+                    <th>Nama Kamar</th>
+                    <th>Tipe Kasur</th>
+                    <th>Ukuran</th>
+                    <th>Kapasitas</th>
+                    <th>Fasilitas</th>
+                    <th>Harga</th>
+                    <th>Jumlah Kamar</th>
+                    <th>Tamu</th>
+                    <th>Deskripsi</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td>301</td>
+                <td>201</td>
+                <td>New Deluxe Twin Room Only</td>
+                <td>1 Ranjang Twin</td>
+                <td>40.0</td>
+                <td>2</td>
+                <td>Bathtub, Kulkas, Air Panas, AC, Smart TV, Sendal, Handuk</td>
+                <td>Rp. 1.167.076</td>
+                <td>1</td>
+                <td>
+                    <span class="badge">Dewasa: 2</span><br>
+                    <span class="badge">Anak: 0</span>
+                </td>
+                <td>Berlokasi di Semarang, 2 Km dari Stasiun Semarang Tawang, Gumaya Tower Hotel Menawarkan Spa & Pusat Kebugaran dan Pemandangan Kota.</td>
+                <td>
+                        <a href="#" class="btn-edit"><i class="fas fa-edit"></i></a><br>
+                        <a href="#" class="btn-delete"><i class="fas fa-trash-alt"></i></a><br>
+                        <a href="#" class="btn-detailGambar"><i class="fas fa-images"></i></a>
+                </td>                
+                </tr>
+
+                <tr>
+                    <td>302</td>
+                    <td>202</td>
+                    <td>Grand Deluxe Twin</td>
+                    <td>1 Ranjang Twin</td>
+                    <td>45.0</td>
+                    <td>3</td>
+                    <td>Bathtub, Kulkas, Air Panas, AC, Smart TV, Sendal, Handuk, Spa, Bar</td>
+                    <td>Rp. 2.500.000</td>
+                    <td>1</td>
+                    <td>
+                        <span class="badge">Dewasa: 1</span><br>
+                        <span class="badge">Anak: 2</span>
+                    </td>
+                    <td>Berlokasi di Semarang, 2 Km dari Stasiun Semarang Tawang, Gumaya Tower Hotel Menawarkan Spa & Pusat Kebugaran dan Pemandangan Kota.</td>
+                    <td>
+                            <a href="#" class="btn-edit"><i class="fas fa-edit"></i></a><br>
+                            <a href="#" class="btn-delete"><i class="fas fa-trash-alt"></i></a><br>
+                            <a href="#" class="btn-detailGambar"><i class="fas fa-images"></i></a>
+                    </td>                
+                    </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+
+</div>
+
+<script>
+    document.getElementById('userSearch').addEventListener('input', function() {
+    const searchValue = this.value.toLowerCase();
+    const rows = document.querySelectorAll('.crud-table tbody tr');
+    
+    rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(searchValue) ? '' : 'none';
+    });
+});
+</script>
+
+</body>
+</html>
