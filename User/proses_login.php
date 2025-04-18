@@ -27,7 +27,7 @@ echo "DB Hash: $db_hash<br>";
 if ($input_hash === $db_hash) {
     $_SESSION['email_user'] = $user['email_user'];
     $_SESSION['name_user'] = $user['name_user'];
-    header("Location: index.php");
+    header("Location: home.php");
     exit;
 } else {
 
@@ -35,7 +35,7 @@ if ($input_hash === $db_hash) {
     if ($password === $user['password_user']) { // Jika ternyata password tidak di-hash
         $_SESSION['email_user'] = $user['email_user'];
         $_SESSION['name_user'] = $user['name_user'];
-        header("Location: index.php");
+        header("Location: home.php");
         exit;
     } else {
         header("Location: login.php?error=Password salah!");

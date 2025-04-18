@@ -1,3 +1,13 @@
+<?php 
+session_start();
+require_once '../Koneksi/koneksi.php';
+
+if (!isset($_SESSION['email_user'])) {
+    header("Location: login.php");
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,10 +27,10 @@
 
         </div>
         <div class="menu">
-            <a href="#">Beranda</a>
+            <a href="home.php">Beranda</a>
             <a href="#">Hotel</a>
-            <a href="#">Tentang</a>
-            <a href="#">Kontak Kami</a>
+            <a href="tentang.php">Tentang</a>
+            <a href="kontak_kami.html">Kontak Kami</a>
 
         </div>
 
@@ -29,9 +39,9 @@
                 <i class="fas fa-user"></i> User_name ▼
             </button>
             <div class="dropdown-menu">
-                <a href="#">Profil</a>
-                <a href="#">Booking</a>
-                <a href="#">Logout</a>
+                <a href="profil.php">Profil</a>
+                <a href="booking.html">Booking</a>
+                <a href="logout.php">Logout</a>
             </div>
         </div>
     </div>
@@ -77,7 +87,7 @@
 
                <div class="container"> 
                <div class="hotel-card">
-                       <img src="gambar/Gumaya.jpg" alt="Gumaya Tower Hotel" class="hotel-image">
+                       <img src="Gambar/GambarKota/Gumaya.jpg" alt="Gumaya Tower Hotel" class="hotel-image">
                        <div class="hotel-info">
                         <div class="hotel-name">
                             <h5>Gumaya Tower Hotel</h5>
@@ -95,7 +105,7 @@
                 </div>
 
                 <div class="hotel-card">
-                    <img src="gambar/PO hotel Semarang.jpeg" alt="Po Hotel Semarang" class="hotel-image">
+                    <img src="gambar/gambarkota/PO hotel Semarang.jpeg" alt="Po Hotel Semarang" class="hotel-image">
                     <div class="hotel-info">
                         <div class="hotel-name">
                             <h5>PO hotel Semarang</h5>
@@ -113,7 +123,7 @@
                 </div>
 
                 <div class="hotel-card">
-                    <img src="gambar/the royal surakrta.jpg" alt="The Royal Surakarta Heritage" class="hotel-image">
+                    <img src="gambar/gambarkota/the royal surakrta.jpg" alt="The Royal Surakarta Heritage" class="hotel-image">
                     <div class="hotel-info">
                         <div class="hotel-name">
                             <h5>The Royal Surakarta Heritage</h5>
@@ -153,37 +163,37 @@
         <div class="kota-card">
             <div class="overlay"></div>
             <h3 class="nama-kota">Semarang</h3>
-            <img src="gambar/Semarang.jpg" alt="Semarang" class="image">
+            <img src="gambar/gambarkota/Semarang.jpg" alt="Semarang" class="image">
         </div>
 
         <div class="kota-card">
             <div class="overlay"></div>
             <h3 class="nama-kota">Jepara</h3>
-            <img src="gambar/Jepara.jpeg" alt="Jepara" class="image">
+            <img src="gambar/gambarkota/Jepara.jpeg" alt="Jepara" class="image">
         </div>
 
         <div class="kota-card">
             <div class="overlay"></div>
             <h3 class="nama-kota">Salatiga</h3>
-            <img src="gambar/Salatiga.jpg" alt="Salatiga" class="image">
+            <img src="gambar/gambarkota/Salatiga.jpg" alt="Salatiga" class="image">
         </div>
 
         <div class="kota-card">
             <div class="overlay"></div>
             <h3 class="nama-kota">Jogja</h3>
-            <img src="gambar/Jogja.jpeg" alt="Jogja" class="image">
+            <img src="gambar/gambarkota/Jogja.jpeg" alt="Jogja" class="image">
         </div>
 
         <div class="kota-card">
             <div class="overlay"></div>
             <h3 class="nama-kota">Sukoharjo</h3>
-            <img src="gambar/Sukoharjo.jpg" alt="Sukoharjo" class="image">
+            <img src="gambar/gambarkota/Sukoharjo.jpg" alt="Sukoharjo" class="image">
         </div>
 
         <div class="kota-card">
             <div class="overlay"></div>
             <h3 class="nama-kota">Surakarta</h3>
-            <img src="gambar/Surakarta.jpeg" alt="Surakarta" class="image">
+            <img src="gambar/gambarkota/Surakarta.jpeg" alt="Surakarta" class="image">
         </div>
     </div>
 
