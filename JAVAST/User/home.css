@@ -7,7 +7,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #fff;
+    background-color: #ffffff;
     padding: 15px 30px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1000;
@@ -84,13 +84,6 @@
     color: #774C1C;
 }
 
-body {
-    font-family: Inter, sans-serif;
-    background-color: #f8f5f0;
-    margin: 0;
-    padding: 0;
-}
-
 .header {
     background-image: url('gambar/GambarKota/background\ header.jpeg');
     background-size: cover;
@@ -137,14 +130,14 @@ body {
 /* Search bar utama */
 .search-bar {
     display: flex;
-    justify-content: space-between; /* Ganti dari center */
+    justify-content: space-between;
     align-items: center;
-    background: #fff; /* Ganti dari #D9D9D9 */
+    background: #e2e2e2;
     padding: 10px;
     border-radius: 8px;
     width: 80%;
     margin: 0 auto;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 8px rgba(82, 82, 82, 0.6);
     border: 1px solid #ddd;
     position: relative;
 }
