@@ -73,9 +73,7 @@ if (!isset($_SESSION['email_user'])) {
         <button><i class="fa-solid fa-magnifying-glass"></i></button>
     </div>
 
-    <br>
-    <br>
-    <br>
+    
     <br>
             <section class="hotel-favorit">
                 <div class="hotel-title">

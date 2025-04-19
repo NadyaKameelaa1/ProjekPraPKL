@@ -104,16 +104,109 @@ body {
     font-size: 36px;
     margin: 0;
 }
-
 .header hr{
-    width: 60%; 
+    width: 40%; 
     border: none;
-    height: 2px;
-    background-color: #ffffff;
+    height: 1px;
+    background-color: #ffffff; 
     margin: 5px auto; 
 }
 
+/* Label di atas search bar */
 .search-labels {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 100px;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+    margin-bottom: 8px;
+  }
+  
+  .search-label {
+    position:relative;
+    top: 100px;
+    flex: 1;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    color: #f5f3f3;
+    padding: 0 8px;
+  }
+
+/* Search bar utama */
+.search-bar {
+    display: flex;
+    justify-content: space-between; /* Ganti dari center */
+    align-items: center;
+    background: #fff; /* Ganti dari #D9D9D9 */
+    padding: 10px;
+    border-radius: 8px;
+    width: 80%;
+    margin: 0 auto;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    position: relative;
+}
+
+/* Input fields */
+.search-bar input, 
+.search-bar select {
+    flex: 1;
+    margin: 0 5px;
+    padding: 12px 15px;
+    border-radius: 5px;
+    border: 1px solid #eee;
+    font-size: 14px;
+    background: #fff;
+    transition: border 0.3s;
+}
+
+.search-bar input:focus, 
+.search-bar select:focus {
+    outline: none;
+    border-color: #8b5e3c;
+}
+
+/* Tombol search */
+.search-bar button {
+    margin: 0 0 0 5px;
+    padding: 12px 20px;
+    border-radius: 5px;
+    border: none;
+    background-color: #8b5e3c;
+    color: white;
+    cursor: pointer;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background 0.3s;
+}
+
+.search-bar button:hover {
+    background-color: #6d4a2f;
+}
+
+/* Untuk elemen tanggal */
+.date-input-group {
+    display: flex;
+    align-items: center;
+    position: relative;
+    flex: 1;
+}
+
+.search-bar label i{
+    color: #8b5e3c;
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+    .search-labels,
+    .search-bar {
+        width: 95%;
+    }
+}
+
+/* .search-labels {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 100px;
     justify-content: space-between;
@@ -159,7 +252,7 @@ body {
     color: white;
     border: none;
     cursor: pointer;
-}
+} */
 
 
 /* hotel */
