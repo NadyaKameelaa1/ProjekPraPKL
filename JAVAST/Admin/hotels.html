@@ -104,22 +104,7 @@
             <td>AC, Restoran, Kolam Renang, Lift, Parkir, Resepsionis 24 Jam</td>
             <td><img src="Gambar/Hotel/hotel-gumaya tower semarang.jpg" width="80"></td>
             <td>
-                <button class="btn-edit"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
-                <button class="btn-delete"><i class="fas fa-trash"></i> Hapus</button>
-            </td>
-            </tr>
-
-            <tr>
-            <td>202</td>
-            <td>Semarang</td>
-            <td>Santika Premiere</td>
-            <td>4</td>
-            <td>Pekunden, Jawa Tengah</td>
-            <td>Jl. Pandanaran No. 116-120, Pekunden, Kec. Semarang Tengah, Kota Semarang, Jawa Tengah 50134.</td>
-            <td>layanan pijat, pusat kebugaran, sauna, antar-jemput bandara, spa, bar</td>
-            <td><img src="Gambar/Hotel/hotel-santika premiere.jpg" width="80"></td>
-            <td>
-                <button class="btn-edit"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
+                <button class="btn-edit" onclick="openPopupedit()"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
                 <button class="btn-delete"><i class="fas fa-trash"></i> Hapus</button>
             </td>
             </tr>
@@ -145,22 +130,8 @@
 </script>
 
 
-  <!-- Konten Utama -->
-  <div class="admin-container">
-    <div class="sidebar">
-      <h1>ADMIN PANEL</h1>
-      <ul>
-        <li>Dashboard</li>
-        <li>Users</li>
-        <li class="active">Hotels</li>
-        <li>Kamar</li>
-        <li>Kontak Kami</li>
-        <li>Booking</li>
-      </ul>
-    </div>
   
-  
-  <!-- Popup Form - Letakkan di bagian bawah sebelum </body> -->
+  <!-- Popup tambah -->
   <div class="popup-overlay" id="popup">
     <div class="popup-content">
       <div class="popup-header">
@@ -218,7 +189,78 @@
     </div>
   </div>
   
-  <script>
+  
+
+<div class="popup-overlay" id="popupedit">
+    <div class="popup-content">
+      <div class="popup-header">
+        <div>
+          <h2>EDIT HOTEL</h2>
+          <h3>Gumaya Tower Hotel</h3>
+        </div>
+        <span class="close-btn" onclick="closePopupedit()">&times;</span>
+      </div>
+  
+      <form class="hotel-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Kota Hotel</label>
+            <input type="text" value="Semarang">
+          </div>
+          
+          <div class="form-group">
+            <label>Nama Hotel</label>
+            <input type="text" value="Gumaya Tower Semarang">
+          </div>
+        </div>
+  
+        <div class="form-group">
+          <label>Bintang Hotel (1-5)</label>
+          <select>
+            <option value="1">⭐</option>
+            <option value="2">⭐⭐</option>
+            <option value="3">⭐⭐⭐</option>
+            <option value="4" selected>⭐⭐⭐⭐</option>
+            <option value="5">⭐⭐⭐⭐⭐</option>
+          </select>
+        </div>
+  
+        <div class="form-group">
+          <label>Lokasi</label>
+          <input type="text" value="Jl. Gajah Mada No. 59-61">
+        </div>
+  
+        <div class="form-group">
+          <label>Alamat Hotel</label>
+          <textarea>Jl. Gajah Mada No. 59-61, Pekunden, Kec. Semarang Tengah, Kota Semarang, Jawa Tengah 50134</textarea>
+        </div>
+  
+        <div class="form-group">
+          <label>Fasilitas Hotel</label>
+          <textarea>Kolam renang, Restoran, WiFi gratis, Parkir gratis, Layanan kamar 24 jam, AC, Lift, Sarapan gratis</textarea>
+        </div>
+  
+        <div class="form-group">
+            <label>Tambah Gambar Hotel (Max: 1)</label>
+            <input type="file" id="hotel-image" accept="image/*">
+          </div>
+  
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" onclick="closePopupedit()">Batal</button>
+          <button type="submit" class="btn-submit">Simpan Perubahan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+    <script>
+        // Script untuk menampilkan nama file yang dipilih
+        document.getElementById('hotel-image').addEventListener('change', function(e) {
+            const fileName = e.target.files[0] ? e.target.files[0].name : 'No file chosen';
+            document.querySelector('.file-chosen').textContent = fileName;
+        });
+ 
+    // tambah
     function openPopup() {
       document.getElementById("popup").style.display = "flex";
     }
@@ -226,7 +268,17 @@
     function closePopup() {
       document.getElementById("popup").style.display = "none";
     }
+
+    // edit
+    function openPopupedit() {
+      document.getElementById("popupedit").style.display = "flex";
+    }
+    
+    function closePopupedit() {
+      document.getElementById("popupedit").style.display = "none";
+    }
   </script>
+
 
 </body>
 </html>
