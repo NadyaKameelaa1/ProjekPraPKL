@@ -72,7 +72,7 @@
             <input type="text" id="userSearch" placeholder="Cari kota, nama hotel, lokasi, alamat, fasilitas...">
         </div>
 
-         <button class="btn-add" class="button" onclick="window.location.href='hotels_tambah.html'">
+         <button class="btn-add" class="button" onclick="openPopup()">
             <i class="fas fa-plus"></i> Tambah
         </button> 
     </div>
@@ -143,6 +143,90 @@
     });
 });
 </script>
+
+
+  <!-- Konten Utama -->
+  <div class="admin-container">
+    <div class="sidebar">
+      <h1>ADMIN PANEL</h1>
+      <ul>
+        <li>Dashboard</li>
+        <li>Users</li>
+        <li class="active">Hotels</li>
+        <li>Kamar</li>
+        <li>Kontak Kami</li>
+        <li>Booking</li>
+      </ul>
+    </div>
+  
+  
+  <!-- Popup Form - Letakkan di bagian bawah sebelum </body> -->
+  <div class="popup-overlay" id="popup">
+    <div class="popup-content">
+      <div class="popup-header">
+        <h2>TAMBAH HOTEL</h2>
+        <span class="close-btn" onclick="closePopup()">&times;</span>
+      </div>
+  
+      <form class="hotel-form">
+        <div class="form-group">
+          <label>Kota Hotel</label>
+          <input type="text" placeholder="Kota Hotel">
+        </div>
+        
+        <div class="form-group">
+          <label>Nama Hotel</label>
+          <input type="text" placeholder="Nama Hotel">
+        </div>
+        
+        <div class="form-group">
+          <label>Bintang Hotel (1-5)</label>
+          <select>
+            <option value="1">⭐</option>
+            <option value="2">⭐⭐</option>
+            <option value="3">⭐⭐⭐</option>
+            <option value="4">⭐⭐⭐⭐</option>
+            <option value="5">⭐⭐⭐⭐⭐</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label>Lokasi</label>
+          <input type="text" placeholder="Lokasi Hotel">
+        </div>
+        
+        <div class="form-group">
+          <label>Alamat Hotel</label>
+          <textarea placeholder="Alamat Hotel"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label>Fasilitas Hotel</label>
+          <textarea placeholder="Fasilitas Hotel"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label>Tambah Gambar Hotel (Max: 1)</label>
+          <input type="file" id="hotel-image" accept="image/*">
+        </div>
+        
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" onclick="closePopup()">Batal</button>
+          <button type="submit" class="btn-submit">Tambah Hotel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <script>
+    function openPopup() {
+      document.getElementById("popup").style.display = "flex";
+    }
+    
+    function closePopup() {
+      document.getElementById("popup").style.display = "none";
+    }
+  </script>
 
 </body>
 </html>
