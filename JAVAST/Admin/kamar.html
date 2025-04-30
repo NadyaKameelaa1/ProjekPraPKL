@@ -72,7 +72,7 @@
             <input type="text" id="userSearch" placeholder="Cari id kamar, id hotel, nama kamar, tipe kasur, ukuran, fasilitas, harga, jumlah kamar, tamu, deskripsi...">
         </div>
 
-         <button class="btn-add">
+         <button class="btn-add" class="button" onclick="openPopup()">
             <i class="fas fa-plus"></i> Tambah
         </button> 
     </div>
@@ -136,9 +136,9 @@
                     </td>
                     <td>Berlokasi di Semarang, 2 Km dari Stasiun Semarang Tawang, Gumaya Tower Hotel Menawarkan Spa & Pusat Kebugaran dan Pemandangan Kota.</td>
                     <td>
-                            <a href="#" class="btn-edit"><i class="fas fa-edit"></i></a><br>
-                            <a href="#" class="btn-delete"><i class="fas fa-trash-alt"></i></a><br>
-                            <a href="#" class="btn-detailGambar"><i class="fas fa-images"></i></a>
+                            <button class="btn-edit"><i class="fas fa-edit"></i></button><br>
+                            <button class="btn-delete"><i class="fas fa-trash-alt"></i></button><br>
+                            <button class="btn-detailGambar"><i class="fas fa-images"></i></button>
                     </td>                
                     </tr>
             </tbody>
@@ -159,6 +159,102 @@
         row.style.display = text.includes(searchValue) ? '' : 'none';
     });
 });
+</script>
+
+
+
+  <!-- Popup tambah -->
+  <div class="popup-overlay" id="popup">
+    <div class="popup-content">
+      <div class="popup-header">
+        <h2>TAMBAH KAMAR</h2>
+        <span class="close-btn" onclick="closePopup()">&times;</span>
+      </div>
+  
+      <div class="form-container">
+        <form class="room-form">
+            <div class="form-group">
+                <label for="hotel-id">Id Hotel</label>
+                <div class="hotel-selection">
+                    <select id="hotel-id">
+                        <option value="201">201 - Semarang</option>
+                        <option value="202">202 - Semarang</option>
+                        <option value="203">203 - Purwokerto</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="room-name">Nama Kamar</label>
+                <input type="text" id="room-name" placeholder="Nama Kamar Hotel...">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="bed-type">Tipe Kasur</label>
+                    <select id="bed-type">
+                        <option>Twin</option>
+                        <option>Double</option>
+                        <option>Queen</option>
+                        <option>King</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="room-size">Ukuran (m²)</label>
+                    <input type="text" id="room-size" placeholder="Ukuran Kamar Hotel...">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="capacity">Kapasitas</label>
+                <input type="number" id="capacity" placeholder="Kapasitas Hotel..." min="1" max="10">
+            </div>
+
+            <div class="form-group">
+                <label for="facilities">Fasilitas</label>
+                <textarea id="facilities" placeholder="Fasilitas Hotel..."></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="price">Harga</label>
+                    <input type="text" id="price" placeholder="Harga Hotel...">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Deskripsi</label>
+                <textarea id="description" placeholder="Deskripsi Hotel..."></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" onclick="closePopup()">Batal</button>
+                <button type="submit" class="btn-submit">Tambah Kamar</button>
+              </div>
+        </form>
+    </div>
+</div>
+</div>
+
+<script>
+// tambah
+function openPopup() {
+  document.getElementById("popup").style.display = "flex";
+}
+
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
+}
+
+// edit
+function openPopupedit() {
+  document.getElementById("popupedit").style.display = "flex";
+}
+
+function closePopupedit() {
+  document.getElementById("popupedit").style.display = "none";
+}
 </script>
 
 </body>
