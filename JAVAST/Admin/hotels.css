@@ -230,6 +230,7 @@
   transition: background-color 0.3s;
   text-decoration: none; /* Hilangkan underline link */
   display: inline-block; /* Agar padding bekerja */
+  align-items: center;
 }
 
 .btn-delete:hover {

@@ -77,8 +77,6 @@
         </button> 
     </div>
     
-    
-
     <div class="table-container">
         <table class="crud-table">
             <thead>
@@ -114,40 +112,21 @@
                 </td>
                 <td>Berlokasi di Semarang, 2 Km dari Stasiun Semarang Tawang, Gumaya Tower Hotel Menawarkan Spa & Pusat Kebugaran dan Pemandangan Kota.</td>
                 <td>
-                        <a href="#" class="btn-edit"><i class="fas fa-edit"></i></a><br>
-                        <a href="#" class="btn-delete"><i class="fas fa-trash-alt"></i></a><br>
-                        <a href="#" class="btn-detailGambar"><i class="fas fa-images"></i></a>
+                    <button class="btn-edit" class="button" onclick="openPopupedit()" id="popupedit">
+                        <i class="fas fa-edit"></i> 
+                    </button><br>
+                    
+                    <button class="btn-delete"><i class="fas fa-trash-alt"></i></button><br>
+                    <button class="btn-detailGambar"><i class="fas fa-images"></i></button>
                 </td>                
                 </tr>
-
-                <tr>
-                    <td>302</td>
-                    <td>202</td>
-                    <td>Grand Deluxe Twin</td>
-                    <td>1 Ranjang Twin</td>
-                    <td>45.0</td>
-                    <td>3</td>
-                    <td>Bathtub, Kulkas, Air Panas, AC, Smart TV, Sendal, Handuk, Spa, Bar</td>
-                    <td>Rp. 2.500.000</td>
-                    <td>1</td>
-                    <td>
-                        <span class="badge">Dewasa: 1</span><br>
-                        <span class="badge">Anak: 2</span>
-                    </td>
-                    <td>Berlokasi di Semarang, 2 Km dari Stasiun Semarang Tawang, Gumaya Tower Hotel Menawarkan Spa & Pusat Kebugaran dan Pemandangan Kota.</td>
-                    <td>
-                            <button class="btn-edit"><i class="fas fa-edit"></i></button><br>
-                            <button class="btn-delete"><i class="fas fa-trash-alt"></i></button><br>
-                            <button class="btn-detailGambar"><i class="fas fa-images"></i></button>
-                    </td>                
-                    </tr>
             </tbody>
         </table>
     </div>
 </div>
 </div>
 
-</div>
+
 
 <script>
     document.getElementById('userSearch').addEventListener('input', function() {
@@ -230,9 +209,88 @@
         </form>
     </div>
 </div>
+
+
+  <!-- Popup edit -->
+  <div class="popup-overlay" id="popupedit">
+    <div class="popup-content">
+      <div class="popup-header">
+        <div>
+        <h2>EDIT KAMAR</h2>
+        <h3>New Deluxe Twin Room Only</h3>
+        </div>
+        <span class="close-btn" onclick="closePopupedit()">&times;</span>
+      </div>
+  
+        <form class="room-form">
+            <div class="form-row">
+            <div class="form-group">
+                <label for="hotel-id">Id Hotel</label>
+                <div class="hotel-selection">
+                    <select id="hotel-id">
+                        <option value="201" selected>201 - Semarang</option>
+                        <option value="202">202 - Semarang</option>
+                        <option value="203">203 - Purwokerto</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="room-name">Nama Kamar</label>
+                <input type="text" id="room-name" placeholder="Nama Kamar Hotel...">
+            </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="room-name">Tipe Kasur</label>
+                    <input type="text" id="room-bed" placeholder="Tipe Kasur Hotel...">
+                </div>
+
+                <div class="form-group">
+                    <label for="room-size">Ukuran (m²)</label>
+                    <input type="text" id="room-size" placeholder="Ukuran Kamar Hotel...">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="capacity">Kapasitas</label>
+                <input type="number" id="capacity" placeholder="Kapasitas Hotel..." min="1" max="10">
+            </div>
+
+            <div class="form-group">
+                <label for="facilities">Fasilitas</label>
+                <textarea id="facilities" placeholder="Fasilitas Hotel..."></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="price">Harga</label>
+                    <input type="text" id="price" placeholder="Harga Hotel...">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Deskripsi</label>
+                <textarea id="description" placeholder="Deskripsi Hotel..."></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" onclick="closePopupedit()">Batal</button>
+                <button type="submit" class="btn-submit">Tambah Kamar</button>
+              </div>
+        </form>
+    </div>
 </div>
 
+
 <script>
+// Script untuk menampilkan nama file yang dipilih
+        document.getElementById('hotel-image').addEventListener('change', function(e) {
+            const fileName = e.target.files[0] ? e.target.files[0].name : 'No file chosen';
+            document.querySelector('.file-chosen').textContent = fileName;
+        });
+    
 // tambah
 function openPopup() {
   document.getElementById("popup").style.display = "flex";
