@@ -1,3 +1,7 @@
+<?php
+session_start(); 
+?>  
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,14 +23,22 @@
         <br>
  
         
+        <?php if (isset($_GET['error'])): ?>
+            <div class="error-message" style="color: red;">
+                <i class="fas fa-exclamation-circle"></i> 
+                <?php echo htmlspecialchars($_GET['error']); ?>
+            </div>
+        <?php endif; ?> 
+
+        <form action="proses_login.php" method="POST">
         <div class="input-group">
             <label><i class="fas fa-envelope"></i> Email</label>
-            <input type="email" placeholder="Tulis emailmu..." required>
+            <input type="email" name="email_user" placeholder="Tulis emailmu..." required>
         </div>
 
         <div class="input-group">
             <label><i class="fas fa-lock"></i> Password</label>
-            <input type="password" placeholder="Tulis passwordmu..." required>
+            <input type="password" name="password_user" placeholder="Tulis passwordmu..." required>
         </div>
     
         <button class="button" onclick="window.location.href='dashboard.html'">Login Sebagai Admin</button>

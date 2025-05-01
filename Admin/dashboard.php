@@ -18,7 +18,7 @@
 
         </div>
         <div>
-            <button class="button" onclick="window.location.href='login.html'"> 
+            <button class="button" onclick="window.location.href='login.php'"> 
                 <i class="fas fa-user"></i> Log Out
             </button>
         </div>
@@ -32,22 +32,22 @@
             <h1><b>ADMIN PANEL</b></h1>
         </div>
         <div class="sidebar-menu">
-            <div class="menu-item active" onclick="window.location.href='dashboard.html'">
+            <div class="menu-item active" onclick="window.location.href='dashboard.php'">
                 <i class="fas fa-tachometer-alt"></i> Dashboard
             </div>
-            <div class="menu-item" onclick="window.location.href='users.html'">
+            <div class="menu-item" onclick="window.location.href='users.php'">
                 <i class="fas fa-users"></i> Users
             </div>
-            <div class="menu-item" onclick="window.location.href='hotels.html'">
+            <div class="menu-item" onclick="window.location.href='hotels.php'">
                 <i class="fas fa-hotel"></i> Hotel
             </div>
-            <div class="menu-item" onclick="window.location.href='kamar.html'">
+            <div class="menu-item" onclick="window.location.href='kamar.php'">
                 <i class="fas fa-bed"></i> Kamar
             </div>
-            <div class="menu-item" onclick="window.location.href='kontak.html'">
+            <div class="menu-item" onclick="window.location.href='kontak.php'">
                 <i class="fas fa-envelope"></i> Kontak Kami
             </div>
-            <div class="menu-item" onclick="window.location.href='booking.html'">
+            <div class="menu-item" onclick="window.location.href='booking.php'">
                 <i class="fas fa-calendar-check"></i> Booking <i class="fa-solid fa-caret-up"></i>
             </div>
         </div>
