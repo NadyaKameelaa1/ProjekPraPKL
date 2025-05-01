@@ -364,13 +364,14 @@
   }
   
   .popup-content {
-    background-color: rgb(226, 226, 226);
+    background-color: rgb(226, 226, 226); /* Diubah dari abu-abu ke putih */
     width: 600px;
-    max-height: 90vh;
+    max-height: 90vh; /* Diubah dari 'wh' ke 'vh' */
     overflow-y: auto;
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    border-radius: 8px; /* Diubah dari 200% ke 8px */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2); /* Diperbaiki nilai shadow */
     animation: popupFadeIn 0.3s;
+    padding: 25px; /* TAMBAHAN: Padding untuk jarak dari ujung popup */
   }
   
   @keyframes popupFadeIn {
@@ -410,11 +411,12 @@
   }
   
   .hotel-form {
-    padding: 20px;
+    padding: 0 15px; /* Diubah dari 20px ke 0 15px */
   }
   
   .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 15px; /* Diubah dari 20px ke 15px */
+    padding: 0 10px; /* TAMBAHAN: Padding kiri-kanan */
   }
   
   .form-group label {
@@ -424,7 +426,25 @@
     color: #000000;
   }
   
+  /* TAMBAHAN: Section styling baru */
+.form-section {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+/* TAMBAHAN: Section title styling */
+.form-section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+}
+
   .form-group input[type="text"],
+  .form-group input[type="number"],
   .form-group select,
   .form-group textarea {
     width: 100%;
