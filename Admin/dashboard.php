@@ -107,7 +107,7 @@
       <div class="analysis-card">
         <h3 class="bookingTerbaru">PERLU VERIFIKASI</h3>
         <div class="bookingTerbaru-value">2</div>
-        <a href="booking.html" class="detail-link">DETAIL ></a>
+        <a href="booking.php" class="detail-link">DETAIL ></a>
       </div>
     </div>
 

@@ -41,7 +41,7 @@ session_start();
             <input type="password" name="password_user" placeholder="Tulis passwordmu..." required>
         </div>
     
-        <button class="button" onclick="window.location.href='dashboard.html'">Login Sebagai Admin</button>
+        <button class="button" onclick="window.location.href='dashboard.php'">Login Sebagai Admin</button>
         <br>
         <br>
         <hr>
