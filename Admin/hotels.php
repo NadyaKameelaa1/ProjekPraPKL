@@ -1,3 +1,12 @@
+<?php
+session_start();
+require_once '../Koneksi/koneksi.php';
+
+$sql = "SELECT * FROM hotels";
+$query = mysqli_query($koneksi,$sql);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -94,22 +103,26 @@
                     <th>Aksi</th>
                 </tr>
             </thead>
+            <?php
+            while($hotels=mysqli_fetch_assoc($query)) : 
+            ?>
             <tbody>
-            <td>201</td>
-            <td>Semarang</td>
-            <td>Gumaya Tower Semarang</td>
-            <td>5</td>
-            <td>Semarang Tengah, Jawa Tengah</td>
-            <td>Jl. Gajahmada No.59-61, 50134 Semarang, Indonesia</td>
-            <td>AC, Restoran, Kolam Renang, Lift, Parkir, Resepsionis 24 Jam</td>
-            <td><img src="Gambar/Hotel/hotel-gumaya tower semarang.jpg" width="80"></td>
+            <td><?=$hotels['id_hotel']?></td>
+            <td><?=$hotels['kota_hotel']?></td>
+            <td><?=$hotels['nama_hotel']?></td>
+            <td><?=$hotels['bintang_hotel']?></td>
+            <td><?=$hotels['lokasi_hotel']?></td>
+            <td><?=$hotels['alamat_hotel']?></td>
+            <td><?=$hotels['fasilitas_hotel']?></td>
+            <td><?=$hotels['gambar_hotel']?></td>
             <td>
-                <button class="btn-edit" onclick="openPopupedit()"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
-                <button class="btn-delete"><i class="fas fa-trash"></i> Hapus</button>
+                <button class="btn-edit" onclick="openPopupedit()"><a href="<?=$hotels['id_hotel']?>"><i class="fa-solid fa-pen-to-square"></i> Edit</a></button>
+                <button class="btn-delete"><a href="hapus.php?id=<?=$hotels['id_hotel']?>"><i class="fas fa-trash"></i> Hapus</a></button>
             </td>
             </tr>
 
             </tbody>
+            <?php endwhile ?>
         </table>
     </div>
 </div>
@@ -139,7 +152,7 @@
         <span class="close-btn" onclick="closePopup()">&times;</span>
       </div>
   
-      <form class="hotel-form">
+      <form action="hotels_proses_tambah.php" method="get" class="hotel-form">
         <div class="form-group">
           <label>Kota Hotel</label>
           <input type="text" placeholder="Kota Hotel">
@@ -152,13 +165,7 @@
         
         <div class="form-group">
           <label>Bintang Hotel (1-5)</label>
-          <select>
-            <option value="1">⭐</option>
-            <option value="2">⭐⭐</option>
-            <option value="3">⭐⭐⭐</option>
-            <option value="4">⭐⭐⭐⭐</option>
-            <option value="5">⭐⭐⭐⭐⭐</option>
-          </select>
+          <input type="number" placeholder="Bintang Hotel">
         </div>
         
         <div class="form-group">
@@ -281,4 +288,4 @@
 
 
 </body>
-  </html>
+</html>

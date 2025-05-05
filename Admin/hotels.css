@@ -264,6 +264,23 @@
   margin-right: 5px;
 }
 
+.btn-edit a{
+    color: inherit;
+    text-decoration: none;
+}
+
+.btn-delete a{
+  color: inherit;
+  text-decoration: none;
+}
+
+.btn-edit,
+.btn-delete {
+  color: white;
+  text-decoration: none;
+}
+
+
 /* add */
 
 .btn-add {
@@ -418,9 +435,18 @@
   color: #000000;
 }
 
-.form-group input[type="text"],
+.form-group input[type="text"], 
+.form-group input[type="number"],
 .form-group select,
 .form-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-group input[type="number"]{
   width: 100%;
   padding: 10px 12px;
   border: 1px solid #ddd;
