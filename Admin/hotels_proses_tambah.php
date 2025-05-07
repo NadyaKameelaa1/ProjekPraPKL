@@ -1,24 +1,35 @@
 <?php
 session_start();
-require_once '../Koneksi/koneksi.php';
+require_once '../koneksi/koneksi.php';
 
-$kota_hotel = $_GET['kota_hotel'];
-$nama_hotel = $_GET['nama_hotel'];
-$bintang_hotel = $_GET['bintang_hotel'];
-$lokasi_hotel = $_GET['lokasi_hotel'];
-$alamat_hotel = $_GET['alamat_hotel'];
-$fasilitas_hotel = $_GET['fasilitas_hotel'];
-$gambar_hotel = $_GET['gambar_hotel'];
+function image_upload($img){
+    $tmp_loc = $img['tmp_name'];
+    $new_name = random_int(11111,99999).$img['name'];
 
-$sql = "INSERT INTO hotels (kota_hotel,nama_hotel,bintang_hotel,lokasi_hotel,alamat_hotel,fasilitas_hotel,gambar_hotel) VALUES ('$kota_hotel','$nama_hotel','$bintang_hotel','$lokasi_hotel','$alamat_hotel','$fasilitas_hotel','$gambar_hotel')";
-$query = mysqli_query($koneksi,$sql);
+    $new_loc= UPLOAD_SRC.$new_name;
 
-if($query){
-    header("location:hotels.php?tambah=sukses");
-    exit;
-} else{
-    header("location:hotels.php?tambah=gagal");
-    exit;
+    if(!move_uploaded_file($tmp_loc,$new_loc)){
+        header("location: hotels.php?alert=img_upload");
+        exit;
+    }
+    else{
+        return $new_name;
+    }
 }
 
-?>
+if(isset($_POST['tambahHotel'])){
+    foreach($_POST as $key => $value){
+        $_POST[$key] = mysqli_real_escape_string($koneksi,$value);
+    }
+
+    $imgpath = image_upload($_FILES['gambar_hotel']);
+    
+    $query="INSERT INTO `hotels`(`kota_hotel`, `nama_hotel`, `bintang_hotel`, `lokasi_hotel`, `alamat_hotel`, `fasilitas_hotel`, `gambar_hotel`) VALUES ('$_POST[kota_hotel]','$_POST[nama_hotel]','$_POST[bintang_hotel]','$_POST[lokasi_hotel]','$_POST[alamat_hotel]','$_POST[fasilitas_hotel]','$imgpath')";
+
+    if(mysqli_query($koneksi,$query)){
+        header("location: hotels.php?success=tambah");
+    } else{
+        header("location: hotels.php?alert=tambah_gagal");
+    }
+}
+

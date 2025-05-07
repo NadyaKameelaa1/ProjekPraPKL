@@ -85,9 +85,19 @@ $query = mysqli_query($koneksi,$sql);
             <i class="fas fa-plus"></i> Tambah
         </button> 
     </div>
-    
-    
+  
 
+    <?php if (isset($_SESSION['success'])): ?>
+        <div class="alert alert-success">
+            <?= $_SESSION['success']; unset($_SESSION['success']); ?>
+        </div>
+    <?php endif; ?>
+    
+    <?php if (isset($_SESSION['error'])): ?>
+        <div class="alert alert-danger">
+            <?= $_SESSION['error']; unset($_SESSION['error']); ?>
+        </div>
+    <?php endif; ?>  
     <div class="table-container">
         <table class="crud-table">
             <thead>
@@ -103,26 +113,30 @@ $query = mysqli_query($koneksi,$sql);
                     <th>Aksi</th>
                 </tr>
             </thead>
-            <?php
-            while($hotels=mysqli_fetch_assoc($query)) : 
-            ?>
             <tbody>
-            <td><?=$hotels['id_hotel']?></td>
-            <td><?=$hotels['kota_hotel']?></td>
-            <td><?=$hotels['nama_hotel']?></td>
-            <td><?=$hotels['bintang_hotel']?></td>
-            <td><?=$hotels['lokasi_hotel']?></td>
-            <td><?=$hotels['alamat_hotel']?></td>
-            <td><?=$hotels['fasilitas_hotel']?></td>
-            <td><?=$hotels['gambar_hotel']?></td>
+            <?php
+            $fetch_src=FETCH_SRC;
+
+            while($hotels=mysqli_fetch_assoc($query)){ 
+            
+            echo<<<hotels
+            <td>$hotels[id_hotel]</td>
+            <td>$hotels[kota_hotel]</td>
+            <td>$hotels[nama_hotel]</td>
+            <td>$hotels[bintang_hotel]</td>
+            <td>$hotels[lokasi_hotel]</td>
+            <td>$hotels[alamat_hotel]</td>
+            <td>$hotels[fasilitas_hotel]</td>
+            <td><img src="$fetch_src$hotels[gambar_hotel]" width="150px"></td>
             <td>
-                <button class="btn-edit" onclick="openPopupedit()"><a href="<?=$hotels['id_hotel']?>"><i class="fa-solid fa-pen-to-square"></i> Edit</a></button>
-                <button class="btn-delete"><a href="hapus.php?id=<?=$hotels['id_hotel']?>"><i class="fas fa-trash"></i> Hapus</a></button>
+                <button class="btn-edit" onclick="openPopupedit()"><a href="id_hotel=$hotels[id_hotel]"><i class="fa-solid fa-pen-to-square"></i> Edit</a></button>
+                <button class="btn-delete"><a href="hotels_hapus.php?id_hotel=$hotels[id_hotel]"><i class="fas fa-trash"></i> Hapus</a></button>
             </td>
             </tr>
-
+            
+            hotels;
+            }  ?>
             </tbody>
-            <?php endwhile ?>
         </table>
     </div>
 </div>
@@ -152,45 +166,45 @@ $query = mysqli_query($koneksi,$sql);
         <span class="close-btn" onclick="closePopup()">&times;</span>
       </div>
   
-      <form action="hotels_proses_tambah.php" method="get" class="hotel-form">
+      <form action="hotels_proses_tambah.php" method="POST" class="hotel-form" enctype="multipart/form-data">
         <div class="form-group">
           <label>Kota Hotel</label>
-          <input type="text" placeholder="Kota Hotel">
+          <input type="text" name="kota_hotel" placeholder="Kota Hotel" required>
         </div>
         
         <div class="form-group">
           <label>Nama Hotel</label>
-          <input type="text" placeholder="Nama Hotel">
+          <input type="text" name="nama_hotel" placeholder="Nama Hotel" required>
         </div>
         
         <div class="form-group">
           <label>Bintang Hotel (1-5)</label>
-          <input type="number" placeholder="Bintang Hotel">
+          <input type="number" name="bintang_hotel" placeholder="Bintang Hotel" required>
         </div>
         
         <div class="form-group">
           <label>Lokasi</label>
-          <input type="text" placeholder="Lokasi Hotel">
+          <input type="text" name="lokasi_hotel" placeholder="Lokasi Hotel" required>
         </div>
         
         <div class="form-group">
           <label>Alamat Hotel</label>
-          <textarea placeholder="Alamat Hotel"></textarea>
+          <textarea name="alamat_hotel" placeholder="Alamat Hotel" required></textarea>
         </div>
         
         <div class="form-group">
           <label>Fasilitas Hotel</label>
-          <textarea placeholder="Fasilitas Hotel"></textarea>
+          <textarea name="fasilitas_hotel" placeholder="Fasilitas Hotel" required></textarea>
         </div>
         
         <div class="form-group">
           <label>Tambah Gambar Hotel (Max: 1)</label>
-          <input type="file" id="hotel-image" accept="image/*">
+          <input type="file" name="gambar_hotel" id="hotel-image" accept=".jpg,.png,.svg" required>
         </div>
         
         <div class="form-actions">
           <button type="button" class="btn-cancel" onclick="closePopup()">Batal</button>
-          <button type="submit" class="btn-submit">Tambah Hotel</button>
+          <button type="submit" class="btn-submit" name="tambahHotel">Tambah Hotel</button>
         </div>
       </form>
     </div>
@@ -212,44 +226,38 @@ $query = mysqli_query($koneksi,$sql);
         <div class="form-row">
           <div class="form-group">
             <label>Kota Hotel</label>
-            <input type="text" value="Semarang">
+            <input type="text" name="kota_hotel" value="Semarang">
           </div>
           
           <div class="form-group">
             <label>Nama Hotel</label>
-            <input type="text" value="Gumaya Tower Semarang">
+            <input type="text" name="nama_hotel" value="Gumaya Tower Semarang">
           </div>
         </div>
   
         <div class="form-group">
           <label>Bintang Hotel (1-5)</label>
-          <select>
-            <option value="1">⭐</option>
-            <option value="2">⭐⭐</option>
-            <option value="3">⭐⭐⭐</option>
-            <option value="4" selected>⭐⭐⭐⭐</option>
-            <option value="5">⭐⭐⭐⭐⭐</option>
-          </select>
+          <input type="number" name="bintang_hotel" placeholder="Bintang Hotel" required>
         </div>
   
         <div class="form-group">
           <label>Lokasi</label>
-          <input type="text" value="Jl. Gajah Mada No. 59-61">
+          <input type="text" name="lokasi_hotel" value="Jl. Gajah Mada No. 59-61" required>
         </div>
   
         <div class="form-group">
           <label>Alamat Hotel</label>
-          <textarea>Jl. Gajah Mada No. 59-61, Pekunden, Kec. Semarang Tengah, Kota Semarang, Jawa Tengah 50134</textarea>
+          <textarea name="alamat_hotel" required>Jl. Gajah Mada No. 59-61, Pekunden, Kec. Semarang Tengah, Kota Semarang, Jawa Tengah 50134</textarea>
         </div>
   
         <div class="form-group">
           <label>Fasilitas Hotel</label>
-          <textarea>Kolam renang, Restoran, WiFi gratis, Parkir gratis, Layanan kamar 24 jam, AC, Lift, Sarapan gratis</textarea>
+          <textarea name="fasilitas_hotel" required>Kolam renang, Restoran, WiFi gratis, Parkir gratis, Layanan kamar 24 jam, AC, Lift, Sarapan gratis</textarea>
         </div>
   
         <div class="form-group">
             <label>Tambah Gambar Hotel (Max: 1)</label>
-            <input type="file" id="hotel-image" accept="image/*">
+            <input type="file" name="gambar_hotel" id="hotel-image" accept=".jpg,.png,.svg" required>
           </div>
   
         <div class="form-actions">
@@ -261,6 +269,12 @@ $query = mysqli_query($koneksi,$sql);
   </div>
 
     <script>
+      // function confirm_rem(id_hotel){
+      //   if(confirm("Apakah anda yakin ingin menghapus data ini?")){
+      //     window.location.href="hotels.php?rem="+id_hotel;
+      //   }
+      // }
+
         // Script untuk menampilkan nama file yang dipilih
         document.getElementById('hotel-image').addEventListener('change', function(e) {
             const fileName = e.target.files[0] ? e.target.files[0].name : 'No file chosen';
