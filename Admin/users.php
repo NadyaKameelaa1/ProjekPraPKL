@@ -110,7 +110,7 @@ $query = mysqli_query($koneksi,$sql);
             <td>$user[no_telp]</td>
             <td>$user[alamat_user]</td>
             <td>
-                <button class="btn-delete"><a href="user_hapus.php?id_hotel=$user[id_user]"><i class="fas fa-trash"></i>Hapus</a></button>
+                <button class="btn-delete"><a href="users_hapus.php?id_user=$user[id_user]"><i class="fas fa-trash"></i>Hapus</a></button>
             </td>
             </tr>
             
