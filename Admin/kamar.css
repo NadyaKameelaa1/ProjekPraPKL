@@ -282,6 +282,23 @@
   }
 
   
+.btn-edit a{
+  color: inherit;
+  text-decoration: none;
+}
+
+.btn-delete a{
+color: inherit;
+text-decoration: none;
+}
+
+.btn-edit,
+.btn-delete {
+color: white;
+text-decoration: none;
+}
+
+  
 
 
 /* ===== RESPONSIVE ===== */

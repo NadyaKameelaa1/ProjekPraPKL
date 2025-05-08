@@ -1,3 +1,13 @@
+<?php
+
+session_start();
+require_once '../Koneksi/koneksi.php';
+
+$sql = "SELECT * FROM users";
+$query = mysqli_query($koneksi,$sql);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,7 +51,7 @@
             <div class="menu-item" onclick="window.location.href='hotels.php'">
                 <i class="fas fa-hotel"></i> Hotel
             </div>
-            <div class="menu-item" onclick="window.location.href='kamar.php'">
+            <div class="menu-item" onclick="window.location.href='user.php'">
                 <i class="fas fa-bed"></i> Kamar
             </div>
             <div class="menu-item" onclick="window.location.href='kontak.php'">
@@ -71,10 +81,6 @@
             <i class="fas fa-search"></i>
             <input type="text" id="userSearch" placeholder="Cari nama, email, nomor telepon, alamat user...">
         </div>
-        <!-- Tambahkan tombol tambah data jika diperlukan -->
-        <!-- <button class="btn-add">
-            <i class="fas fa-plus"></i> Add User
-        </button> -->
     </div>
     
     
@@ -83,7 +89,7 @@
         <table class="crud-table">
             <thead>
                 <tr>
-                    <th>#</th>
+                    <th>Id User</th>
                     <th>Nama User</th>
                     <th>Email User</th>
                     <th>No. Telp</th>
@@ -92,59 +98,24 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>101</td>
-                    <td>Nadya Kameela</td>
-                    <td>nadyakameela162@gmail.com</td>
-                    <td>085712227029</td>
-                    <td>Purbalingga</td>
-                    <td>
-                        <button class="btn-delete"><i class="fas fa-trash"></i> Hapus</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>102</td>
-                    <td>Arini Husna Sabila</td>
-                    <td>arinihusnas@gmail.com</td>
-                    <td>084423480218</td>
-                    <td>Kalimanah</td>
-                    <td>
-                        <button class="btn-delete"><i class="fas fa-trash"></i> Hapus</button>
-                    </td>
-                </tr>
-                
-                <tr>
-                    <td>102</td>
-                    <td>Arini Husna Sabila</td>
-                    <td>arinihusnas@gmail.com</td>
-                    <td>084423480218</td>
-                    <td>Kalimanah</td>
-                    <td>
-                        <button class="btn-delete"><i class="fas fa-trash"></i> Hapus</button>
-                    </td>
-                </tr>
+            <?php
+            $fetch_src=FETCH_SRC;
 
-                <tr>
-                    <td>102</td>
-                    <td>Arini Husna Sabila</td>
-                    <td>arinihusnas@gmail.com</td>
-                    <td>084423480218</td>
-                    <td>Kalimanah</td>
-                    <td>
-                        <button class="btn-delete"><i class="fas fa-trash"></i> Hapus</button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>102</td>
-                    <td>Arini Husna Sabila</td>
-                    <td>arinihusnas@gmail.com</td>
-                    <td>084423480218</td>
-                    <td>Kalimanah</td>
-                    <td>
-                        <button class="btn-delete"><i class="fas fa-trash"></i> Hapus</button>
-                    </td>
-                </tr>
+            while($user=mysqli_fetch_assoc($query)){ 
+            
+            echo<<<user
+            <td>$user[id_user]</td>
+            <td>$user[nama_user]</td>
+            <td>$user[email_user]</td>
+            <td>$user[no_telp]</td>
+            <td>$user[alamat_user]</td>
+            <td>
+                <button class="btn-delete"><a href="user_hapus.php?id_hotel=$user[id_user]"><i class="fas fa-trash"></i>Hapus</a></button>
+            </td>
+            </tr>
+            
+            user;
+            }  ?>
             </tbody>
         </table>
     </div>

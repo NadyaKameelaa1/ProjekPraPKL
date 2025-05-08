@@ -1,3 +1,13 @@
+<?php
+session_start();
+require_once '../Koneksi/koneksi.php';
+
+$sql = "SELECT * FROM kamar";
+$query = mysqli_query($koneksi,$sql);
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -81,8 +91,8 @@
         <table class="crud-table">
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Id hotel</th>
+                    <th>Id Kamar</th>
+                    <th>Id Hotel</th>
                     <th>Nama Kamar</th>
                     <th>Tipe Kasur</th>
                     <th>Ukuran</th>
@@ -90,36 +100,39 @@
                     <th>Fasilitas</th>
                     <th>Harga</th>
                     <th>Jumlah Kamar</th>
-                    <th>Tamu</th>
+                    <th>Jumlah Dewasa</th>
+                    <th>Jumlah Anak</th>
                     <th>Deskripsi</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                <td>301</td>
-                <td>201</td>
-                <td>New Deluxe Twin Room Only</td>
-                <td>1 Ranjang Twin</td>
-                <td>40.0</td>
-                <td>2</td>
-                <td>Bathtub, Kulkas, Air Panas, AC, Smart TV, Sendal, Handuk</td>
-                <td>Rp. 1.167.076</td>
-                <td>1</td>
-                <td>
-                    <span class="badge">Dewasa: 2</span><br>
-                    <span class="badge">Anak: 0</span>
-                </td>
-                <td>Berlokasi di Semarang, 2 Km dari Stasiun Semarang Tawang, Gumaya Tower Hotel Menawarkan Spa & Pusat Kebugaran dan Pemandangan Kota.</td>
-                <td>
-                    <button class="btn-edit" class="button" onclick="openPopupedit()" id="popupedit">
-                        <i class="fas fa-edit"></i> 
-                    </button><br>
-                    
-                    <button class="btn-delete"><i class="fas fa-trash-alt"></i></button><br>
-                    <button class="btn-detailGambar"><i class="fas fa-images"></i></button>
-                </td>                
-                </tr>
+            <?php
+            $fetch_src=FETCH_SRC;
+
+            while($kamar=mysqli_fetch_assoc($query)){ 
+            
+            echo<<<kamar
+            <td>$kamar[id_kamar]</td>
+            <td>$kamar[id_hotel]</td>
+            <td>$kamar[nama_kamar]</td>
+            <td>$kamar[tipe_kasur]</td>
+            <td>$kamar[ukuran_kamar]</td>
+            <td>$kamar[kapasitas_kamar]</td>
+            <td>$kamar[fasilitas_kamar]</td>
+            <td>$kamar[harga_kamar]</td>
+            <td>$kamar[jumlah_kamar]</td>
+            <td>$kamar[jumlah_dewasa]</td>
+            <td>$kamar[jumlah_anak]</td>
+            <td>$kamar[deskripsi_kamar]</td>
+            <td>
+                <button class="btn-edit" onclick="openPopupedit()"><a href="id_kamar=$kamar[id_kamar]"><i class="fa-solid fa-pen-to-square"></i> Edit</a></button>
+                <button class="btn-delete"><a href="kamar_hapus.php?id_hotel=$kamar[id_kamar]"><i class="fas fa-trash"></i>Hapus</a></button>
+            </td>
+            </tr>
+            
+            kamar;
+            }  ?>
             </tbody>
         </table>
     </div>

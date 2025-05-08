@@ -102,7 +102,7 @@ $query = mysqli_query($koneksi,$sql);
         <table class="crud-table">
             <thead>
                 <tr>
-                    <th>#</th>
+                    <th>id Hotel</th>
                     <th>Kota Hotel</th>
                     <th>Nama Hotel</th>
                     <th>Bintang</th>
