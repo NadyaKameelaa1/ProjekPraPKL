@@ -23,10 +23,10 @@ session_start();
 
         </div>
         <div class="menu">
-            <a href="index.php">Beranda</a>
+            <a href="home.php">Beranda</a>
             <a href="#">Hotel</a>
             <a href="tentang.html">Tentang</a>
-            <a href="kontak_kami.html">Kontak Kami</a>
+            <a href="kontak_kami.php">Kontak Kami</a>
 
         </div>
 
@@ -73,42 +73,28 @@ session_start();
 
         <div class="card contact-form">
             <h3>Kirimkan kami pesan!</h3>
-            <form>
+            <form action="kontak_proses_tambah.php" method="post">
                 <div class="form-group">
                     <label><i class="fas fa-user"></i> Nama</label>
-                    <input type="text" placeholder="Tulis nama...">
+                    <input type="text" name="nama_pengirim" placeholder="Tulis nama...">
                 </div>
                 <div class="form-group">
                     <label><i class="fas fa-envelope"></i> Email</label>
-                    <input type="email" placeholder="Tulis email...">
+                    <input type="email" name="email_pengirim" placeholder="Tulis email...">
                 </div>
                 <div class="form-group">
-                    <label><i class="fas fa-comment"></i> Message</label>
-                    <textarea placeholder="Tulis pesan..."></textarea>
+                    <label><i class="fas fa-comment"></i> Pesan</label>
+                    <textarea name="pesan_pengirim" placeholder="Tulis pesan..."></textarea>
                    
                 </div>
-                <input type="submit" class="button" value="Kirim">
+                <input type="submit" class="button" value="Kirim" name="tambahPesan">
             </form>
             
         </div>
     </div>
 
-
-
-
-
-
-
     <br>
     <br>
-
-
-
-
-
-
-
-
 
         <footer>
             <div class="footer-container">
