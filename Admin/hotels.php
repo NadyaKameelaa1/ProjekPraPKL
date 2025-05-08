@@ -179,7 +179,7 @@ $query = mysqli_query($koneksi,$sql);
         
         <div class="form-group">
           <label>Bintang Hotel (1-5)</label>
-          <input type="number" name="bintang_hotel" placeholder="Bintang Hotel" required>
+          <input type="number" name="bintang_hotel" placeholder="Bintang Hotel" max="5" required>
         </div>
         
         <div class="form-group">
@@ -221,59 +221,83 @@ $query = mysqli_query($koneksi,$sql);
         </div>
         <span class="close-btn" onclick="closePopupedit()">&times;</span>
       </div>
-  
-      <form class="hotel-form">
-        <div class="form-row">
-          <div class="form-group">
+         
+
+      <!-- Tambahkan input hidden untuk ID hotel -->
+<form action="hotels_proses_edit.php" method="POST" class="hotel-form" enctype="multipart/form-data">
+    
+    <div class="form-row">
+        <div class="form-group">
             <label>Kota Hotel</label>
-            <input type="text" name="kota_hotel" value="Semarang">
-          </div>
-          
-          <div class="form-group">
+            <input type="text" name="kota_hotel" id="editkota" required>
+        </div>
+
+        <div class="form-group">
             <label>Nama Hotel</label>
-            <input type="text" name="nama_hotel" value="Gumaya Tower Semarang">
-          </div>
+            <input type="text" name="nama_hotel" id="editnama" required>
         </div>
-  
-        <div class="form-group">
-          <label>Bintang Hotel (1-5)</label>
-          <input type="number" name="bintang_hotel" placeholder="Bintang Hotel" required>
-        </div>
-  
-        <div class="form-group">
-          <label>Lokasi</label>
-          <input type="text" name="lokasi_hotel" value="Jl. Gajah Mada No. 59-61" required>
-        </div>
-  
-        <div class="form-group">
-          <label>Alamat Hotel</label>
-          <textarea name="alamat_hotel" required>Jl. Gajah Mada No. 59-61, Pekunden, Kec. Semarang Tengah, Kota Semarang, Jawa Tengah 50134</textarea>
-        </div>
-  
-        <div class="form-group">
-          <label>Fasilitas Hotel</label>
-          <textarea name="fasilitas_hotel" required>Kolam renang, Restoran, WiFi gratis, Parkir gratis, Layanan kamar 24 jam, AC, Lift, Sarapan gratis</textarea>
-        </div>
-  
-        <div class="form-group">
-            <label>Tambah Gambar Hotel (Max: 1)</label>
-            <input type="file" name="gambar_hotel" id="hotel-image" accept=".jpg,.png,.svg" required>
-          </div>
-  
-        <div class="form-actions">
-          <button type="button" class="btn-cancel" onclick="closePopupedit()">Batal</button>
-          <button type="submit" class="btn-submit">Simpan Perubahan</button>
-        </div>
-      </form>
+    </div>
+
+    <div class="form-group">
+        <label>Bintang Hotel (1-5)</label>
+        <input type="number" name="bintang_hotel" id="editbintang" min="1" max="5" required>
+    </div>
+
+    <div class="form-group">
+        <label>Lokasi</label>
+        <input type="text" name="lokasi_hotel" id="editlokasi" required>
+    </div>
+
+    <div class="form-group">
+        <label>Alamat Hotel</label>
+        <textarea name="alamat_hotel" id="editalamat" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Fasilitas Hotel</label>
+        <textarea name="fasilitas_hotel" id="editfasilitas" required></textarea>
+    </div>
+
+    <img src="" id="editgambar" width="100%" class="mb-3"><br>
+    <div class="form-group">
+          <label>Edit Gambar Hotel (Max: 1)</label>
+          <input type="file" name="gambar_hotel" id="hotel-image" accept=".jpg,.png,.svg" required>
+    </div>
+
+    <div class="form-actions">
+        <button type="button" class="btn-cancel" onclick="closePopupedit()">Batal</button>
+        <button type="submit" class="btn-submit" name="edithotel">Simpan Perubahan</button>
+    </div>
+    </form>
     </div>
   </div>
 
+<?php
+
+if(isset($_GET['popupedit']) && $_GET['popupedit']>0){
+$query="SELECT * FROM `hotels` WHERE `id_hotel` ='$id_hotel'";
+$result=mysqli_query($koneksi, $query);
+$hotels=mysqli_fetch_assoc($result);
+
+echo"
     <script>
-      // function confirm_rem(id_hotel){
-      //   if(confirm("Apakah anda yakin ingin menghapus data ini?")){
-      //     window.location.href="hotels.php?rem="+id_hotel;
-      //   }
-      // }
+        var edithotel = new bootstrap.Modal(document.getElementById('edithotel'), {
+    });
+    document.querySelector('#editkota').value=`$hotels[kota_hotel]`;
+    document.querySelector('#editnama').value=`$hotels[nama_hotel]`;
+    document.querySelector('#editbintang').value=`$hotels[bintang_hotel]`;
+    document.querySelector('#editlokasi').value=`$hotels[lokasi_hotel]`;
+    document.querySelector('#editalamat').value=`$hotels[alamat_hotel]`;
+    document.querySelector('#editfasilitas').value=`$hotels[fasilitas_hotel]`;
+    document.querySelector('#hotel-image').src=`$fetch_src$hotels[gambar_hotel]`;
+    editproduct.show();
+    </script>
+";
+
+}
+?>
+
+    <script>
 
         // Script untuk menampilkan nama file yang dipilih
         document.getElementById('hotel-image').addEventListener('change', function(e) {
