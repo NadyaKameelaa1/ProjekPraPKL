@@ -1,3 +1,8 @@
+<?php
+session_start();
+
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -47,21 +52,8 @@
         <img src="ornamen/ornament-bottom.png" class="ornament ornament-bottom">
     </header>
 
-
-
-
-
-
-
 <br>
 <br>
-
-
-
-
-
-
-
 
     <div class="container">
         <div class="card contact-info">
