@@ -29,7 +29,7 @@ if (!isset($_SESSION['email_user'])) {
         <div class="menu">
             <a href="home.php">Beranda</a>
             <a href="tentang.php">Tentang</a>
-            <a href="kontak_kami.html">Kontak Kami</a>
+            <a href="kontak_kami.php">Kontak Kami</a>
 
         </div>
 
