@@ -108,8 +108,6 @@ $query = mysqli_query($koneksi,$sql);
             </thead>
             <tbody>
             <?php
-            $fetch_src=FETCH_SRC;
-
             while($kamar=mysqli_fetch_assoc($query)){ 
             
             echo<<<kamar

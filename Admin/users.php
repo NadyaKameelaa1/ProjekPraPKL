@@ -99,8 +99,6 @@ $query = mysqli_query($koneksi,$sql);
             </thead>
             <tbody>
             <?php
-            $fetch_src=FETCH_SRC;
-
             while($user=mysqli_fetch_assoc($query)){ 
             
             echo<<<user
