@@ -58,7 +58,7 @@ if (!isset($_SESSION['email_user'])) {
     <div class="search-bar">
         <label><i class="fa-solid fa-location-dot"></i></label> 
               <input type="text" placeholder="Kota">
-        <button><i class="fa-solid fa-magnifying-glass" onclick.window="hasilpencarian.html"></i>Lihat Selengkapnya</button>
+        <button onclick="window.location.href='home2.php'"><i class="fa-solid fa-magnifying-glass"></i>Lihat Selengkapnya</button>
     </div>
 
     <br>
