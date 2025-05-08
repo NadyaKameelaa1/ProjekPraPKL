@@ -24,8 +24,7 @@ session_start();
         </div>
         <div class="menu">
             <a href="home.php">Beranda</a>
-            <a href="#">Hotel</a>
-            <a href="tentang.html">Tentang</a>
+            <a href="tentang.php">Tentang</a>
             <a href="kontak_kami.php">Kontak Kami</a>
 
         </div>

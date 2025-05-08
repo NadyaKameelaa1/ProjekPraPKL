@@ -45,7 +45,6 @@ $initial_values = [
         </div>
         <div class="menu">
             <a href="index.php">Beranda</a>
-            <a href="#">Hotel</a>
             <a href="tentang.html">Tentang</a>
             <a href="kontak_kami.html">Kontak Kami</a>
 

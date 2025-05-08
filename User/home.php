@@ -28,7 +28,6 @@ if (!isset($_SESSION['email_user'])) {
         </div>
         <div class="menu">
             <a href="home.php">Beranda</a>
-            <a href="#">Hotel</a>
             <a href="tentang.php">Tentang</a>
             <a href="kontak_kami.html">Kontak Kami</a>
 
@@ -52,25 +51,14 @@ if (!isset($_SESSION['email_user'])) {
         <hr>
 
         <div class="search-labels">
-            <div class="search-label">Kota, atau nama hotel</div>
-            <div class="search-label">Tanggal Check-In & Check-Out</div>
-            <div class="search-label">Tamu & Kamar</div>
+            <div class="search-label">Kota</div>
           </div>
     </header>
 
     <div class="search-bar">
         <label><i class="fa-solid fa-location-dot"></i></label> 
-              <input type="text" placeholder="Kota, atau Nama hotel">        
-              
-              <input type="date" placeholder="Check-in">
-              <input type="date" placeholder="Check-out">   
-   
-              <label><i class="fa-solid fa-user-check"></i> </label> 
-        <select>
-            <option>2 Dewasa, 0 Anak, 1 Kamar</option>
-            <option>2 Dewasa, 1 Anak, 1 Kamar</option>           
-        </select>
-        <button><i class="fa-solid fa-magnifying-glass"></i></button>
+              <input type="text" placeholder="Kota">
+        <button><i class="fa-solid fa-magnifying-glass" onclick.window="hasilpencarian.html"></i>Lihat Selengkapnya</button>
     </div>
 
     <br>
