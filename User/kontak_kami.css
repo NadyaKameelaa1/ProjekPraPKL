@@ -251,6 +251,25 @@ textarea {
 }
 
 
+.success-message {
+    color: #28a745 !important;
+    background-color: #e6ffe6;
+    padding: 10px 15px;
+    border: 1px solid #28a745 !important;
+    border-radius: 4px;
+    margin: 10px auto 20px auto; /* atas kanan bawah kiri */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* teks di tengah */
+    gap: 8px;
+    width: 100%;
+    max-width: 900px; /* sesuaikan dengan lebar card Anda */
+    box-sizing: border-box;
+}
+
+.success-message i {
+    color: #28a745;
+}
 
 
 

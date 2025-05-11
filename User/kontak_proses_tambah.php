@@ -3,43 +3,44 @@ session_start();
 require_once '../koneksi/koneksi.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tambahPesan'])){
-    // Sanitasi input (pastikan nama field sesuai form)
-    $nama_pengirim = mysqli_real_escape_string($koneksi, $_POST['name_pengirim'] ?? '');
+    // Sanitasi input - PASTIKAN NAMA FIELD SESUAI FORM
+    $nama_pengirim = mysqli_real_escape_string($koneksi, $_POST['nama_pengirim'] ?? '');
     $email_pengirim = mysqli_real_escape_string($koneksi, $_POST['email_pengirim'] ?? '');
     $pesan_pengirim = mysqli_real_escape_string($koneksi, $_POST['pesan_pengirim'] ?? '');
 
-    // Periksa apakah user login dan dapatkan id_user
-    if (isset($_SESSION['email_user'])){
-        // Dapatkan id_user berdasarkan email
-        $check_user = mysqli_query($koneksi, "SELECT id_user FROM users WHERE email_user = '".$_SESSION['email_user']."'");
-        if(mysqli_num_rows($check_user) > 0){
-            $user_data = mysqli_fetch_assoc($check_user);
-            $id_user = $user_data['id_user'];
-            
-            $query = "INSERT INTO kontak_kami (id_user, nama_pengirim, email_pengirim, pesan_pengirim)
-                      VALUES (?, ?, ?, ?)";
-            $stmt = mysqli_prepare($koneksi, $query);
-            mysqli_stmt_bind_param($stmt, 'isss', $id_user, $nama_pengirim, $email_pengirim, $pesan_pengirim);
-        } else {
-            $_SESSION['error'] = "User tidak ditemukan";
-            header("Location: kontak_kami.php?alert=user_tidak_valid");
-            exit;
-        }
-    } else {
-        // Untuk pengunjung non-login, gunakan nilai default untuk id_user
-        $query = "INSERT INTO kontak_kami (id_user, nama_pengirim, email_pengirim, pesan_pengirim)
-                  VALUES (0, ?, ?, ?)"; // Anggap 0 adalah guest user
-        $stmt = mysqli_prepare($koneksi, $query);
-        mysqli_stmt_bind_param($stmt, 'sss', $nama_pengirim, $email_pengirim, $pesan_pengirim);
+    // Debug: Lihat data yang diterima
+    error_log("Data Form: " . print_r($_POST, true));
+
+    // Untuk pengunjung non-login
+    $id_user = 0; // Nilai default untuk guest
+
+    // Untuk user yang login
+    if (isset($_SESSION['email_user'])) {
+        $stmt = mysqli_prepare($koneksi, "SELECT id_user FROM users WHERE email_user = ?");
+        mysqli_stmt_bind_param($stmt, 's', $_SESSION['email_user']);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_bind_result($stmt, $id_user);
+        mysqli_stmt_fetch($stmt);
+        mysqli_stmt_close($stmt);
     }
 
+    // Insert data
+    $query = "INSERT INTO kontak_kami (id_user, nama_pengirim, email_pengirim, pesan_pengirim)
+              VALUES (?, ?, ?, ?)";
+    $stmt = mysqli_prepare($koneksi, $query);
+    mysqli_stmt_bind_param($stmt, 'isss', $id_user, $nama_pengirim, $email_pengirim, $pesan_pengirim);
+
+    // Set session success setelah berhasil insert
     if (mysqli_stmt_execute($stmt)){
-        $_SESSION["success"] = "Pesan berhasil dikirim";
-        header("Location: kontak_kami.php?success=tambah");
+        $_SESSION['success'] = "Pesan berhasil dikirim!";
+        header("Location: kontak_kami.php");
+        exit;
     } else {
-        $_SESSION["error"] = "Gagal mengirim pesan: ". mysqli_error($koneksi);
-        header("Location: kontak_kami.php?alert=tambah_gagal");
+        $_SESSION['error'] = "Gagal mengirim pesan: ". mysqli_error($koneksi);
+        header("Location: kontak_kami.php");
+        exit;
     }
     mysqli_stmt_close($stmt);
+    header("Location: kontak_kami.php");
     exit;
 }

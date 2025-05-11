@@ -54,6 +54,14 @@ session_start();
 <br>
 <br>
 
+    <?php if (isset($_SESSION['success'])): ?>
+    <div class="success-message">
+        <i class="fas fa-check-circle"></i>
+        <?php echo htmlspecialchars($_SESSION['success']); ?>
+    </div>
+    <?php unset($_SESSION['success']); ?>
+    <?php endif; ?>
+
     <div class="container">
         <div class="card contact-info">
             <h3>Kontak Kami</h3>
