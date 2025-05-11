@@ -1,3 +1,14 @@
+<?php
+session_start();
+
+require_once '../Koneksi/koneksi.php';
+
+$sql = "SELECT * FROM kontak_kami";
+$query = mysqli_query($koneksi,$sql);
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -87,7 +98,7 @@
         <table class="crud-table">
             <thead>
                 <tr>
-                    <th>#</th>
+                    <th>Id User</th>
                     <th>Nama Pengirim</th>
                     <th>Email Pengirim</th>
                     <th>Pesan</th>
@@ -96,29 +107,23 @@
                 </tr>
             </thead>
             <tbody>
-            <tr>
-            <td>101</td>
-            <td>Nadyaaaaaaaa</td>
-            <td>nadyakameela162@gmail.com</td>
-            <td>websitenya keren bangetttt</td>
-            <td>01-02-2025</td>
+            <?php
+            while($kontak=mysqli_fetch_assoc($query)){ 
+            
+            echo<<<kontak
+            <td>$kontak[id_user]</td>
+            <td>$kontak[nama_pengirim]</td>
+            <td>$kontak[email_pengirim]</td>
+            <td>$kontak[pesan_pengirim]</td>
+            <td>$kontak[tanggal_waktu]</td>
             <td>
                 <button class="btn-edit"><i class="fa-solid fa-check"></i> Tandai Dibaca</button><br><br>
-                <button class="btn-delete"><i class="fas fa-trash"></i> Hapus</button>
+                <button class="btn-delete"><a href="kontak_hapus.php?id_user=$kontak[id_user]"><i class="fas fa-trash"></i>Hapus</a></button>
             </td>
             </tr>
-
-            <tr>
-            <td>102</td>
-            <td>Arin</td>
-            <td>arinarin@gmail.com</td>
-            <td>hotelnya jelek, perbaiki lg yh kk</td>
-            <td>05-10-2025</td>
-            <td>
-                <button class="btn-edit"><i class="fa-solid fa-check"></i> Tandai Dibaca</button><br><br>
-                <button class="btn-delete"><i class="fas fa-trash"></i> Hapus</button>
-            </td>
-            </tr>
+            
+            kontak;
+            }  ?>
 
             </tbody>
         </table>
