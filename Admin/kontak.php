@@ -83,16 +83,28 @@ $query = mysqli_query($koneksi,$sql);
             <input type="text" id="userSearch" placeholder="Cari id pengirim, nama pengirim, email pengirim, pesan, waktu,...">
         </div>
 
-         <button class="btn-mark">
+         <button id="markAllRead" class="btn-mark">
             <i class="fa-solid fa-check-double"></i> Tandai Dibaca Semua
         </button> 
 
-        <button class="btn-deleteAll">
+        <button id="deleteAll" class="btn-deleteAll">
             <i class="fas fa-trash"></i> Hapus Semua
         </button> 
     </div>
-    
-    
+
+    <?php if (isset($_SESSION['success'])): ?>
+        <div class="alert alert-success">
+            <?= htmlspecialchars($_SESSION['success']); ?>
+            <?php unset($_SESSION['success']); ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['error'])): ?>
+        <div class="alert alert-danger">
+            <?= htmlspecialchars($_SESSION['error']); ?>
+            <?php unset($_SESSION['error']); ?>
+        </div>
+    <?php endif; ?>
 
     <div class="table-container">
         <table class="crud-table">
@@ -108,23 +120,33 @@ $query = mysqli_query($koneksi,$sql);
             </thead>
             <tbody>
             <?php
-            while($kontak=mysqli_fetch_assoc($query)){ 
+        while($kontak = mysqli_fetch_assoc($query)) {
+            $readStatus = isset($kontak['status_dibaca']) && $kontak['status_dibaca'] == 1 ? 'dibaca' : 'tandai-dibaca';
+            $btnClass = $kontak['status_dibaca'] ? 'btn-dibaca' : 'btn-edit';
+            $buttonText = $kontak['status_dibaca'] ? 'Dibaca' : 'Tandai Dibaca';
+            $disabled = $kontak['status_dibaca'] ? 'disabled' : '';
             
-            echo<<<kontak
-            <td>$kontak[id_user]</td>
-            <td>$kontak[nama_pengirim]</td>
-            <td>$kontak[email_pengirim]</td>
-            <td>$kontak[pesan_pengirim]</td>
-            <td>$kontak[tanggal_waktu]</td>
-            <td>
-                <button class="btn-edit"><i class="fa-solid fa-check"></i> Tandai Dibaca</button><br><br>
-                <button class="btn-delete"><a href="kontak_hapus.php?id_user=$kontak[id_user]"><i class="fas fa-trash"></i>Hapus</a></button>
-            </td>
+            echo <<<kontak
+            <tr>
+                <td>{$kontak['id_user']}</td>
+                <td>{$kontak['nama_pengirim']}</td>
+                <td>{$kontak['email_pengirim']}</td>
+                <td>{$kontak['pesan_pengirim']}</td>
+                <td>{$kontak['tanggal_waktu']}</td>
+                <td>
+                    <button class="$btnClass" data-id="{$kontak['id_user']}" 
+                            onclick="markAsRead(this)" $disabled>
+                        <i class="fa-solid fa-check"></i> $buttonText
+                    </button>
+                    <br><br>
+                    <a href="kontak_hapus.php?id_user={$kontak['id_user']}" class="btn-delete">
+                        <i class="fas fa-trash"></i> Hapus
+                    </a>
+                </td>
             </tr>
-            
-            kontak;
-            }  ?>
-
+        kontak;
+        }
+        ?>
             </tbody>
         </table>
     </div>
@@ -143,6 +165,94 @@ $query = mysqli_query($koneksi,$sql);
         row.style.display = text.includes(searchValue) ? '' : 'none';
     });
 });
+
+//tandai dibaca
+function markAsRead(button) {
+    const idUser = button.getAttribute('data-id');
+    
+    // Kirim request AJAX ke server
+    fetch('kontak_tandai_dibaca.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `id_user=${idUser}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.success) {
+            // Ubah tampilan tombol
+            button.classList.remove('btn-delete');
+            button.classList.add('btn-dibaca');
+            button.innerHTML = '<i class="fa-solid fa-check"></i> Dibaca';
+            button.disabled = true;
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+//tandai dibaca semua
+document.getElementById('markAllRead').addEventListener('click', function() {
+    if(confirm('Apakah Anda yakin ingin menandai semua pesan sebagai dibaca?')) {
+        fetch('kontak_tandai_dibaca_semua.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({mark_all: true})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                // Update semua tombol di halaman
+                document.querySelectorAll('.btn-dibaca').forEach(button => {
+                    button.classList.remove('btn-delete');
+                    button.classList.add('btn-dibaca');
+                    button.innerHTML = '<i class="fa-solid fa-check"></i> Dibaca';
+                    button.disabled = true;
+                    button.onclick = null; // Hapus event listener
+                });
+                alert(data.affected_rows + ' pesan telah ditandai sebagai dibaca');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+});
+
+document.getElementById('deleteAll').addEventListener('click', function() {
+    if(confirm('Apakah Anda yakin ingin menghapus SEMUA pesan? Tindakan ini tidak dapat dibatalkan!')) {
+        // Tampilkan loading
+        const btn = this;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menghapus...';
+        btn.disabled = true;
+        
+        fetch('kontak_hapus_semua.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({delete_all: true})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                alert(data.message);
+                // Refresh halaman setelah penghapusan
+                location.reload();
+            } else {
+                alert('Gagal menghapus: ' + data.error);
+                btn.innerHTML = '<i class="fas fa-trash-alt"></i> Hapus Semua';
+                btn.disabled = false;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            btn.innerHTML = '<i class="fas fa-trash-alt"></i> Hapus Semua';
+            btn.disabled = false;
+        });
+    }
+});
+
 </script>
 
 </body>

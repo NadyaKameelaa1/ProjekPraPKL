@@ -354,13 +354,44 @@
     box-shadow: 0 0 0 2px rgba(93, 58, 26, 0.2);
 }
 
-.btn-delete a{
+.btn-delete a,
+.btn-dibaca a,
+.btn-edit a{
   color: inherit;
   text-decoration: none;
   }
+
+  /* Tombol Tandai Dibaca */
+.btn-edit {
+  background-color: #007bff; /* Biru */
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+/* Tombol Sudah Dibaca */
+.btn-dibaca {
+  background-color: #28a745; /* Hijau */
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.btn-dibaca:hover {
+  background-color: #289742;
+}
   
   .btn-edit,
-  .btn-delete {
+  .btn-delete, 
+  .btn-dibaca {
   color: white;
   text-decoration: none;
   }
+
+  
