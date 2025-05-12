@@ -125,7 +125,7 @@ $query = mysqli_query($koneksi,$sql);
             <td>$kamar[deskripsi_kamar]</td>
             <td>
                 <button class="btn-edit" onclick="openPopupedit()"><a href="id_kamar=$kamar[id_kamar]"><i class="fa-solid fa-pen-to-square"></i> Edit</a></button>
-                <button class="btn-delete"><a href="kamar_hapus.php?id_hotel=$kamar[id_kamar]"><i class="fas fa-trash"></i>Hapus</a></button>
+                <button class="btn-delete"><a href="kamar_hapus.php?id_kamar=$kamar[id_kamar]"><i class="fas fa-trash"></i>Hapus</a></button>
             </td>
             </tr>
             
@@ -161,61 +161,109 @@ $query = mysqli_query($koneksi,$sql);
         <span class="close-btn" onclick="closePopup()">&times;</span>
       </div>
   
+        <?php
+        // Tampilkan pesan error jika ada
+        if(isset($_SESSION['errors'])) {
+            echo '<div class="alert alert-danger">';
+            foreach($_SESSION['errors'] as $error) {
+                echo '<p>'.$error.'</p>';
+            }
+            echo '</div>';
+            unset($_SESSION['errors']);
+        }
+
+        // Tampilkan pesan sukses jika ada
+        if(isset($_SESSION['success'])) {
+            echo '<div class="alert alert-success">'.$_SESSION['success'].'</div>';
+            unset($_SESSION['success']);
+        }
+
+        // Isi kembali form dengan data sebelumnya jika ada error
+        $form_data = $_SESSION['form_data'] ?? [];
+        unset($_SESSION['form_data']);
+        ?>
+
       <div class="form-container">
-        <form class="room-form">
+        <form class="room-form" action="kamar_proses_tambah.php" method="POST">
             <div class="form-group">
                 <label for="hotel-id">Id Hotel</label>
                 <div class="hotel-selection">
-                    <select id="hotel-id">
-                        <option value="201">201 - Semarang</option>
-                        <option value="202">202 - Semarang</option>
-                        <option value="203">203 - Purwokerto</option>
+                <select name="id_hotel" id="hotel-id" required>
+                        <option value="">Pilih Hotel</option>
+                        <?php
+                        $hotel = mysqli_query($koneksi, "SELECT id_hotel, nama_hotel FROM hotels");
+                        while($hotels = mysqli_fetch_assoc($hotel)) {
+                            $selected = ($hotels['id_hotel'] == ($_POST['id_hotel'] ?? '')) ? 'selected' : '';
+                            echo '<option value="'.$hotels['id_hotel'].'" '.$selected.'>'.$hotels['nama_hotel'].'</option>';
+                        }
+                        ?>
                     </select>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="room-name">Nama Kamar</label>
-                <input type="text" id="room-name" placeholder="Nama Kamar Hotel...">
+                <input type="text" name="nama_kamar" id="room-name" value="<?= htmlspecialchars($_POST['nama_kamar'] ?? '') ?>" placeholder="Nama Kamar Hotel..." required>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label for="room-name">Tipe Kasur</label>
-                    <input type="text" id="room-bed" placeholder="Tipe Kasur Hotel...">
+                    <input type="text" name="tipe_kasur" id="room-bed" value="<?= htmlspecialchars($_POST['tipe_kasur'] ?? '') ?>" placeholder="Tipe Kasur Hotel..." required>
                 </div>
 
                 <div class="form-group">
                     <label for="room-size">Ukuran (m²)</label>
-                    <input type="text" id="room-size" placeholder="Ukuran Kamar Hotel...">
+                    <input type="number" name="ukuran_kamar" id="room-size" value="<?= htmlspecialchars($_POST['ukuran_kamar'] ?? '') ?>" placeholder="Ukuran Kamar Hotel..." required>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="capacity">Kapasitas</label>
-                <input type="number" id="capacity" placeholder="Kapasitas Hotel..." min="1" max="10">
+                <input type="number" name="kapasitas_kamar" id="capacity" value="<?= htmlspecialchars($_POST['kapasitas_kamar'] ?? '') ?>" placeholder="Kapasitas Hotel..." min="1" max="10" required>
             </div>
 
             <div class="form-group">
                 <label for="facilities">Fasilitas</label>
-                <textarea id="facilities" placeholder="Fasilitas Hotel..."></textarea>
+                <textarea id="facilities" name="fasilitas_kamar" value="<?= htmlspecialchars($_POST['fasilitas_kamar'] ?? '') ?>" placeholder="Fasilitas Hotel..." required></textarea>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label for="price">Harga</label>
-                    <input type="text" id="price" placeholder="Harga Hotel...">
+                    <input type="number" name="harga_kamar" id="price" value="<?= htmlspecialchars($_POST['harga_kamar'] ?? '') ?>" placeholder="Harga Hotel..." required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="price">Jumlah Kamar</label>
+                    <input type="number" name="jumlah_kamar" value="<?= htmlspecialchars($_POST['jumlah_kamar'] ?? '') ?>" placeholder="Jumlah Kamar..." required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="price">Jumlah Dewasa</label>
+                    <input type="number" name="jumlah_dewasa" value="<?= htmlspecialchars($_POST['jumlah_dewasa'] ?? '') ?>" placeholder="Jumlah Dewasa..." required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="price">Jumlah Anak</label>
+                    <input type="number" name="jumlah_anak" value="<?= htmlspecialchars($_POST['jumlah_anak'] ?? '') ?>" placeholder="Jumlah Anak..." required>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="description">Deskripsi</label>
-                <textarea id="description" placeholder="Deskripsi Hotel..."></textarea>
+                <label for="description">Deskripsi Kamar</label>
+                <textarea id="description" name="deskripsi_kamar" value="<?= htmlspecialchars($_POST['deskripsi_kamar'] ?? '') ?>" placeholder="Deskripsi Hotel..." required></textarea>
             </div>
 
             <div class="form-actions">
                 <button type="button" class="btn-cancel" onclick="closePopup()">Batal</button>
-                <button type="submit" class="btn-submit">Tambah Kamar</button>
+                <button type="submit" name="submit" class="btn-submit">Tambah Kamar</button>
               </div>
         </form>
     </div>
@@ -301,6 +349,8 @@ $query = mysqli_query($koneksi,$sql);
             const fileName = e.target.files[0] ? e.target.files[0].name : 'No file chosen';
             document.querySelector('.file-chosen').textContent = fileName;
         });
+
+//-----------------------------------------------------------------------
     
 // tambah
 function openPopup() {
@@ -319,6 +369,10 @@ function openPopupedit() {
 function closePopupedit() {
   document.getElementById("popupedit").style.display = "none";
 }
+
+//----------------------------------------------------------------
+
+
 </script>
 
 </body>
