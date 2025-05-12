@@ -117,25 +117,31 @@ $query = mysqli_query($koneksi,$sql);
             <?php
             $fetch_src=FETCH_SRC;
 
-            while($hotels=mysqli_fetch_assoc($query)){ 
+            while($hotels = mysqli_fetch_assoc($query)) {
+                echo <<<hotels
+                <tr>
+                    <td>{$hotels['id_hotel']}</td>
+                    <td>{$hotels['kota_hotel']}</td>
+                    <td>{$hotels['nama_hotel']}</td>
+                    <td>{$hotels['bintang_hotel']}</td>
+                    <td>{$hotels['lokasi_hotel']}</td>
+                    <td>{$hotels['alamat_hotel']}</td>
+                    <td>{$hotels['fasilitas_hotel']}</td>
+                    <td><img src="{$fetch_src}{$hotels['gambar_hotel']}" width="150px"></td>
+                    <td>
+                        <button class="btn-edit" onclick="openPopupedit({$hotels['id_hotel']})">
+                            <i class="fa-solid fa-pen-to-square"></i> Edit
+                        </button>
+                        <button class="btn-delete">
+                            <a href="hotels_hapus.php?id_hotel={$hotels['id_hotel']}">
+                                <i class="fas fa-trash"></i> Hapus
+                            </a>
+                        </button>
+                    </td>
+                </tr>
+                hotels;
+            } ?>
             
-            echo<<<hotels
-            <td>$hotels[id_hotel]</td>
-            <td>$hotels[kota_hotel]</td>
-            <td>$hotels[nama_hotel]</td>
-            <td>$hotels[bintang_hotel]</td>
-            <td>$hotels[lokasi_hotel]</td>
-            <td>$hotels[alamat_hotel]</td>
-            <td>$hotels[fasilitas_hotel]</td>
-            <td><img src="$fetch_src$hotels[gambar_hotel]" width="150px"></td>
-            <td>
-                <button class="btn-edit" onclick="openPopupedit()"><a href="id_hotel=$hotels[id_hotel]"><i class="fa-solid fa-pen-to-square"></i> Edit</a></button>
-                <button class="btn-delete"><a href="hotels_hapus.php?id_hotel=$hotels[id_hotel]"><i class="fas fa-trash"></i> Hapus</a></button>
-            </td>
-            </tr>
-            
-            hotels;
-            }  ?>
             </tbody>
         </table>
     </div>
@@ -221,47 +227,46 @@ $query = mysqli_query($koneksi,$sql);
         </div>
         <span class="close-btn" onclick="closePopupedit()">&times;</span>
       </div>
-         
 
-      <!-- Tambahkan input hidden untuk ID hotel -->
 <form action="hotels_proses_edit.php" method="POST" class="hotel-form" enctype="multipart/form-data">
-    
+    <input type="hidden" name="id_hotel" value="<?= $_GET['edit_id'] ?? '' ?>">
     <div class="form-row">
         <div class="form-group">
             <label>Kota Hotel</label>
-            <input type="text" name="kota_hotel" id="editkota" required>
+            <input type="text" name="kota_hotel" id="editkota" value="<?= htmlspecialchars($hotels['kota_hotel'] ?? '') ?>" required>
         </div>
 
         <div class="form-group">
             <label>Nama Hotel</label>
-            <input type="text" name="nama_hotel" id="editnama" required>
+            <input type="text" name="nama_hotel" id="editnama" value="<?= htmlspecialchars($hotels['nama_hotel'] ?? '') ?>" required>
         </div>
     </div>
 
     <div class="form-group">
         <label>Bintang Hotel (1-5)</label>
-        <input type="number" name="bintang_hotel" id="editbintang" min="1" max="5" required>
+        <input type="number" name="bintang_hotel" id="editbintang" min="1" max="5" value="<?= htmlspecialchars($hotels['bintang_hotel'] ?? '') ?>" required>
     </div>
 
     <div class="form-group">
         <label>Lokasi</label>
-        <input type="text" name="lokasi_hotel" id="editlokasi" required>
+        <input type="text" name="lokasi_hotel" id="editlokasi" value="<?= htmlspecialchars($hotels['lokasi_hotel'] ?? '') ?>" required>
     </div>
 
     <div class="form-group">
         <label>Alamat Hotel</label>
-        <textarea name="alamat_hotel" id="editalamat" required></textarea>
+        <textarea name="alamat_hotel" id="editalamat" value="<?= htmlspecialchars($hotels['alamat_hotel'] ?? '') ?>" required></textarea>
     </div>
 
     <div class="form-group">
         <label>Fasilitas Hotel</label>
-        <textarea name="fasilitas_hotel" id="editfasilitas" required></textarea>
+        <textarea name="fasilitas_hotel" id="editfasilitas" value="<?= htmlspecialchars($hotels['fasilitas_hotel'] ?? '') ?>" required></textarea>
     </div>
 
     <img src="" id="editgambar" width="100%" class="mb-3"><br>
     <div class="form-group">
           <label>Edit Gambar Hotel (Max: 1)</label>
-          <input type="file" name="gambar_hotel" id="hotel-image" accept=".jpg,.png,.svg" required>
+          <input type="file" name="gambar_hotel" id="hotel-image" accept=".jpg,.png,.svg">
+          <small>Biarkan kosong jika tidak ingin mengubah gambar</small>
     </div>
 
     <div class="form-actions">
@@ -272,30 +277,6 @@ $query = mysqli_query($koneksi,$sql);
     </div>
   </div>
 
-<?php
-
-if(isset($_GET['popupedit']) && $_GET['popupedit']>0){
-$query="SELECT * FROM `hotels` WHERE `id_hotel` ='$id_hotel'";
-$result=mysqli_query($koneksi, $query);
-$hotels=mysqli_fetch_assoc($result);
-
-echo"
-    <script>
-        var edithotel = new bootstrap.Modal(document.getElementById('edithotel'), {
-    });
-    document.querySelector('#editkota').value=`$hotels[kota_hotel]`;
-    document.querySelector('#editnama').value=`$hotels[nama_hotel]`;
-    document.querySelector('#editbintang').value=`$hotels[bintang_hotel]`;
-    document.querySelector('#editlokasi').value=`$hotels[lokasi_hotel]`;
-    document.querySelector('#editalamat').value=`$hotels[alamat_hotel]`;
-    document.querySelector('#editfasilitas').value=`$hotels[fasilitas_hotel]`;
-    document.querySelector('#hotel-image').src=`$fetch_src$hotels[gambar_hotel]`;
-    editproduct.show();
-    </script>
-";
-
-}
-?>
 
     <script>
 
@@ -315,9 +296,46 @@ echo"
     }
 
     // edit
-    function openPopupedit() {
-      document.getElementById("popupedit").style.display = "flex";
+    // Fungsi untuk membuka popup edit dengan data hotel
+    function openPopupedit(id_hotel) {
+        // Ambil data hotel via AJAX
+        fetch('hotels_data.php?id_hotel=' + id_hotel)
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    // Isi form dengan data yang diterima
+                    document.getElementById('editkota').value = data.kota_hotel;
+                    document.getElementById('editnama').value = data.nama_hotel;
+                    document.getElementById('editbintang').value = data.bintang_hotel;
+                    document.getElementById('editlokasi').value = data.lokasi_hotel;
+                    document.getElementById('editalamat').value = data.alamat_hotel;
+                    document.getElementById('editfasilitas').value = data.fasilitas_hotel;
+                    document.getElementById('editgambar').src = data.gambar_hotel;
+                    
+                    // Tambahkan input hidden untuk id_hotel
+                    const form = document.querySelector('.hotel-form');
+                    let idInput = form.querySelector('input[name="id_hotel"]');
+                    if(!idInput) {
+                        idInput = document.createElement('input');
+                        idInput.type = 'hidden';
+                        idInput.name = 'id_hotel';
+                        form.prepend(idInput);
+                    }
+                    idInput.value = id_hotel;
+                    
+                    // Tampilkan popup
+                    document.getElementById("popupedit").style.display = "flex";
+                    document.querySelector('#popupedit h3').textContent = data.name_hotel;
+                } else {
+                    alert('Gagal memuat data hotel');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat memuat data');
+            });
     }
+
     
     function closePopupedit() {
       document.getElementById("popupedit").style.display = "none";
