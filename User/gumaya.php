@@ -49,14 +49,14 @@ require_once '../koneksi/koneksi.php';
     <div class="container-gumaya">
       <div class="hotel-card">
         <div class="left-image">
-          <img src="gambar/SKY guyana tower.jpg" alt="Hotel">
+          <img src="gambar/gambargumaya/gumaya.jpg" alt="Hotel">
         </div>
 
         
         <div class="left-info">
           <div class="small-images">
-            <img src="gambar/" alt="Kolam Renang">
-            <img src="gambar/Guma.jpeg" alt="Restoran">
+            <img src="gambar/gambargumaya/gumayakolam.jpg" alt="Kolam Renang">
+            <img src="gambar/gambargumaya/Guma.jpeg" alt="Restoran">
           </div>
           <div class="description">
             <h2>GUMAYA TOWER SEMARANG</h2>
