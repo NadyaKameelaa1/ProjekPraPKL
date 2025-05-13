@@ -124,8 +124,17 @@ $query = mysqli_query($koneksi,$sql);
             <td>$kamar[jumlah_anak]</td>
             <td>$kamar[deskripsi_kamar]</td>
             <td>
-                <button class="btn-edit" onclick="openPopupedit()"><a href="id_kamar=$kamar[id_kamar]"><i class="fa-solid fa-pen-to-square"></i> Edit</a></button>
-                <button class="btn-delete"><a href="kamar_hapus.php?id_kamar=$kamar[id_kamar]"><i class="fas fa-trash"></i>Hapus</a></button>
+                <button class="btn-edit" onclick="openPopupedit({$kamar['id_kamar']})">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+                        <button class="btn-delete">
+                            <a href="kamar_hapus.php?id_kamar={$kamar['id_kamar']}">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </button>
+                <button class="btn-detailGambar" onclick="openPopupgambar({$kamar['id_kamar']})">
+                    <i class="fa-solid fa-image"></i>
+                </button>
             </td>
             </tr>
             
@@ -342,10 +351,66 @@ $query = mysqli_query($koneksi,$sql);
     </div>
 </div>
 
+    <!-- Popup gambar -->
+  <div class="popup-overlay" id="popupgambar">
+    <div class="popup-content">
+      <div class="popup-header">
+        <h2>TAMBAH KAMAR</h2>
+        <span class="close-btn" onclick="closePopupgambar()">&times;</span>
+      </div>
+  
+        <?php
+        // Tampilkan pesan error jika ada
+        if(isset($_SESSION['errors'])) {
+            echo '<div class="alert alert-danger">';
+            foreach($_SESSION['errors'] as $error) {
+                echo '<p>'.$error.'</p>';
+            }
+            echo '</div>';
+            unset($_SESSION['errors']);
+        }
+
+        // Tampilkan pesan sukses jika ada
+        if(isset($_SESSION['success'])) {
+            echo '<div class="alert alert-success">'.$_SESSION['success'].'</div>';
+            unset($_SESSION['success']);
+        }
+
+        // Isi kembali form dengan data sebelumnya jika ada error
+        $form_data = $_SESSION['form_data'] ?? [];
+        unset($_SESSION['form_data']);
+        ?>
+
+      <div class="form-container">
+        <form class="room-form">
+
+            <div class="form-group">
+                <label for="room-name">Nama Kamar</label>
+                <input type="text" name="nama_kamar" id="room-name" value="<?= htmlspecialchars($_POST['nama_kamar'] ?? '') ?>" placeholder="Nama Kamar Hotel..." required>
+            </div>
+
+            <div class="form-group">
+                <label>Tambah Gambar Kamar</label>
+                <input type="file" name="gambar_kamar" id="room-image" accept=".jpg,.png,.svg" required>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" onclick="closePopupgambar()">Batal</button>
+                <button type="submit" name="submit" class="btn-submit">Simpan Gambar</button>
+              </div>
+        </form>
+    </div>
+</div>
+
 
 <script>
 // Script untuk menampilkan nama file yang dipilih
         document.getElementById('hotel-image').addEventListener('change', function(e) {
+            const fileName = e.target.files[0] ? e.target.files[0].name : 'No file chosen';
+            document.querySelector('.file-chosen').textContent = fileName;
+        });
+
+        document.getElementById('room-image').addEventListener('change', function(e) {
             const fileName = e.target.files[0] ? e.target.files[0].name : 'No file chosen';
             document.querySelector('.file-chosen').textContent = fileName;
         });
@@ -368,6 +433,15 @@ function openPopupedit() {
 
 function closePopupedit() {
   document.getElementById("popupedit").style.display = "none";
+}
+
+// edit
+function openPopupgambar() {
+  document.getElementById("popupgambar").style.display = "flex";
+}
+
+function closePopupgambar() {
+  document.getElementById("popupgambar").style.display = "none";
 }
 
 //----------------------------------------------------------------
