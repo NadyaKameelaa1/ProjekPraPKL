@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+require_once '../Koneksi/koneksi.php';
 ?>
 
 <!DOCTYPE html>

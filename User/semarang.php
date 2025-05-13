@@ -1,3 +1,16 @@
+<?php
+session_start();
+require_once '../Koneksi/koneksi.php';
+
+$query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harga_terendah
+    FROM hotels
+    LEFT JOIN kamar ON hotels.id_hotel = kamar.id_hotel
+    WHERE kota_hotel = 'Semarang'
+    GROUP BY hotels.id_hotel");
+while($hotels = mysqli_fetch_assoc($query)) {
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -71,31 +84,31 @@
         <div class="container-hotel">
             <div class="hotel-card">
                 <div class="hotel-image">
-                    <img src="gambar/gambarkota/Gumaya.jpg" alt="Gumaya Tower Hotel">
+                    <img src="<?php echo '/JAVAST/Admin/Gambar/Hotel/' . $hotels['gambar_hotel']; ?>" alt="<?php echo $hotels['nama_hotel']; ?>">
                 </div>
                     <div class="hotel-info">
-                        <h2><b>Gumaya Tower Hotel</b></h2>
-                    <div class="rating">Bintang 5 
-                        <span class="stars">★★★★★</span>
-                    </div>
+                        <h2><b><?php echo $hotels['nama_hotel']; ?></b></h2>
+                    <div class="rating">Bintang <?php echo $hotels['bintang_hotel']; ?>
+                    <span class="stars"><?php echo str_repeat("★", $hotels['bintang_hotel']); ?></span>
+                </div>
                         <div class="location">
                             <i class="fa-solid fa-location-dot"></i>
-                             Semarang Tengah, Jawa Tengah <br>
-                            Jl. Gajahmada No.59-61, 50134 Semarang, Indonesia
+                            <?php echo $hotels['lokasi_hotel'] . ', ' . $hotels['kota_hotel']; ?><br>
+                            <?php echo $hotels['alamat_hotel']; ?>
                         </div>
 
                         <div class="facilities">
-                             <span>Tv</span>
-                             <span>WiFi</span>
-                             <span>Air Hangat</span>
-                             <span>Antar jemput bandara</span>
-                             <span>Spa</span>
-                             <span>Bar</span>
+                        <?php
+                        $fasilitas = explode(',', $hotels['fasilitas_hotel']);
+                        foreach($fasilitas as $fas) {
+                            echo "<span>" . trim($fas) . "</span>";
+                        }
+                        ?>
                         </div>
                     </div>
                 
                 <div class="hotel-booking">
-                    <div class="price">1 malam <br><strong>Rp. 1.167.076</strong></div>
+                    <div class="price">1 malam <br><strong>Rp. <?php echo number_format($hotels['harga_terendah'], 0, ',', '.'); ?></strong></div>
                         <div class="note">Di luar pajak & biaya</div>
                         <div class="button">
                         <button>Pilih Kamar</button>
@@ -367,4 +380,5 @@
 </body>
 </html>
 
+<?php } ?>
 
