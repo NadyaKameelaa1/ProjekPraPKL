@@ -92,12 +92,13 @@ body {
 }
 
 .header {
-    background-image: url('gambar/GambarKota/background\ header.jpeg');
+    background-image: url('gambar/gambarkota/Semarang.jpg');
     background-size: cover;
     background-position: center;
     text-align: center;
     padding: 100px 0;
     color: white;
+    
 }
 
 .header h1 {
@@ -107,9 +108,14 @@ body {
 .header hr{
     width: 40%; 
     border: none;
-    height: 1px;
+    height: 2px;
     background-color: #ffffff; 
     margin: 5px auto; 
+}
+
+.header h2{
+    color: white;
+    text-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 /* Label di atas search bar */
