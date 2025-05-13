@@ -55,7 +55,7 @@ require_once '../koneksi/koneksi.php';
         
         <div class="left-info">
           <div class="small-images">
-            <img src="gambar/guyana tower kolam.jpg" alt="Kolam Renang">
+            <img src="gambar/" alt="Kolam Renang">
             <img src="gambar/Guma.jpeg" alt="Restoran">
           </div>
           <div class="description">
