@@ -1,3 +1,9 @@
+<?php
+session_start();
+require_once '../koneksi/koneksi.php';
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

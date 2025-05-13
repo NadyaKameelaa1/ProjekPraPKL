@@ -1,3 +1,10 @@
+<?php
+session_start();
+require_once '../koneksi/koneksi.php';
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,9 +23,9 @@
 
     </div>
     <div class="menu">
-        <a href="home.html">Beranda</a>
-        <a href="tentang.html">Tentang</a>
-        <a href="kontak_kami.html">Kontak Kami</a>
+        <a href="home.php">Beranda</a>
+        <a href="tentang.php">Tentang</a>
+        <a href="kontak_kami.php">Kontak Kami</a>
 
     </div>
 
@@ -27,8 +34,8 @@
             <i class="fas fa-user"></i> User_name ▼
         </button>
         <div class="dropdown-menu">
-            <a href="profil.html">Profil</a>
-            <a href="booking.html">Booking</a>
+            <a href="profil.php">Profil</a>
+            <a href="booking.php">Booking</a>
             <a href="logout.php">Logout</a>
         </div>
     </div>
