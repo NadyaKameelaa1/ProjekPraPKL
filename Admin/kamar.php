@@ -2,9 +2,71 @@
 session_start();
 require_once '../Koneksi/koneksi.php';
 
-$sql = "SELECT * FROM kamar";
+$sql = "SELECT k.*, kg.gambarA, kg.gambarB, kg.gambarC, kg.gambarD, kg.gambarE 
+        FROM kamar k 
+        LEFT JOIN kamar_gambar kg ON k.id_kamar = kg.id_kamar";
 $query = mysqli_query($koneksi,$sql);
 
+// if(isset($_POST['upload'])){
+//     $gambar1 = $_FILES['gambarA']['name'];
+//     $gambar2 = $_FILES['gambarB']['name'];
+//     $gambar3 = $_FILES['gambarC']['name'];
+//     $gambar4 = $_FILES['gambarD']['name'];
+//     $gambar5 = $_FILES['gambarE']['name'];
+
+//     $target_dir = "/JAVAST/Admin/Gambar/GambarKamar/Gumaya/";
+//     $target_file1 = $target_dir . basename($gambar1);
+//     $target_file2 = $target_dir . basename($gambar2);
+//     $target_file3 = $target_dir . basename($gambar3);
+//     $target_file4 = $target_dir . basename($gambar4);
+//     $target_file5 = $target_dir . basename($gambar5);
+
+//     $imageFileType1 = strtolower(pathinfo($target_file1, PATHINFO_EXTENSION));
+//     $imageFileType2 = strtolower(pathinfo($target_file2, PATHINFO_EXTENSION));
+//     $imageFileType3 = strtolower(pathinfo($target_file3, PATHINFO_EXTENSION));
+//     $imageFileType4 = strtolower(pathinfo($target_file4, PATHINFO_EXTENSION));
+//     $imageFileType5 = strtolower(pathinfo($target_file5, PATHINFO_EXTENSION));
+
+//     $check1 = getImageSize($_FILES(['gambarA']['tmp_name']));
+//     $check2 = getImageSize($_FILES(['gambarB']['tmp_name']));
+//     $check3 = getImageSize($_FILES(['gambarC']['tmp_name']));
+//     $check4 = getImageSize($_FILES(['gambarD']['tmp_name']));
+//     $check5 = getImageSize($_FILES(['gambarE']['tmp_name']));
+
+//     $extension1 = substr($gambar1, strlen($gambar1)-4, strlen($gambar1));
+//     $extension2 = substr($gambar2, strlen($gambar2)-4, strlen($gambar2));
+//     $extension3 = substr($gambar3, strlen($gambar3)-4, strlen($gambar3));
+//     $extension4 = substr($gambar4, strlen($gambar4)-4, strlen($gambar4));
+//     $extension5 = substr($gambar5, strlen($gambar5)-4, strlen($gambar5));
+
+//     $allowed_extensions = array(".jpg", ".jpeg", ".png", ".webp");
+
+//     if($check1 == false || $check2 == false || $check3 == false || $check4 == false || $check5 == false){
+//         $message = "<div class='alert alert-danfer text-center alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><h5>One or more file is fake image. Only JPEG, JPG, PNG and GIF are allowed</h5></div>" .mysqli_error($koneksi);
+//     } elseif ($_FILES['gambarA']['size'] > 102400 || $_FILES['gambarB']['size'] > 102400 || $_FILES['gambarC']['size'] > 102400 || $_FILES['gambarD']['size'] > 102400 || $_FILES['gambarE']['size'] > 102400 ){
+//         $message = "<div class='alert alert-danfer text-center alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><h5>One or more file is fake image. Only JPEG, JPG, PNG and GIF are allowed</h5></div>" .mysqli_error($koneksi);
+
+//     } else{
+//         if(file_exist($target_file1) || file_exist($target_file2) || file_exist($target_file3) || file_exist($target_file4) || file_exist($target_file5)){
+//             $message = "<div class='alert alert-danfer text-center alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><h5>One or more file is fake image. Only JPEG, JPG, PNG and GIF are allowed</h5></div>" .mysqli_error($koneksi);
+//         } elseif(!in_array($extension1,$allowed_extensions) || !in_array($extension2,$allowed_extensions) || !in_array($extension3,$allowed_extensions) || !in_array($extension4,$allowed_extensions) || !in_array($extension5,$allowed_extensions) ){
+//             $message = "<div class='alert alert-danfer text-center alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><h5>One or more file is fake image. Only JPEG, JPG, PNG and GIF are allowed</h5></div>" .mysqli_error($koneksi);
+//         } else{
+//             move_uploaded_file($_FILES['gambarA']['tmp_name'], $target_file1);
+//             move_uploaded_file($_FILES['gambarB']['tmp_name'], $target_file2);
+//             move_uploaded_file($_FILES['gambarC']['tmp_name'], $target_file3);
+//             move_uploaded_file($_FILES['gambarD']['tmp_name'], $target_file4);
+//             move_uploaded_file($_FILES['gambarE']['tmp_name'], $target_file5);
+
+//             $sql = "INSERT INTO kamar_gambar (gambarA, gambarB, gambarC, gambarD, gambarE) VALUES ('$target_file1','$target_file2','$target_file3','$target_file4','$target_file5')";
+//             $result = $koneksi->query($sql);
+//             if($result){
+//                 header("location: kamar.php?tambahgambar=sukses");
+//             }
+
+//         }
+//     }
+// }
 
 ?>
 
@@ -127,11 +189,11 @@ $query = mysqli_query($koneksi,$sql);
                 <button class="btn-edit" onclick="openPopupedit({$kamar['id_kamar']})">
                     <i class="fa-solid fa-pen-to-square"></i>
                 </button>
-                        <button class="btn-delete">
-                            <a href="kamar_hapus.php?id_kamar={$kamar['id_kamar']}">
-                                <i class="fas fa-trash"></i>
-                            </a>
-                        </button>
+                <button class="btn-delete">
+                    <a href="kamar_hapus.php?id_kamar={$kamar['id_kamar']}">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </button>
                 <button class="btn-detailGambar" onclick="openPopupgambar({$kamar['id_kamar']})">
                     <i class="fa-solid fa-image"></i>
                 </button>
@@ -352,68 +414,62 @@ $query = mysqli_query($koneksi,$sql);
 </div>
 
     <!-- Popup gambar -->
-  <div class="popup-overlay" id="popupgambar">
+  <div class="popup-overlay" id="popup-gambar">
     <div class="popup-content">
       <div class="popup-header">
         <h2>TAMBAH KAMAR</h2>
         <span class="close-btn" onclick="closePopupgambar()">&times;</span>
       </div>
-  
-        <?php
-        // Tampilkan pesan error jika ada
-        if(isset($_SESSION['errors'])) {
-            echo '<div class="alert alert-danger">';
-            foreach($_SESSION['errors'] as $error) {
-                echo '<p>'.$error.'</p>';
-            }
-            echo '</div>';
-            unset($_SESSION['errors']);
-        }
-
-        // Tampilkan pesan sukses jika ada
-        if(isset($_SESSION['success'])) {
-            echo '<div class="alert alert-success">'.$_SESSION['success'].'</div>';
-            unset($_SESSION['success']);
-        }
-
-        // Isi kembali form dengan data sebelumnya jika ada error
-        $form_data = $_SESSION['form_data'] ?? [];
-        unset($_SESSION['form_data']);
-        ?>
 
       <div class="form-container">
-        <form class="room-form">
-
+        <form class="room-form" action="kamar_tambah_gambar.php" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="id_gambar">
             <div class="form-group">
-                <label for="room-name">Nama Kamar</label>
-                <input type="text" name="nama_kamar" id="room-name" value="<?= htmlspecialchars($_POST['nama_kamar'] ?? '') ?>" placeholder="Nama Kamar Hotel..." required>
+                <label>Nama Kamar:</label>
+                <p class="nama-kamar-display"><?= htmlspecialchars($_GET['nama_kamar'] ?? ' ') ?></p>
+                <input type="hidden" name="id_kamar" value="<?= $_GET['id_kamar'] ?? '' ?>">
             </div>
-
             <div class="form-group">
-                <label>Tambah Gambar Kamar</label>
-                <input type="file" name="gambar_kamar" id="room-image" accept=".jpg,.png,.svg" required>
+                <label>Gambar 1</label>
+                <input type="file" name="gambarA" multiple accept=".jpg,.png,.webp,.svg">
+            </div>
+            <div class="form-group">
+                <label>Gambar 2</label>
+                <input type="file" name="gambarB" multiple accept=".jpg,.png,.webp,.svg">
+            </div>
+            <div class="form-group">
+                <label>Gambar 3</label>
+                <input type="file" name="gambarC" multiple accept=".jpg,.png,.webp,.svg">
+            </div>
+            <div class="form-group">
+                <label>Gambar 4</label>
+                <input type="file" name="gambarD" multiple accept=".jpg,.png,.webp,.svg">
+            </div>
+            <div class="form-group">
+                <label>Gambar 5</label>
+                <input type="file" name="gambarE" multiple accept=".jpg,.png,.webp,.svg">
             </div>
 
             <div class="form-actions">
                 <button type="button" class="btn-cancel" onclick="closePopupgambar()">Batal</button>
-                <button type="submit" name="submit" class="btn-submit">Simpan Gambar</button>
-              </div>
+                <button type="submit" name="upload" class="btn-submit">Simpan Gambar</button>
+            </div>
         </form>
     </div>
 </div>
 
 
 <script>
-// Script untuk menampilkan nama file yang dipilih
-        document.getElementById('hotel-image').addEventListener('change', function(e) {
-            const fileName = e.target.files[0] ? e.target.files[0].name : 'No file chosen';
-            document.querySelector('.file-chosen').textContent = fileName;
-        });
+// // Script untuk menampilkan nama file yang dipilih
+//         document.getElementById('hotel-image').addEventListener('change', function(e) {
+//             const fileName = e.target.files[0] ? e.target.files[0].name : 'No file chosen';
+//             document.querySelector('.file-chosen').textContent = fileName;
+//         });
 
-        document.getElementById('room-image').addEventListener('change', function(e) {
-            const fileName = e.target.files[0] ? e.target.files[0].name : 'No file chosen';
-            document.querySelector('.file-chosen').textContent = fileName;
-        });
+//         document.getElementById('room-image').addEventListener('change', function(e) {
+//             const fileName = e.target.files[0] ? e.target.files[0].name : 'No file chosen';
+//             document.querySelector('.file-chosen').textContent = fileName;
+//         });
 
 //-----------------------------------------------------------------------
     
@@ -435,17 +491,52 @@ function closePopupedit() {
   document.getElementById("popupedit").style.display = "none";
 }
 
-// edit
-function openPopupgambar() {
-  document.getElementById("popupgambar").style.display = "flex";
+// Fungsi untuk membuka popup gambar
+function openPopupgambar(id_kamar) {
+    console.log('Mencoba membuka popup untuk kamar ID:', id_kamar); // Debug 1
+    
+    fetch(`kamar_get_data.php?id_kamar=${id_kamar}`)
+        .then(response => {
+            console.log('Response status:', response.status); // Debug 2
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            console.log('Data diterima:', data); // Debug 3
+            if (data && data.nama_kamar) {
+                document.querySelector('#popup-gambar .nama-kamar-display').textContent = data.nama_kamar;
+                document.querySelector('#popup-gambar input[name="id_kamar"]').value = id_kamar;
+                document.getElementById("popup-gambar").style.display = "flex";
+            } else {
+                console.error('Data tidak valid atau nama_kamar tidak ada');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Fallback: Tampilkan popup meski tanpa data
+            document.getElementById("popup-gambar").style.display = "flex";
+        });
 }
 
+// Fungsi penutup
 function closePopupgambar() {
-  document.getElementById("popupgambar").style.display = "none";
+    document.getElementById('popup-gambar').style.display = 'none';
 }
+
+// Event listener untuk form submit
+document.querySelector('.room-form')?.addEventListener('submit', function() {
+    setTimeout(closePopupgambar, 1000);
+});
 
 //----------------------------------------------------------------
 
+// // Membuka popup dengan data kamar yang dipilih
+// function openAddImagePopup(id_kamar, nama_kamar) {
+//     const popup = document.getElementById('image-popup');
+//     popup.querySelector('.nama-kamar-display').textContent = nama_kamar;
+//     popup.querySelector('input[name="id_kamar"]').value = id_kamar;
+//     popup.style.display = 'block';
+// }
 
 </script>
 

@@ -532,3 +532,12 @@ text-decoration: none;
     background-color: #45a049;
   }
   
+
+  .nama-kamar-display {
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 8px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    margin-top: 5px;
+}
