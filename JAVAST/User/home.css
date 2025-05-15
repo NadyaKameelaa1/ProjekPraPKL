@@ -180,7 +180,7 @@
 }
 
 /* Untuk elemen tanggal */
-.date-input-group {
+.date-group p {
     display: flex;
     align-items: center;
     position: relative;
@@ -262,7 +262,7 @@
 
 .form-group {
     margin-bottom: 20px;
-}
+} 
 
 .hotel-search-container label {
     display: block;
@@ -673,6 +673,7 @@ h4 {
     padding: 10px;
     cursor: pointer;
     max-width: 100%;
+    
 }
 
 .guest-room-input label {
@@ -683,6 +684,7 @@ h4 {
 
 .selected-option {
     font-weight: bold;
+
 }
 
 .guest-room-dropdown {
