@@ -39,17 +39,127 @@
         <h5>Hotel Jawa Tengah</h5>
         <h2>SELAMAT DATANG</h2>
         <hr>
-
-        <div class="search-labels">
-            <div class="search-label">Kota</div>
-
-          </div>
     </header>
+    <br>
+    <br>
+    <div class="hotel-search-container">
+        <div class="form-group input-wrapper">
+            <label>Kota, atau nama hotel</label>
+            <input type="text" id="cityInput" placeholder="Kota, hotel">
+        </div>
 
-    <div class="search-bar">
-        <label><i class="fa-solid fa-location-dot"></i></label> 
-              <input type="text" placeholder="Kota">        
-        <button onclick="window.location.href='home2.html'"><i class="fa-solid fa-magnifying-glass"></i>  Selengkapnya</button>
+        <!-- Popup Kota -->
+        <div id="cityPopup" class="popup hidden">
+            <div class="popup-header">
+            <span>Kota, tujuan, atau nama hotel</span>
+            <button id="closePopup">&times;</button>
+            </div>
+            <hr>
+            <div class="popup-body">
+            <h4>Destinasi Populer</h4>
+            <ul class="city-list">
+                <li>Semarang <span>182 Hotel</span></li>
+                <li>Surakarta <span>58 Hotel</span></li>
+                <li>Salatiga <span>38 Hotel</span></li>
+                <li>Magelang <span>15 Hotel</span></li>
+            </ul>
+            </div>
+        </div>
+  
+        
+        <div class="date-row">
+            <div class="form-group date-group">
+                <label>Check-in</label>
+                <input type="date" placeholder="Check-in">
+               
+            </div>
+            
+            <div class="form-group duration-group">
+                <label>Durasi</label>
+                <select>
+                    <option>1 malam</option>
+                    <option>2 malam</option>
+                    <option>3 malam</option>
+                    <option>4 malam</option>
+                    <option>5 malam</option>
+                    <option>6 malam</option>
+                    <option>7 malam</option>
+                    <option>8 malam</option>
+                    <option>9 malam</option>
+                    <option>10 malam</option>
+                    <option>11 malam</option>
+                    <option>12 malam</option>
+                    <option>13 malam</option>
+                    <option>14 malam</option>
+                    <option>15 malam</option>
+                    <option>16 malam</option>
+                    <option>17 malam</option>
+                    <option>18 malam</option>
+                    <option>19 malam</option>
+                    <option>20 malam</option>
+                    <option>21 malam</option>
+                    <option>22 malam</option>
+                    <option>23 malam</option>
+                    <option>24 malam</option>
+                    <option>25 malam</option>
+                    <option>26 malam</option>
+                    <option>27 malam</option>
+                    <option>28 malam</option>
+                    <option>29 malam</option>
+                    <option>30 malam</option>
+                </select>
+            </div>
+            
+            <div class="form-group date-group">
+                <label>Check-out</label>
+                <input type="date" placeholder="Check-out">  
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label>Tamu dan Kamar</label>
+        </div>
+        <div class="guest-room-container">
+            <div class="guest-room-input">
+                <div class="selected-option">2 Dewasa, 0 Anak, 1 Kamar</div>
+            </div>
+            
+            <!-- Dropdown Menu -->
+            <div class="guest-room-dropdown">
+                <div class="counter-row">
+                    <span>Dewasa</span>
+                    <div class="counter">
+                        <button class="decrement">-</button>
+                        <span class="count">2</span>
+                        <button class="increment">+</button>
+                    </div>
+                </div>
+                
+                <div class="counter-row">
+                    <span>Anak</span>
+                    <div class="counter">
+                        <button class="decrement">-</button>
+                        <span class="count">0</span>
+                        <button class="increment">+</button>
+                    </div>
+                </div>
+                
+                <div class="counter-row">
+                    <span>Kamar</span>
+                    <div class="counter">
+                        <button class="decrement">-</button>
+                        <span class="count">1</span>
+                        <button class="increment">+</button>
+                    </div>
+                </div>
+                
+                <button class="apply-btn">Terapkan</button>
+            </div>
+        </div>
+        
+        <button class="search-btn">
+            <i class="fa-solid fa-magnifying-glass"></i>Cari Hotel
+        </button>
     </div>
 
     <br>
@@ -209,6 +319,78 @@
         </div>
     </footer>
        
+    <script>
+  const input = document.getElementById('cityInput');
+  const popup = document.getElementById('cityPopup');
+
+  input.addEventListener('click', () => {
+    popup.classList.toggle('show');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!input.contains(e.target) && !popup.contains(e.target)) {
+      popup.classList.remove('show');
+    }
+  });
+
+      
+        // Jika ingin klik kota otomatis isi input
+        document.querySelectorAll('.city-list li').forEach(item => {
+          item.addEventListener('click', () => {
+            input.value = item.textContent.trim();
+            popup.classList.add('hidden');
+          });
+        });
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+    const guestInput = document.querySelector('.guest-room-input');
+    const dropdown = document.querySelector('.guest-room-dropdown');
+    const selectedOption = document.querySelector('.selected-option');
+    const applyBtn = document.querySelector('.apply-btn');
+    
+    // Toggle dropdown
+    guestInput.addEventListener('click', function(e) {
+        e.stopPropagation();
+        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function() {
+        dropdown.style.display = 'none';
+    });
+    
+    // Counter functionality
+    document.querySelectorAll('.counter').forEach(counter => {
+        const decrement = counter.querySelector('.decrement');
+        const increment = counter.querySelector('.increment');
+        const count = counter.querySelector('.count');
+        
+        decrement.addEventListener('click', function() {
+            let value = parseInt(count.textContent);
+            if (value > 0) {
+                count.textContent = value - 1;
+            }
+        });
+        
+        increment.addEventListener('click', function() {
+            let value = parseInt(count.textContent);
+            count.textContent = value + 1;
+        });
+    });
+    
+    // Apply selection
+    applyBtn.addEventListener('click', function() {
+        const adults = document.querySelectorAll('.counter-row')[0].querySelector('.count').textContent;
+        const children = document.querySelectorAll('.counter-row')[1].querySelector('.count').textContent;
+        const rooms = document.querySelectorAll('.counter-row')[2].querySelector('.count').textContent;
+        
+        selectedOption.textContent = `${adults} Dewasa, ${children} Anak, ${rooms} Kamar`;
+        dropdown.style.display = 'none';
+    });
+});
+      </script>
+      
 
 </body>
 </html>
