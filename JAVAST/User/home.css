@@ -619,7 +619,7 @@ h4 {
     background: #ffffff;
     border-radius: 12px;    
     width: 100%;  /* Tambahkan untuk menjamin penuh dari elemen induk */
-    margin-top: 0;  
+    margin-top: 10;
   }
 
   .popup-body {
