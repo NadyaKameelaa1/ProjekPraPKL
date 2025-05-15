@@ -7,7 +7,7 @@ $query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harg
     LEFT JOIN kamar ON hotels.id_hotel = kamar.id_hotel
     WHERE kota_hotel = 'Semarang'
     GROUP BY hotels.id_hotel");
-while($hotels = mysqli_fetch_assoc($query)) {
+($hotels = mysqli_fetch_assoc($query))
 
 ?>
 
@@ -379,6 +379,4 @@ while($hotels = mysqli_fetch_assoc($query)) {
 
 </body>
 </html>
-
-<?php } ?>
 

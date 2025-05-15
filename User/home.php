@@ -6,6 +6,13 @@ if (!isset($_SESSION['email_user'])) {
     header("Location: login.php");
     exit;
 }
+
+$query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harga_terendah
+    FROM hotels
+    LEFT JOIN kamar ON hotels.id_hotel = kamar.id_hotel
+    WHERE kota_hotel = 'Semarang'
+    GROUP BY hotels.id_hotel");
+$hotels = mysqli_fetch_assoc($query);
 ?>
 
 <!DOCTYPE html>
@@ -72,19 +79,19 @@ if (!isset($_SESSION['email_user'])) {
 
                <div class="container"> 
                <div class="hotel-card">
-                       <img src="Gambar/GambarKota/Gumaya.jpg" alt="Gumaya Tower Hotel" class="hotel-image">
+                        <img src="<?php echo '/JAVAST/Admin/Gambar/Hotel/' . $hotels['gambar_hotel']; ?>" alt="<?php echo $hotels['nama_hotel']; ?>" class="hotel-image">
                        <div class="hotel-info">
                         <div class="hotel-name">
-                            <h5>Gumaya Tower Hotel</h5>
+                            <h5><?php echo $hotels['nama_hotel']; ?></h5>
                         </div>
-                       <p class="hotel-location">Semarang</p>
-                       <p class="hotel-address">Jl. Gajahmada No.59-61, 50134 Semarang, Indonesia</p>
+                       <p class="hotel-location"><?php echo $hotels['lokasi_hotel'] . ', ' . $hotels['kota_hotel']; ?><br></p>
+                       <p class="hotel-address"><?php echo $hotels['alamat_hotel']; ?></p>
                        <div class="hotel-rating">
-                       <span>⭐⭐⭐⭐⭐</span>   
+                        <span class="stars"><?php echo str_repeat("⭐", $hotels['bintang_hotel']); ?></span>   
                        </div>
                        <div class="hotel-price">
                        <span>1 malam</span>
-                       <span class="price">Rp. 1.167.076</span>
+                       <span class="price">Rp. <?php echo number_format($hotels['harga_terendah'], 0, ',', '.'); ?></span>
                    </div>
                  </div>
                 </div>
@@ -126,6 +133,7 @@ if (!isset($_SESSION['email_user'])) {
                 </div>                
            </div>
 
+        
         <div class="button-container">
             <button class="hotel-button">Lihat Hotel Lainnya >></button>
         </div>
@@ -223,5 +231,4 @@ if (!isset($_SESSION['email_user'])) {
 
 </body>
 </html>
-
 
