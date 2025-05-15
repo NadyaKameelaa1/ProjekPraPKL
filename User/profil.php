@@ -113,7 +113,7 @@ $initial_values = [
             </div>
             <div class="form-group">
                 <label><i class="fa fa-lock"></i>Password</label>
-                <input type="password" placeholder="Password" readonly>
+                <input type="password" value="<?= htmlspecialchars($user['password_user']) ?>"  readonly>
                 <small class="text-muted">Password tidak dapat dilihat demi keamanan</small>
             </div>
             <br>
