@@ -1,0 +1,375 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding-top: 80px;
+    background-color: #ffffff;
+}
+
+/* navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    padding: 15px 30px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000; 
+    
+}
+
+.navbar .logo img {
+    height: 50px; 
+    max-width: 100px;
+
+}
+
+.navbar .menu {
+    display: flex;
+    gap: 20px;
+    margin-right: auto; 
+}
+
+.navbar .menu a {
+    text-decoration: none;
+    color: #AE8953;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+ .navbar .user-dropdown {
+    margin-left: auto;
+
+ }
+ 
+.navbar select {
+    padding: 5px;
+    font-size: 14px;
+} 
+
+
+ .dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: #774C1C;
+    cursor: pointer;
+    padding: 10px;
+    margin-left: auto;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 10px;
+    min-width: 150px;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu a {
+    display: block;
+    text-decoration: none;
+    color: gray;
+    padding: 8px;
+}
+
+.dropdown-menu a:hover {
+    color: #774C1C;
+}
+
+/* header hotel */
+
+.container {
+    background: #f4f4f4;
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  .hotel-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    overflow: hidden;
+    width: 1200px;
+    height: 480px;
+    max-width: 2000px; 
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
+    margin-top: 15px;
+  }
+
+.left-image {
+    width: 60%;
+  }
+
+.left-image img {
+    width: 600px;
+    height: 400px;
+    object-fit: cover;
+    padding: 10px;
+   border-radius: 20px;
+  }
+
+
+.left-info {
+    width: 50%;
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 15px;
+  }
+
+
+.small-images {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+.small-images img {
+    width: 500px;
+    height: 155px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+
+  .description {
+    padding-top: 10px;
+    text-align: left; 
+  }
+
+  .description h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .description span {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: gray;
+  }
+
+  .bintang {
+    color: orange;
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+
+  .harga {
+    font-weight: bold;
+    color: #f7931e;
+    font-size: 18px;
+  }
+
+  .per-malam {
+    font-size: 13px;
+    color: gray;
+  }
+
+  
+/* tentang */
+
+.hotel-description {
+    max-width: 2000px;
+    width: 1200px;  
+    margin: 30px 0 30px 20px;
+    padding: 20px;
+  }
+  
+  .back-link {
+    display: inline-block;
+    margin-bottom: 15px;
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .section-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .subsection-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 25px;
+    margin-bottom: 10px;
+  }
+  
+  .hotel-description p {
+    text-align: justify;
+    margin-bottom: 20px;
+  }
+  
+
+
+.hotel-title::before {
+    content: "♦";
+    font-size: 1.5rem;
+    margin: 0 10px;
+    color: #FFD034;
+}
+
+
+h4 {
+    font-weight: bold;
+    font-size: large;
+    color: #3a0404;
+    display: inline-block;
+}
+
+
+/* comment */
+
+.card-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Biar card-nya di tengah horizontal */
+    margin-top: 50px
+   
+}
+
+.review-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    max-width: 1200px;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.6);
+    font-family: sans-serif;
+    width: 1000px;
+    
+  }
+  
+  .review-user {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 16px;
+  }
+  
+  .user-avatar {
+    width: 60px;
+    height: 60px;
+    background-color: #ddd;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+  }
+  
+  .user-name {
+    margin-top: 8px;
+    font-weight: bold;
+    font-size: 14px;
+  }
+  
+  .review-text {
+    flex: 1;
+  }
+  
+  .review-text p {
+    margin: 0;
+    text-align: justify;
+  }
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+footer {
+    background-color: #ccc; 
+    padding: 30px 0;
+    color: #5e3c1b; 
+}
+
+.footer-container {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.footer-logo {
+    width: 40%;
+}
+
+.footer-logo img {
+    width: 200px; 
+    height: auto;
+}
+
+.footer-logo p {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.footer-links, .footer-social {
+    width: 25%;
+}
+
+.footer-links h3, .footer-social h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.footer-links ul, .footer-social ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links ul li, .footer-social ul li {
+    margin-bottom: 8px;
+}
+
+.footer-links ul li a, .footer-social ul li a {
+    text-decoration: none;
+    color: #5e3c1b;
+    font-size: 14px;
+}
+
+.footer-social ul li a i {
+    margin-right: 8px;
+}
+
+
+ 
