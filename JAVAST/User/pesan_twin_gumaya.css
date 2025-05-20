@@ -1,0 +1,271 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding-top: 80px;
+    background-color: #ffffff;
+}
+
+/* navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    padding: 15px 30px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000; 
+    
+}
+
+.navbar .logo img {
+    height: 50px; 
+    max-width: 100px;
+
+}
+
+.navbar .menu {
+    display: flex;
+    gap: 20px;
+    margin-right: auto; 
+}
+
+.navbar .menu a {
+    text-decoration: none;
+    color: #AE8953;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+ .navbar .user-dropdown {
+    margin-left: auto;
+
+ }
+ 
+.navbar select {
+    padding: 5px;
+    font-size: 14px;
+} 
+
+
+ .dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: #774C1C;
+    cursor: pointer;
+    padding: 10px;
+    margin-left: auto;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 10px;
+    min-width: 150px;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu a {
+    display: block;
+    text-decoration: none;
+    color: gray;
+    padding: 8px;
+}
+
+.dropdown-menu a:hover {
+    color: #774C1C;
+}
+
+/* pesan */
+
+.steps {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    font-weight: bold;
+  }
+  
+  .step {
+    background-color: #ccc;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+  }
+  
+  .step.active {
+    background-color: #4CAF50;
+  }
+  
+  .arrow {
+    margin: 0 10px;
+  }
+  
+  .container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .card {
+    background: white;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.6);
+    width: 600px;
+    height: 640px;
+  }
+  
+  .card img {
+    width: 100%;
+    border-radius: 5px;
+  }
+  
+  .card h3 {
+    margin: 10px 0 5px;
+  }
+  
+  .price {
+    color: #FFA500;
+    font-weight: bold;
+    font-size: 22px;
+  }
+  
+  .order-box {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 400px;
+    height: 640px;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.6);
+  }
+  
+  select, input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+  
+  form label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  
+  form input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+  }
+  
+  .date-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+
+  
+  .total {
+    margin-top: 15px;
+    color: green;
+    font-weight: bold;
+  }
+  
+  button {
+    background-color: #f0a500;
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    font-size: 16px;
+    margin-top: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+  }
+
+
+
+
+
+
+/* footer */
+
+footer {
+    background-color: #ccc; 
+    padding: 30px 0;
+    color: #5e3c1b; 
+}
+
+.footer-container {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.footer-logo {
+    width: 40%;
+}
+
+.footer-logo img {
+    width: 200px; 
+    height: auto;
+}
+
+.footer-logo p {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.footer-links, .footer-social {
+    width: 25%;
+}
+
+.footer-links h3, .footer-social h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.footer-links ul, .footer-social ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links ul li, .footer-social ul li {
+    margin-bottom: 8px;
+}
+
+.footer-links ul li a, .footer-social ul li a {
+    text-decoration: none;
+    color: #5e3c1b;
+    font-size: 14px;
+}
+
+.footer-social ul li a i {
+    margin-right: 8px;
+}

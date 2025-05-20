@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | Javast - Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="dashboard.css">
+
+</head>
+<body>
+    
+    <div class="navbar">
+        <div class="logo">
+            <img src="logo/Logo_Javast.png" alt="Logo_Javast">
+
+        </div>
+        <div>
+            <button class="button" onclick="window.location.href='login.html'"> 
+                <i class="fas fa-user"></i> Log Out
+            </button>
+        </div>
+
+    </div>
+    
+<div class="dashboard">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <br><br><br><br><br>
+            <h1><b>ADMIN PANEL</b></h1>
+        </div>
+        <div class="sidebar-menu">
+            <div class="menu-item active" onclick="window.location.href='dashboard.html'">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </div>
+            <div class="menu-item" onclick="window.location.href='users.html'">
+                <i class="fas fa-users"></i> Users
+            </div>
+            <div class="menu-item" onclick="window.location.href='hotels.html'">
+                <i class="fas fa-hotel"></i> Hotel
+            </div>
+            <div class="menu-item" onclick="window.location.href='kamar.html'">
+                <i class="fas fa-bed"></i> Kamar
+            </div>
+            <div class="menu-item" onclick="window.location.href='kontak.html'">
+                <i class="fas fa-envelope"></i> Kontak Kami
+            </div>
+            <div class="menu-item" onclick="window.location.href='booking.html'">
+                <i class="fas fa-calendar-check"></i> Booking <i class="fa-solid fa-caret-up"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="main-content">
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="header">
+        <h1>DASHBOARD</h1>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card booking-card">
+          <h3 class="booking">BOOKING</h3>
+          <div class="booking-value">0</div>
+        </div>
+
+        <div class="stat-card kontak-card">
+          <h3 class="kontak">KONTAK KAMI</h3>
+          <div class="kontak-value">0</div>
+        </div>
+      </div>
+  
+      <div class="header">
+        <h1>Analisis Booking</h1>
+    </div>
+
+      <div class="analysis-grid">
+        <div class="stat-card total-card">
+          <h3 class="total">TOTAL BOOKING</h3>
+          <div class="total-value">3</div>
+          <div class="total-amount">RP. 2.048.022</div>
+        </div>
+        <div class="stat-card">
+          <h3 class="bookingAktif">BOOKING AKTIF</h3>
+          <div class="bookingAktif-value">2</div>
+          <div class="bookingAktif-amount">RP. 1.535.626</div>
+        </div>
+        <div class="stat-card">
+          <h3 class="bookingBatal">BOOKING DIBATALKAN</h3>
+          <div class="bookingBatal-value">1</div>
+          <div class="bookingBatal-amount">RP. 512.396</div>
+        </div>
+      </div>
+  
+      <div class="header">
+        <h1>Booking Terbaru</h1>
+    </div>
+
+      <div class="analysis-card">
+        <h3 class="bookingTerbaru">PERLU VERIFIKASI</h3>
+        <div class="bookingTerbaru-value">2</div>
+        <a href="booking.html" class="detail-link">DETAIL ></a>
+      </div>
+    </div>
+
+
+
+
+</body>
+</html>
