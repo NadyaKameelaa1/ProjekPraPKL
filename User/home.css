@@ -548,6 +548,22 @@ h4 {
     color: #777;
 }
 
+/* ANIMASI HOVERRRR CARD */
+.hotel-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.hotel-card {
+    transition: transform 0.3s;
+}
+
+.hotel-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
 .hotel-address {
     font-size: 12px;
     color: #9b9a9a;

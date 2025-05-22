@@ -103,7 +103,7 @@ while ($row = mysqli_fetch_assoc($query)) {
                     <button class="duration-btn" id="decreaseDuration">-</button>
                     <span class="duration-value" id="durationValue">1</span>
                     <button class="duration-btn" id="increaseDuration">+</button>
-                    <span class="malam">malam</span>
+                    <span class="malam">Malam</span>
                 </div>
             </div>
             <div class="date-box">
@@ -165,10 +165,9 @@ while ($row = mysqli_fetch_assoc($query)) {
                 
                <hr>
 
-                <div class="container"> 
-
                 <div class="container">
                 <?php foreach ($hotels as $hotel): ?>
+                <a href="gumaya.php?id=<?php echo $hotel['id_hotel']; ?>" class="hotel-link">
                     <div class="hotel-card">
                         <img src="/JAVAST/Admin/Gambar/Hotel/<?php echo $hotel['gambar_hotel']; ?>" alt="<?php echo $hotel['nama_hotel']; ?>" class="hotel-image">
                         <div class="hotel-info">
@@ -184,6 +183,7 @@ while ($row = mysqli_fetch_assoc($query)) {
                             </div>
                         </div>
                     </div>
+                </a>
                 <?php endforeach; ?>
             </div>
 
