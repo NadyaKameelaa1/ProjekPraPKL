@@ -56,17 +56,92 @@ $hotels = mysqli_fetch_assoc($query);
         <h5>Hotel Jawa Tengah</h5>
         <h2>SELAMAT DATANG</h2>
         <hr>
-
-        <div class="search-labels">
-            <div class="search-label">Kota</div>
-          </div>
     </header>
+    <br>
+    <br>
 
-    <div class="search-bar">
-        <label><i class="fa-solid fa-location-dot"></i></label> 
-              <input type="text" placeholder="Kota">
-        <button onclick="window.location.href='home2.php'"><i class="fa-solid fa-magnifying-glass"></i>Lihat Selengkapnya</button>
+        <!-- search bar -->
+      <div class="search-container">
+        <div class="section-title">Kota, atau nama hotel</div>
+        <input type="text" class="location-input" id="locationInput" placeholder="Kota, hotel" autocomplete="off" />
+
+        <div class="input-wrapper">
+        <div id="locationDropdown">
+            <h4 class="dropdown-title">Destinasi Populer</h4>
+        <hr />
+         <ul class="city-list">
+            <li data-city="Semarang">Semarang <span>182 Hotel</span></li>
+            <li data-city="Surakarta">Surakarta <span>58 Hotel</span></li>
+            <li data-city="Yogyakarta">Yogyakarta <span>38 Hotel</span></li>
+            <li data-city="Purwokerto">Purwokerto <span>15 Hotel</span></li>
+        </ul>
+     </div>
+     </div>
+
+     <!-- Check-in check-out Durasi    -->
+
+        <div class="section-title">Check-in    Durasi    Check-out</div>
+        <div class="date-container">
+            <div class="date-box">
+                <input type="date" class="date-input" id="checkInDate">
+            </div>
+            <div class="duration-box">
+                <div class="duration-counter">
+                    <button class="duration-btn" id="decreaseDuration">-</button>
+                    <span class="duration-value" id="durationValue">1</span>
+                    <button class="duration-btn" id="increaseDuration">+</button>
+                    <span class="malam">malam</span>
+                </div>
+            </div>
+            <div class="date-box">
+                <input type="date" class="date-input" id="checkOutDate" >
+            </div>
+        </div>
+
+        <div class="section-title">Tamu dan Kamar</div>
+        <div class="search-row">
+        <div class="guest-room-box" id="guestRoomTrigger">
+            <div class="sub-label">2 Dewasa, 0 Anak, 1 Kamar</div>
+            
+            <div class="guest-room-dropdown" id="guestRoomDropdown">
+                <div class="guest-room-item">
+                    <div class="guest-room-label">Dewasa</div>
+                    <div class="counter">
+                        <button class="counter-btn" type="button">-</button>
+                        <span class="counter-value">2</span>
+                        <button class="counter-btn" type="button">+</button>
+                    </div>
+                </div>
+                
+                <div class="guest-room-item">
+                    <div class="guest-room-label">Anak</div>
+                    <div class="counter">
+                        <button class="counter-btn" type="button">-</button>
+                        <span class="counter-value">0</span>
+                        <button class="counter-btn" type="button">+</button>
+                    </div>
+                </div>
+                
+                <div class="guest-room-item">
+                    <div class="guest-room-label">Kamar</div>
+                    <div class="counter">
+                        <button class="counter-btn" type="button">-</button>
+                        <span class="counter-value">1</span>
+                        <button class="counter-btn" type="button">+</button>
+                    </div>
+                </div>
+                
+                <button class="apply-btn" type="button">Terapkan</button>
+            </div>
+            
+        </div>
+        <button class="search-btn" onclick="window.location.href='hasil_pencarian.php'">
+            <i class="fa-solid fa-magnifying-glass"></i>Cari Hotel
+        </button>
     </div>
+</div>
+</div>
+
 
     <br>
             <section class="hotel-favorit">
@@ -228,6 +303,148 @@ $hotels = mysqli_fetch_assoc($query);
         </div>
     </footer>
        
+    <script>
+        // Guest Room Dropdown Functionality
+
+        const trigger = document.getElementById('guestRoomTrigger');
+        const dropdown = document.getElementById('guestRoomDropdown');
+        
+        trigger.addEventListener('click', function(e) {
+            if (e.target.closest('.guest-room-dropdown')) return;
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        });
+        
+        document.addEventListener('click', function(e) {
+            if (!trigger.contains(e.target)) {
+                dropdown.style.display = 'none';
+            }
+        });
+        
+
+
+        // Guest Counter Functionality
+        document.querySelectorAll('.counter-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                const counter = this.parentElement;
+                const valueElement = counter.querySelector('.counter-value');
+                let value = parseInt(valueElement.textContent);
+                
+                if (this.textContent === '+') {
+                    value++;
+                } else {
+                    if (value > 0) {
+                        value--;
+                    }
+                }
+                
+                valueElement.textContent = value;
+                
+                // Update summary text
+                const adultValue = parseInt(document.querySelectorAll('.counter-value')[0].textContent);
+                const childValue = parseInt(document.querySelectorAll('.counter-value')[1].textContent);
+                const roomValue = parseInt(document.querySelectorAll('.counter-value')[2].textContent);
+                
+                trigger.querySelector('.sub-label').textContent = 
+                    `${adultValue} Dewasa, ${childValue} Anak, ${roomValue} Kamar`;
+            });
+        });
+        
+        document.querySelector('.apply-btn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdown.style.display = 'none';
+        });
+
+
+
+        // Date and Duration Functionality
+        const checkInDate = document.getElementById('checkInDate');
+        const checkOutDate = document.getElementById('checkOutDate');
+        const increaseDuration = document.getElementById('increaseDuration');
+        const decreaseDuration = document.getElementById('decreaseDuration');
+        const durationValue = document.getElementById('durationValue');
+
+        // Set default dates
+        const today = new Date();
+        const tomorrow = new Date();
+        tomorrow.setDate(today.getDate() + 1);
+        
+        checkInDate.valueAsDate = today;
+        checkOutDate.valueAsDate = tomorrow;
+
+        // Format tampilan tanggal (YYYY-MM-DD)
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        // mengubah otomatis checkout
+        function updateCheckOutDate() {
+            if (!checkInDate.value) return;
+            
+            const duration = parseInt(durationValue.textContent);
+            const startDate = new Date(checkInDate.value);
+            const endDate = new Date(startDate);
+            endDate.setDate(startDate.getDate() + duration);
+            
+            checkOutDate.value = formatDate(endDate);
+        }
+
+        // ngubah otomatis durasi 
+        increaseDuration.addEventListener('click', function() {
+            let duration = parseInt(durationValue.textContent);
+            duration++;
+            durationValue.textContent = duration;
+            updateCheckOutDate();
+        });
+
+        decreaseDuration.addEventListener('click', function() {
+            let duration = parseInt(durationValue.textContent);
+            if (duration > 1) {
+                duration--;
+                durationValue.textContent = duration;
+                updateCheckOutDate();
+            }
+        });
+
+        // Update check-out pas check-in berubah
+        checkInDate.addEventListener('change', updateCheckOutDate);
+        
+        updateCheckOutDate();
+
+
+    // destinasi
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const locationInput = document.getElementById("locationInput");
+        const locationDropdown = document.getElementById("locationDropdown");
+        const cityListItems = document.querySelectorAll(".city-list li");
+
+      // Tampilkan/ sembunyikan dropdown saat klik input
+    locationInput.addEventListener("click", function(e) {
+        e.stopPropagation();
+        locationDropdown.style.display = locationDropdown.style.display === "block" ? "none" : "block";
+    });
+
+      // Klik kota akan isi input dan tutup dropdown
+    cityListItems.forEach(function(li) {
+        li.addEventListener("click", function() {
+          locationInput.value = li.getAttribute("data-city");
+          locationDropdown.style.display = "none";
+      });
+    });
+
+      // Klik di luar input & dropdown, tutup dropdown
+    document.addEventListener("click", function(event) {
+        if (!locationInput.contains(event.target) && !locationDropdown.contains(event.target)) {
+          locationDropdown.style.display = "none";
+        }
+      });
+    });
+    </script>
 
 </body>
 </html>
