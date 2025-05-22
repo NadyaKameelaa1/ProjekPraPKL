@@ -54,10 +54,11 @@ require_once '../koneksi/koneksi.php';
 
         
         <div class="left-info">
-          <div class="small-images">
-            <img src="gambar/gambargumaya/gumayakolam.jpg" alt="Kolam Renang">
-            <img src="gambar/gambargumaya/Guma.jpeg" alt="Restoran">
-          </div>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
           <div class="description">
             <h2>GUMAYA TOWER SEMARANG</h2>
             <span>Hotel</span>
