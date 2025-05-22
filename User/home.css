@@ -245,7 +245,7 @@
     box-sizing: border-box;
 }
 
-.date-box {
+/* .date-box {
 
     flex: 1;
     padding: 12px;
@@ -260,8 +260,70 @@
     outline: none;
     font-size: 14px;
     color: #666;
+} */
+
+.date-box {
+    position: relative; /* Membuat posisi relatif untuk penempatan absolut ikon */
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    display: flex; /* Menggunakan flexbox untuk mengatur tata letak */
+    align-items: center; /* Pusatkan vertikal */
 }
 
+.date-input {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    color: #666;
+    padding-right: 25px; /* Beri ruang untuk ikon di kanan */
+    background: transparent; /* Pastikan background transparan */
+}
+
+/* Style untuk ikon kalender (diasumsikan menggunakan pseudo-element) */
+.date-input::-webkit-calendar-picker-indicator {
+    position: absolute;
+    right: 10px; /* Posisikan di kanan */
+    cursor: pointer;
+}
+
+/* PERBAIKAN UTAMA */
+.section-title {
+    display: flex;
+    margin-bottom: 8px;
+}
+
+.label-container {
+    display: flex;
+    width: 100%;
+    align-items: center; /* Ini kunci utamanya */
+}
+
+.check-in-label, 
+.duration-label, 
+.check-out-label {
+    flex: 1;
+    height: 100%; /* Pastikan mengambil tinggi penuh */
+    display: inline-flex;
+    align-items: center; /* Pusatkan vertikal */
+}
+
+.check-in-label {
+    justify-content: flex-start;
+    padding-left: 12px;
+}
+
+.duration-label {
+    justify-content: center;
+}
+
+.check-out-label {
+    justify-content: flex-end;
+    padding-right: 12px;
+}
 
 .duration-box {
 

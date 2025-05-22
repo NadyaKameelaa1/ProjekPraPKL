@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 require_once '../Koneksi/koneksi.php';
 
@@ -7,12 +7,18 @@ if (!isset($_SESSION['email_user'])) {
     exit;
 }
 
-$query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harga_terendah
+// Query untuk mengambil hotel dengan id_hotel 2027, 2028, dan 2029 + harga terendah
+$query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harga_terendah 
     FROM hotels
     LEFT JOIN kamar ON hotels.id_hotel = kamar.id_hotel
-    WHERE kota_hotel = 'Semarang'
+    WHERE hotels.id_hotel IN (2027, 2028, 2029)
     GROUP BY hotels.id_hotel");
-$hotels = mysqli_fetch_assoc($query);
+
+// Simpan semua hasil query ke dalam array (bukan hanya 1 row)
+$hotels = [];
+while ($row = mysqli_fetch_assoc($query)) {
+    $hotels[] = $row;
+}
 ?>
 
 <!DOCTYPE html>
@@ -80,7 +86,14 @@ $hotels = mysqli_fetch_assoc($query);
 
      <!-- Check-in check-out Durasi    -->
 
-        <div class="section-title">Check-in    Durasi    Check-out</div>
+            <div class="section-title">
+            <div class="label-container">
+                <div class="check-in-label">Check-in</div>
+                <div class="duration-label">Durasi</div>
+                <div class="check-out-label">Check-out</div>
+            </div>
+        </div>
+
         <div class="date-container">
             <div class="date-box">
                 <input type="date" class="date-input" id="checkInDate">
@@ -152,61 +165,33 @@ $hotels = mysqli_fetch_assoc($query);
                 
                <hr>
 
-               <div class="container"> 
-               <div class="hotel-card">
-                        <img src="<?php echo '/JAVAST/Admin/Gambar/Hotel/' . $hotels['gambar_hotel']; ?>" alt="<?php echo $hotels['nama_hotel']; ?>" class="hotel-image">
-                       <div class="hotel-info">
-                        <div class="hotel-name">
-                            <h5><?php echo $hotels['nama_hotel']; ?></h5>
-                        </div>
-                       <p class="hotel-location"><?php echo $hotels['lokasi_hotel'] . ', ' . $hotels['kota_hotel']; ?><br></p>
-                       <p class="hotel-address"><?php echo $hotels['alamat_hotel']; ?></p>
-                       <div class="hotel-rating">
-                        <span class="stars"><?php echo str_repeat("⭐", $hotels['bintang_hotel']); ?></span>   
-                       </div>
-                       <div class="hotel-price">
-                       <span>1 malam</span>
-                       <span class="price">Rp. <?php echo number_format($hotels['harga_terendah'], 0, ',', '.'); ?></span>
-                   </div>
-                 </div>
-                </div>
+                <div class="container"> 
 
-                <div class="hotel-card">
-                    <img src="gambar/gambarkota/PO hotel Semarang.jpeg" alt="Po Hotel Semarang" class="hotel-image">
-                    <div class="hotel-info">
-                        <div class="hotel-name">
-                            <h5>PO hotel Semarang</h5>
-                        </div>
-                        <p class="hotel-location">Semarang</p>
-                        <p class="hotel-address">Jl. Pemuda No 118, 50132, Semarang, Indonesia</p>
-                        <div class="hotel-rating">
-                            <span>⭐⭐⭐⭐⭐</span>   
-                        </div>
-                        <div class="hotel-price">
-                            <span>1 malam</span>
-                            <span class="price">Rp. 1.200.000</span>
+                <div class="container">
+                <?php foreach ($hotels as $hotel): ?>
+                    <div class="hotel-card">
+                        <img src="/JAVAST/Admin/Gambar/Hotel/<?php echo $hotel['gambar_hotel']; ?>" alt="<?php echo $hotel['nama_hotel']; ?>" class="hotel-image">
+                        <div class="hotel-info">
+                            <h5><?php echo $hotel['nama_hotel']; ?></h5>
+                            <p class="hotel-location"><?php echo $hotel['lokasi_hotel'] . ', ' . $hotel['kota_hotel']; ?></p>
+                            <p class="hotel-address"><?php echo $hotel['alamat_hotel']; ?></p>
+                            <div class="hotel-rating">
+                                <span><?php echo str_repeat("⭐", $hotel['bintang_hotel']); ?></span>
+                            </div>
+                            <div class="hotel-price">
+                                <span>1 malam</span>
+                                <span class="price">Rp. <?php echo number_format($hotel['harga_terendah'], 0, ',', '.'); ?></span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                <?php endforeach; ?>
+            </div>
 
-                <div class="hotel-card">
-                    <img src="gambar/gambarkota/the royal surakrta.jpg" alt="The Royal Surakarta Heritage" class="hotel-image">
-                    <div class="hotel-info">
-                        <div class="hotel-name">
-                            <h5>The Royal Surakarta Heritage</h5>
-                        </div>
-                        <p class="hotel-location">Surakarta</p>
-                        <p class="hotel-address">Jl. Jl. Slamet Riyadi No.6, 57111 Solo, Indonesia</p>
-                        <div class="hotel-rating">
-                            <span>⭐⭐⭐⭐⭐</span>   
-                        </div>
-                        <div class="hotel-price">
-                            <span>1 malam</span>
-                            <span class="price">Rp. 500.000</span>
-                        </div>
-                    </div>
-                </div>                
-           </div>
+
+                
+
+                       
+            </div>
 
         
         <div class="button-container">
