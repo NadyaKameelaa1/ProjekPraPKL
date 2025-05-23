@@ -43,32 +43,6 @@ require_once '../koneksi/koneksi.php';
 </div>
 
 
-
-    <!-- header -->
-
-    <!-- <div class="container-gumaya">
-      <div class="hotel-card">
-        <div class="left-image">
-          <img src="gambar/gambargumaya/gumaya.jpg" alt="Hotel">
-        </div>
-
-        
-        <div class="left-info">
-          <br>
-          <br>
-          <br>
-          <br>
-          <br>
-          <div class="description">
-            <h2>GUMAYA TOWER SEMARANG</h2>
-            <span>Hotel</span>
-            <div class="bintang">★★★★★</div>
-            <div class="harga">RP. 1.167.076</div>
-            <div class="per-malam">Per-malam</div>
-          </div>
-        </div>
-      </div>
-    </div> -->
     <div class="container-gumaya">
     <div class="hotel-card">
         
@@ -109,7 +83,7 @@ require_once '../koneksi/koneksi.php';
         <p class="hotel-description">
           Berlokasi di Semarang, 2 km dari Stasiun Semarang Tawang, Gumaya Tower Hotel menawarkan spa & pusat kebugaran dan pemandangan kota. Fasilitas yang tersedia di akomodasi ini adalah restoran, layanan kamar, resepsionis 24 jam, dan WiFi gratis di seluruh area akomodasi.
           <br>
-          <a href="tentang_gumaya.html" class="next-link">lihat selengkapnya &gt;&gt;</a>
+          <a href="tentang_gumaya.php" class="next-link">lihat selengkapnya &gt;&gt;</a>
       </p>
       </div>
     </div>
