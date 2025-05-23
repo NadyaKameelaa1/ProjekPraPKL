@@ -193,11 +193,6 @@ while ($row = mysqli_fetch_assoc($query)) {
                        
             </div>
 
-        
-        <div class="button-container">
-            <button class="hotel-button">Lihat Hotel Lainnya >></button>
-        </div>
-
     </section> 
 
     <br>
