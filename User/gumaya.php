@@ -75,18 +75,18 @@ require_once '../koneksi/koneksi.php';
         
         <div class="hotel-info">
             <div class="description">
-            <div class="header-container">
-              <div class="rating-facilities-hotel">
-                <div class="rating">★★★★★ <i class="fa-solid fa-thumbs-up"></i></div>
-                <div class="facilities"><span>AC</span> <span>Restoran</span> <span>Kolam Renang</span> <span>Dan masih banyak lagi</span></div>
-              </div>
+              <div class="header-container">
+                <div class="rating-facilities-hotel">
+                    <div class="rating">★★★★★ <i class="fa-solid fa-thumbs-up"></i></div>
+                    <div class="facilities"><span>AC</span> <span>Restoran</span> <span>Kolam Renang</span> <span>Dan masih banyak lagi</span></div>
+                </div>
                 <h2 class="title">GUMAYA TOWER SEMARANG</h2>
                 <span class="hotel-type"><i class="fa-solid fa-location-dot"></i> Hotel</span>
                 
-                <div class="price-container">
-                <span class="price">Rp. 1.167.076</span>
-                <span class="per-night">1 Malam</span>
-            </div>
+                <div class="price-wrapper">
+                  <span class="price">Rp. 1.167.076</span><br>
+                  <span class="per-night">1 Malam</span>
+              </div>
             </div>
         </div>
 

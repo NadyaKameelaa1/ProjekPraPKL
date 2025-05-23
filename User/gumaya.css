@@ -129,6 +129,7 @@ body {
 }
 
 .description h2 {
+    order: 2; /* Judul setelah rating */
     font-size: 24px;
     margin-bottom: 12px;
     color: #333;
@@ -206,28 +207,7 @@ body {
 }
 
 /* header hotel */
-/* 
-.container {
-    background: #f4f4f4;
-    padding: 40px;
-    display: flex;
-    justify-content: center;
-    font-family: 'Segoe UI', sans-serif;
-  } */
 
-  /* .hotel-card {
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    overflow: hidden;
-    width: 1200px;
-    height: 480px;
-    max-width: 2000px; 
-    display: flex;
-    margin: 0 auto;
-    justify-content: center;
-    margin-top: 15px;
-  } */
 
 .left-image {
     width: 60%;
@@ -265,40 +245,15 @@ body {
     border-radius: 5px;
   }
 
-  /* .description {
-    padding-top: 10px;
-    text-align: left; 
+
+  /* atas */
+
+   .description {
+    position: relative; /* Container untuk posisi absolut harga */
+    padding-top: 10px; /* Ruang untuk harga */
   }
 
-  .description h2 {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
 
-  .description span {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 14px;
-    color: gray;
-  }
-
-  .bintang {
-    color: orange;
-    font-size: 16px;
-    margin-bottom: 5px;
-  }
-
-  .harga {
-    font-weight: bold;
-    color: #f7931e;
-    font-size: 18px;
-  }
-
-  .per-malam {
-    font-size: 13px;
-    color: gray;
-  } */
 
   .container-gumaya {
     padding: 20px;
@@ -338,19 +293,17 @@ body {
     font-size: 24px;
     margin-bottom: 8px;
     color: #333;
+    margin-right: 150px; /* Beri ruang untuk harga */
 }
 
 .hotel-type {
+    order: 3; /* Tipe hotel setelah judul */
     display: block;
     font-size: 16px;
     color: #505050;
-    margin-bottom: 10px;
+    margin-bottom: 1px;
 }
 
-.header-container:hover .title {
-    transform: scale(1.05);
-    transition: transform 0.2s;
-}
 
 .hotel-address {
     display: block;
@@ -365,6 +318,7 @@ body {
 }
 
 .rating-facilities-hotel {
+    order: 1; /* Rating di atas */
     display: flex;
     align-items: center;
     gap: 10px;
@@ -378,6 +332,7 @@ body {
     border-radius: 5px;
     display: inline-block;
 }
+
 .rating {
     color: orange;
     display: flex;
@@ -386,19 +341,24 @@ body {
 }
 
 .header-container {
+    position: relative; /* Tambahkan ini */
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
     margin-bottom: 15px;
+    flex-direction: column; /* Ubah ke vertikal */
+    align-items: flex-start; /* Rata kiri */
 }
 
 /* Gaya Harga */
-.price-container {
+/* .price-container {
+    
     text-align: right;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-}
+} */
+
+
 
 .price {
     font-size: 24px; /* Lebih besar dari nama hotel */
@@ -406,10 +366,18 @@ body {
     color: #f7931e;
     line-height: 1.2;
     text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-
+    text-align: right;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.price-wrapper { /* Ganti dari .price-container */
+    position: absolute;
+    right: 0;
+    top: 0;
+    text-align: right;
 }
 
-.price-container:hover .price {
+.price-wrapper:hover .price{
     transform: scale(1.05);
     transition: transform 0.2s;
 }
