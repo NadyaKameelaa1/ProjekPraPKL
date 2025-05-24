@@ -1,9 +1,36 @@
+<?php
+session_start();
+require_once '../koneksi/koneksi.php';
+
+if (!isset($_SESSION['email_user'])) {
+    header("Location: login.php");
+    exit;
+}
+// Ambil id_hotel dari URL
+$id_hotel = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+// Query untuk mengambil data hotel spesifik + harga terendah
+$query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harga_terendah 
+    FROM hotels
+    LEFT JOIN kamar ON hotels.id_hotel = kamar.id_hotel
+    WHERE hotels.id_hotel = $id_hotel
+    GROUP BY hotels.id_hotel");
+
+$hotels = mysqli_fetch_assoc($query);
+
+// Jika hotel tidak ditemukan, tampilkan pesan
+if (!$hotels) {
+    die("Hotel tidak ditemukan!");
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>santika Premiere</title>
+    <title>Santika Premiere</title>
     <link rel="stylesheet" href="santika_premiere.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -36,32 +63,50 @@
 </div>
 
 
-
-    <!-- header -->
-
     <div class="container-gumaya">
-      <div class="hotel-card">
-        <div class="left-image">
-          <img src="gambar/Santika Premiere/Hotel santika premiere semarang.jpeg" alt="Hotel">
-        </div>
-
+    <div class="hotel-card">
         
-        <div class="left-info">
-          <div class="small-images">
-            <img src="gambar/gambargumaya/gumayakolam.jpg" alt="Kolam Renang">
-            <img src="gambar/gambargumaya/Guma.jpeg" alt="Restoran">
-          </div>
-          <div class="description">
-            <h2>Santika premiere</h2>
-            <span>Hotel</span>
-            <div class="bintang">★★★★</div>
-            <div class="harga">RP. 1.167.076</div>
-            <div class="per-malam">1 malam</div>
-          </div>
+        
+        <div class="hotel-info">
+            <div class="description">
+              <div class="header-container">
+                <div class="rating-facilities-hotel">
+                    <div class="rating">
+                            <?php echo str_repeat("★", $hotels['bintang_hotel']); ?>
+                            <i class="fa-solid fa-thumbs-up"></i>
+                        </div>
+                    <div class="facilities">
+                            <?php 
+                            // Contoh: Ambil 3 fasilitas pertama
+                            $fasilitas = explode(", ", $hotels['fasilitas_hotel']);
+                            for ($i = 0; $i < min(4, count($fasilitas)); $i++) {
+                                echo "<span>" . trim($fasilitas[$i]) . "</span> ";
+                            }
+                            ?>
+                            <span>Dan masih banyak lagi</span>
+                        </div>  
+                </div>
+                <h2 class="title"><?php echo strtoupper($hotels['nama_hotel']); ?></h2>
+                    <span class="hotel-type">
+                        <i class="fa-solid fa-location-dot"></i><?php echo  $hotels['lokasi_hotel']; ?>
+                    </span>
+                
+                     <div class="price-wrapper">
+                        <span class="price">Rp. <?php echo number_format($hotels['harga_terendah'], 0, ',', '.'); ?></span><br>
+                        <span class="per-night">1 Malam</span>
+                    </div>
+            </div>
         </div>
-      </div>
-    </div>
 
+        <div class="hotel-image-container">
+                <img src="/JAVAST/Admin/Gambar/Hotel/<?php echo $hotels['gambar_hotel']; ?>" alt="<?php echo $hotels['nama_hotel']; ?>" class="hotel-image">
+        </div>
+    </div>
+    </div>
+</div>
+
+
+    
     <br>
     
 
@@ -70,9 +115,9 @@
     <div class="description-card">
       <div class="card-content">
         <p class="hotel-description">
-            Hotel Santika Premiere Semarang adalah hotel di lokasi yang baik, tepatnya berada di Pekunden. Resepsionis siap 24 jam untuk melayani proses check-in, check-out dan kebutuhan Anda yang lain. Jangan ragu untuk menghubungi resepsionis, kami siap melayani Anda. WiFi tersedia di seluruh area publik properti untuk membantu Anda tetap terhubung dengan keluarga dan teman.
+        Hotel Santika Premiere Semarang adalah hotel di lokasi yang baik, tepatnya berada di Pekunden. Resepsionis siap 24 jam untuk melayani proses check-in, check-out dan kebutuhan Anda yang lain. Jangan ragu untuk menghubungi resepsionis, kami siap melayani Anda. WiFi tersedia di seluruh area publik properti untuk membantu Anda tetap terhubung dengan keluarga dan teman.
           <br>
-          <a href="tentang_santika.html" class="next-link">lihat selengkapnya &gt;&gt;</a>
+          <a href="tentang_gumaya.php" class="next-link">lihat selengkapnya &gt;&gt;</a>
       </p>
       </div>
     </div>
@@ -82,7 +127,7 @@
     <div class="location-card">
       <div class="card-content">
         <p class="location-description"><i class="fa-solid fa-location-dot"></i>
-            Jl. Pandanaran No.116-120, Pekunden, Kec. Semarang Tengah, Kota Semarang, Jawa Tengah
+        Jl. Pandanaran No.116-120, Pekunden, Kec. Semarang Tengah, Kota Semarang, Jawa Tengah
         </p>
       </div>
     </div>
@@ -125,12 +170,12 @@
       <!-- Konten kamar -->
       <div class="kamar-content">
         <div class="kamar-card">
-          <img src="gambar/new twin room gumaya.jpeg" alt="Kamar Hotel">
+          <img src="gambar/Santika Premiere" alt="Kamar Hotel">
           <div class="kamar-info">
-            <h4><b>New Deluxe Twin Room Only</b></h4>
+            <h4><b>Deluxe Twin</b></h4>
             
             <div class="facilities">
-              <span>1 Ranjang Twin</span>
+              <span>2 single bed</span>
 
               <br>
               <br>
@@ -167,19 +212,19 @@
          </div>
 
          <div class="box-button">
-            <div class="price">Rp. 1.200.000</div>
-            <a href="detail_kmr_gumaya.html"><button class="btn-pilih-kamar">Pilih Kamar</button></a>
+            <div class="price">Rp. 600.000</div>
+            <a href="detail_kmr_santika.html"><button class="btn-pilih-kamar">Pilih Kamar</button></a>
           </div>
          </div>
         </div>
     
         <div class="kamar-card">
-          <img src="gambar/new deluxe king bed.jpeg" alt="Kamar Hotel">
+          <img src="gambar/Santika Preimere/Deluxe King" alt="Kamar Hotel">
           <div class="kamar-info">
-            <h4><b>New Deluxe King Bed</b></h4>
+            <h4><b>Deluxe King</b></h4>
 
             <div class="facilities">
-              <span>1 Ranjang Twin</span>
+              <span>1 King Bed</span>
 
               <br>
               <br>
@@ -216,12 +261,8 @@
          </div>
 
          <div class="box-button">
-            <div class="price">Rp. 1.200.000</div>
+            <div class="price">Rp. 700.000</div>
             <button class="btn-pilih-kamar">Pilih Kamar</button>
-
-            <div class="lihat-detail">
-              <a href="#">Lihat Detail >></a>
-            </div>
           </div>
           </div>
         </div>
@@ -229,10 +270,10 @@
         <div class="kamar-card">
           <img src="gambar/GRand deluxe twin.jpeg" alt="Kamar Hotel">
           <div class="kamar-info">
-            <h4><b>Grand Deluxe Twin</b></h4>
+            <h4><b>Executive King</b></h4>
           
             <div class="facilities">
-              <span>1 Ranjang Twin</span>
+              <span>1 King Bed</span>
 
               <br>
               <br>
@@ -269,24 +310,20 @@
          </div>
 
          <div class="box-button">
-            <div class="price">Rp. 1.100.000</div>
+            <div class="price">Rp. 850.000</div>
             <button class="btn-pilih-kamar">Pilih Kamar</button>
-
-            <div class="lihat-detail">
-              <a href="#">Lihat Detail >></a>
-            </div>
           </div>
 
           </div>
         </div>
 
         <div class="kamar-card">
-          <img src="gambar/tower club.jpeg" alt="Kamar Hotel">
+          <img src="gambar/Premiere King" alt="Kamar Hotel">
           <div class="kamar-info">
-            <h4><b>Tower club</b></h4>
+            <h4><b>Premiere King</b></h4>
            
             <div class="facilities">
-              <span>1 Ranjang Twin</span>
+              <span>1 King Bed</span>
 
               <br>
               <br>
@@ -323,12 +360,9 @@
          </div>
 
          <div class="box-button">
-            <div class="price">Rp. 1.100.000</div>
+            <div class="price">Rp. 950.000</div>
             <button class="btn-pilih-kamar">Pilih Kamar</button>
 
-            <div class="lihat-detail">
-              <a href="#">Lihat Detail >></a>
-            </div>
           </div>
           </div>
         </div>
