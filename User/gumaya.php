@@ -264,9 +264,6 @@ if (!$hotels) {
             <div class="price">Rp. 1.200.000</div>
             <button class="btn-pilih-kamar">Pilih Kamar</button>
 
-            <div class="lihat-detail">
-              <a href="#">Lihat Detail >></a>
-            </div>
           </div>
           </div>
         </div>
@@ -371,9 +368,6 @@ if (!$hotels) {
             <div class="price">Rp. 1.100.000</div>
             <button class="btn-pilih-kamar">Pilih Kamar</button>
 
-            <div class="lihat-detail">
-              <a href="#">Lihat Detail >></a>
-            </div>
           </div>
           </div>
         </div>
