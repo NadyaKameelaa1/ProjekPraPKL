@@ -17,9 +17,9 @@
 
         </div>
         <div class="menu">
-            <a href="home.html">Beranda</a>
-            <a href="tentang.html">Tentang</a>
-            <a href="kontak_kami.html">Kontak Kami</a>
+            <a href="home.php">Beranda</a>
+            <a href="tentang.php">Tentang</a>
+            <a href="kontak_kami.php">Kontak Kami</a>
 
         </div>
 
@@ -28,8 +28,8 @@
                 <i class="fas fa-user"></i> User_name ▼
             </button>
             <div class="dropdown-menu">
-                <a href="profil.html">Profil</a>
-                <a href="booking.html">Booking</a>
+                <a href="profil.php">Profil</a>
+                <a href="booking.php">Booking</a>
                 <a href="logout.php">Logout</a>
             </div>
         </div>
@@ -38,33 +38,38 @@
 
     <!-- header hotel -->
 
-    <div class="container-gumaya">
-        <div class="hotel-card">
-          <div class="left-image">
-            <img src="gambar/SKY guyana tower.jpg" alt="Hotel">
-          </div>
-  
-          
-          <div class="left-info">
-            <div class="small-images">
-              <img src="gambar/guyana tower kolam.jpg" alt="Kolam Renang">
-              <img src="gambar/Guma.jpeg" alt="Restoran">
-            </div>
+        <div class="container-gumaya">
+    <div class="hotel-card">
+        
+        
+        <div class="hotel-info">
             <div class="description">
-              <h2>GUMAYA TOWER SEMARANG</h2>
-              <span>Hotel</span>
-              <div class="bintang">★★★★★</div>
-              <div class="harga">RP. 1.167.076</div>
-              <div class="per-malam">Per-malam</div>
+              <div class="header-container">
+                <div class="rating-facilities-hotel">
+                    <div class="rating">★★★★★ <i class="fa-solid fa-thumbs-up"></i></div>
+                    <div class="facilities-hotel"><span>AC</span> <span>Restoran</span> <span>Kolam Renang</span> <span>Dan masih banyak lagi</span></div>
+                </div>
+                <h2 class="title">GUMAYA TOWER SEMARANG</h2>
+                <span class="hotel-type"><i class="fa-solid fa-location-dot"></i> Hotel</span>
+                
+                <div class="price-wrapper">
+                  <span class="price">Rp. 1.167.076</span><br>
+                  <span class="per-night">1 Malam</span>
+              </div>
             </div>
-          </div>
         </div>
-      </div>
+
+        <div class="hotel-image-container">
+            <img src="gambar/gambargumaya/gumaya.jpg" alt="Hotel" class="hotel-image">
+        </div>
+    </div>
+    </div>
+</div>
 
      <!-- tentang hotel -->
 
      <div class="hotel-description">
-        <a href="gumaya.html" class="back-link">&lt;&lt; kembali</a>
+        <a href="gumaya.php" class="back-link">&lt;&lt; kembali</a>
       
         <h2 class="section-title">Tentang Gumaya Tower Hotel Semarang</h2>
         <p>Berlokasi di Semarang, 2 km dari Stasiun Semarang Tawang, Gumaya Tower Hotel menawarkan spa & pusat kebugaran dan pemandangan kota. Fasilitas yang tersedia di akomodasi ini adalah restoran, layanan kamar, resepsionis 24 jam, dan WiFi gratis di seluruh area akomodasi. 

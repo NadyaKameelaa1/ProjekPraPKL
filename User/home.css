@@ -7,7 +7,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #fff;
+    background-color: #ffffff;
     padding: 15px 30px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1000;
@@ -84,13 +84,6 @@
     color: #774C1C;
 }
 
-body {
-    font-family: Inter, sans-serif;
-    background-color: #f8f5f0;
-    margin: 0;
-    padding: 0;
-}
-
 .header {
     background-image: url('gambar/GambarKota/background\ header.jpeg');
     background-size: cover;
@@ -112,147 +105,379 @@ body {
     margin: 5px auto; 
 }
 
-/* Label di atas search bar */
-.search-labels {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 100px;
-    justify-content: space-between;
-    width: 100%;
-    margin: 0 auto;
-    padding: 0 15px;
-    margin-bottom: 8px;
-  }
-  
-  .search-label {
-    position:relative;
-    top: 100px;
-    flex: 1;
-    text-align: center;
-    font-size: 14px;
-    font-weight: 500;
-    color: #f5f3f3;
-    padding: 0 8px;
-  }
-
-/* Search bar utama */
-.search-bar {
-    display: flex;
-    justify-content: space-between; /* Ganti dari center */
-    align-items: center;
-    background: #fff; /* Ganti dari #D9D9D9 */
-    padding: 10px;
-    border-radius: 8px;
-    width: 80%;
-    margin: 0 auto;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-    border: 1px solid #ddd;
-    position: relative;
-}
-
-/* Input fields */
-.search-bar input, 
-.search-bar select {
-    flex: 1;
-    margin: 0 5px;
-    padding: 12px 15px;
-    border-radius: 5px;
-    border: 1px solid #eee;
-    font-size: 14px;
-    background: #fff;
-    transition: border 0.3s;
-}
-
-.search-bar input:focus, 
-.search-bar select:focus {
-    outline: none;
-    border-color: #8b5e3c;
-}
-
-/* Tombol search */
-.search-bar button {
-    margin: 0 0 0 5px;
-    padding: 12px 20px;
-    border-radius: 5px;
-    border: none;
-    background-color: #8b5e3c;
-    color: white;
-    cursor: pointer;
-    font-weight: 500;
-    white-space: nowrap;
-    transition: background 0.3s;
-}
-
-.search-bar button:hover {
-    background-color: #6d4a2f;
-}
-
-/* Untuk elemen tanggal */
-.date-input-group {
-    display: flex;
-    align-items: center;
-    position: relative;
-    flex: 1;
-}
-
-.search-bar label i{
-    color: #8b5e3c;
-}
-
-/* Responsif */
-@media (max-width: 768px) {
-    .search-labels,
-    .search-bar {
-        width: 95%;
-    }
-}
-
-/* .search-labels {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 100px;
-    justify-content: space-between;
-    width: 80%;
-    margin: 0 auto;
-    padding: 0 15px;
-    margin-bottom: 8px;
-  }
-  
-  .search-label {
-    position: relative;
-    top: 80px;
-    flex: 1;
-    text-align: center;
-    font-size: 14px;
-    font-weight: 500;
-    color: #f5f3f3;
-    padding: 0 8px;
-  }
-
-.search-bar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/*  search bar */
+.search-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 25px;
     background: #D9D9D9;
-    padding: 5px;
-    border-radius: 5px;
-    width: 80%;
-    margin: auto;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    margin-top: -25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.6);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin-top: -100px;
+    height: 350px;
+    position: relative;
+} 
+
+
+
+.form-group {
+    margin-bottom: 20px;
+} 
+
+.location-input {
+    width: 100%;
+          padding: 10px;
+          border: 1px solid #ccc;
+          /* border-bottom-left-radius: 0;
+          border-bottom-right-radius: 0; */
+          border-radius: 8px;
+          cursor: pointer;
 }
 
-.search-bar input, .search-bar select, .search-bar button {
-    margin: 0 8px;
-    padding: 15px;
-    border-radius: 5px;
+
+.location-suggestions {
+    display: none;
+    position: absolute;
+    background: white;
     border: 1px solid #ccc;
+    width: 100%;
+    margin-top: 5px;
+    z-index: 999;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    max-height: 150px;
+    overflow-y: auto;
+    background: #faf9f7;
+}
+  .input-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  #locationDropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    width: 100%;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 16px;
+    z-index: 1000;
+  }
+
+.popup {
+    position: absolute;
+    top: calc(100% + 4px); /* 4px jarak dari input */
+    left: 50%; /* Tambahkan ini */
+    transform: translateX(-50%); /* Tambahkan ini */
+    width: 100%;
+    max-width: 1083px;
+          background: white;
+          border: 1px solid #ccc;
+          border-top: none; 
+          border-bottom-left-radius: 8px;
+          border-bottom-right-radius: 8px;
+          z-index: 1000;
+          display: none;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+          margin-top: 4px; /* Jarak kecil dari input */
+  }
+  
+  .popup-header button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  .popup.show {
+    display: block;
+    max-width: 1083px;  /* Anda bisa sesuaikan sesuai kebutuhan */
+    background: #ffffff;
+    border-radius: 12px;    
+    width: 100%;  /* Tambahkan untuk menjamin penuh dari elemen induk */
+    margin-top: 10;
+  }
+
+  .popup-body {
+    padding: 15px;
+  }
+
+  .popup h4 {
+    margin-top: 0;
+  }
+
+
+  .dropdown-title {
+    margin: 0 0 8px;
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  .city-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .city-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    cursor: pointer;
+    font-size: 15px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .city-list li:hover {
+    background-color: #f0f0f0;
+  }
+
+.date-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: nowrap;      
+    width: 100%;            
+    box-sizing: border-box;
 }
 
-.search-bar button {
-    background-color: #8b5e3c;
+/* .date-box {
+
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+}
+
+.date-input {
+    width: 50%;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    color: #666;
+} */
+
+.date-box {
+    position: relative; /* Membuat posisi relatif untuk penempatan absolut ikon */
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    display: flex; /* Menggunakan flexbox untuk mengatur tata letak */
+    align-items: center; /* Pusatkan vertikal */
+}
+
+.date-input {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    color: #666;
+    padding-right: 25px; /* Beri ruang untuk ikon di kanan */
+    background: transparent; /* Pastikan background transparan */
+}
+
+/* Style untuk ikon kalender (diasumsikan menggunakan pseudo-element) */
+.date-input::-webkit-calendar-picker-indicator {
+    position: absolute;
+    right: 10px; /* Posisikan di kanan */
+    cursor: pointer;
+}
+
+/* PERBAIKAN UTAMA */
+.section-title {
+    display: flex;
+    margin-bottom: 8px;
+}
+
+.label-container {
+    display: flex;
+    width: 100%;
+    align-items: center; /* Ini kunci utamanya */
+}
+
+.check-in-label, 
+.duration-label, 
+.check-out-label {
+    flex: 1;
+    height: 100%; /* Pastikan mengambil tinggi penuh */
+    display: inline-flex;
+    align-items: center; /* Pusatkan vertikal */
+}
+
+.check-in-label {
+    justify-content: flex-start;
+    padding-left: 12px;
+}
+
+.duration-label {
+    justify-content: center;
+}
+
+.check-out-label {
+    justify-content: flex-end;
+    padding-right: 12px;
+}
+
+.duration-box {
+
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+}
+
+.malam {
+    margin-left: 5px;
+}
+
+
+.duration-counter {
+    display: flex;
+    align-items: center;
+}
+
+.duration-btn {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #ccc;
+    background: #f8f8f8;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.duration-value {
+    margin: 0 5px;
+    min-width: 15px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.search-row {
+    display: flex;
+    align-items: center; /* sejajarkan vertikalnya */
+    gap: 10px; /* beri jarak antara input dan tombol */
+    margin-bottom: 20px;
+}
+
+.guest-room-box {
+    width: 86%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: left;
+    background: white;
+    cursor: pointer;
+    position: relative;
+}
+
+.guest-room-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 10;
+    display: none;
+    margin-top: 5px;
+}
+
+.guest-room-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.guest-room-label {
+    font-weight: bold;
+}
+
+.counter {
+    display: flex;
+    align-items: center;
+}
+
+.counter-btn {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ccc;
+    background: #f8f8f8;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.counter-value {
+    margin: 0 15px;
+    min-width: 20px;
+    text-align: center;
+}
+
+.apply-btn {
+    width: 100%;
+    padding: 10px;
+    background: #8b5e3c;
     color: white;
     border: none;
+    border-radius: 4px;
     cursor: pointer;
-} */
+    font-weight: bold;
+}
+
+.main-label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 2px;
+    font-size: 14px;
+}
+
+.sub-label {
+    font-size: 12px;
+    color: #666;
+}
+
+.section-title {
+    display: block;
+    font-size: 15px;
+    color: #333;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+
+
+
+/* Button Cari */
+.search-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 25px;
+    height: 45px; 
+    background: #8b5e3c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
 
 
 /* hotel */
@@ -321,6 +546,22 @@ h4 {
 .hotel-location {
     font-size: 14px;
     color: #777;
+}
+
+/* ANIMASI HOVERRRR CARD */
+.hotel-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.hotel-card {
+    transition: transform 0.3s;
+}
+
+.hotel-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
 .hotel-address {
@@ -477,6 +718,8 @@ h4 {
 .kota-button:hover {
     background-color: #5a3a1a; 
 }
+
+
 
 /* footer */
 

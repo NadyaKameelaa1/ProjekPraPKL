@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 require_once '../Koneksi/koneksi.php';
 
@@ -7,12 +7,18 @@ if (!isset($_SESSION['email_user'])) {
     exit;
 }
 
-$query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harga_terendah
+// Query untuk mengambil hotel dengan id_hotel 2027, 2028, dan 2029 + harga terendah
+$query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harga_terendah 
     FROM hotels
     LEFT JOIN kamar ON hotels.id_hotel = kamar.id_hotel
-    WHERE kota_hotel = 'Semarang'
+    WHERE hotels.id_hotel IN (2027, 2028, 2029)
     GROUP BY hotels.id_hotel");
-$hotels = mysqli_fetch_assoc($query);
+
+// Simpan semua hasil query ke dalam array (bukan hanya 1 row)
+$hotels = [];
+while ($row = mysqli_fetch_assoc($query)) {
+    $hotels[] = $row;
+}
 ?>
 
 <!DOCTYPE html>
@@ -56,17 +62,99 @@ $hotels = mysqli_fetch_assoc($query);
         <h5>Hotel Jawa Tengah</h5>
         <h2>SELAMAT DATANG</h2>
         <hr>
-
-        <div class="search-labels">
-            <div class="search-label">Kota</div>
-          </div>
     </header>
+    <br>
+    <br>
 
-    <div class="search-bar">
-        <label><i class="fa-solid fa-location-dot"></i></label> 
-              <input type="text" placeholder="Kota">
-        <button onclick="window.location.href='home2.php'"><i class="fa-solid fa-magnifying-glass"></i>Lihat Selengkapnya</button>
+        <!-- search bar -->
+      <div class="search-container">
+        <div class="section-title">Kota, atau nama hotel</div>
+        <input type="text" class="location-input" id="locationInput" placeholder="Kota, hotel" autocomplete="off" />
+
+        <div class="input-wrapper">
+        <div id="locationDropdown">
+            <h4 class="dropdown-title">Destinasi Populer</h4>
+        <hr />
+         <ul class="city-list">
+            <li data-city="Semarang">Semarang <span>182 Hotel</span></li>
+            <li data-city="Surakarta">Surakarta <span>58 Hotel</span></li>
+            <li data-city="Yogyakarta">Yogyakarta <span>38 Hotel</span></li>
+            <li data-city="Purwokerto">Purwokerto <span>15 Hotel</span></li>
+        </ul>
+     </div>
+     </div>
+
+     <!-- Check-in check-out Durasi    -->
+
+            <div class="section-title">
+            <div class="label-container">
+                <div class="check-in-label">Check-in</div>
+                <div class="duration-label">Durasi</div>
+                <div class="check-out-label">Check-out</div>
+            </div>
+        </div>
+
+        <div class="date-container">
+            <div class="date-box">
+                <input type="date" class="date-input" id="checkInDate">
+            </div>
+            <div class="duration-box">
+                <div class="duration-counter">
+                    <button class="duration-btn" id="decreaseDuration">-</button>
+                    <span class="duration-value" id="durationValue">1</span>
+                    <button class="duration-btn" id="increaseDuration">+</button>
+                    <span class="malam">Malam</span>
+                </div>
+            </div>
+            <div class="date-box">
+                <input type="date" class="date-input" id="checkOutDate" >
+            </div>
+        </div>
+
+        <div class="section-title">Tamu dan Kamar</div>
+        <div class="search-row">
+        <div class="guest-room-box" id="guestRoomTrigger">
+            <div class="sub-label">2 Dewasa, 0 Anak, 1 Kamar</div>
+            
+            <div class="guest-room-dropdown" id="guestRoomDropdown">
+                <div class="guest-room-item">
+                    <div class="guest-room-label">Dewasa</div>
+                    <div class="counter">
+                        <button class="counter-btn" type="button">-</button>
+                        <span class="counter-value">2</span>
+                        <button class="counter-btn" type="button">+</button>
+                    </div>
+                </div>
+                
+                <div class="guest-room-item">
+                    <div class="guest-room-label">Anak</div>
+                    <div class="counter">
+                        <button class="counter-btn" type="button">-</button>
+                        <span class="counter-value">0</span>
+                        <button class="counter-btn" type="button">+</button>
+                    </div>
+                </div>
+                
+                <div class="guest-room-item">
+                    <div class="guest-room-label">Kamar</div>
+                    <div class="counter">
+                        <button class="counter-btn" type="button">-</button>
+                        <span class="counter-value">1</span>
+                        <button class="counter-btn" type="button">+</button>
+                    </div>
+                </div>
+                
+                <button class="apply-btn" type="button">Terapkan</button>
+            </div>
+            
+        </div>
+        <button class="search-btn" onclick="window.location.href='hasil_pencarian.php'">
+            <i class="fa-solid fa-magnifying-glass"></i>Cari Hotel
+        </button>
     </div>
+</div>
+</div>
+
 
     <br>
             <section class="hotel-favorit">
@@ -77,66 +165,33 @@ $hotels = mysqli_fetch_assoc($query);
                 
                <hr>
 
-               <div class="container"> 
-               <div class="hotel-card">
-                        <img src="<?php echo '/JAVAST/Admin/Gambar/Hotel/' . $hotels['gambar_hotel']; ?>" alt="<?php echo $hotels['nama_hotel']; ?>" class="hotel-image">
-                       <div class="hotel-info">
-                        <div class="hotel-name">
-                            <h5><?php echo $hotels['nama_hotel']; ?></h5>
-                        </div>
-                       <p class="hotel-location"><?php echo $hotels['lokasi_hotel'] . ', ' . $hotels['kota_hotel']; ?><br></p>
-                       <p class="hotel-address"><?php echo $hotels['alamat_hotel']; ?></p>
-                       <div class="hotel-rating">
-                        <span class="stars"><?php echo str_repeat("⭐", $hotels['bintang_hotel']); ?></span>   
-                       </div>
-                       <div class="hotel-price">
-                       <span>1 malam</span>
-                       <span class="price">Rp. <?php echo number_format($hotels['harga_terendah'], 0, ',', '.'); ?></span>
-                   </div>
-                 </div>
-                </div>
-
-                <div class="hotel-card">
-                    <img src="gambar/gambarkota/PO hotel Semarang.jpeg" alt="Po Hotel Semarang" class="hotel-image">
-                    <div class="hotel-info">
-                        <div class="hotel-name">
-                            <h5>PO hotel Semarang</h5>
-                        </div>
-                        <p class="hotel-location">Semarang</p>
-                        <p class="hotel-address">Jl. Pemuda No 118, 50132, Semarang, Indonesia</p>
-                        <div class="hotel-rating">
-                            <span>⭐⭐⭐⭐⭐</span>   
-                        </div>
-                        <div class="hotel-price">
-                            <span>1 malam</span>
-                            <span class="price">Rp. 1.200.000</span>
+                <div class="container">
+                <?php foreach ($hotels as $hotel): ?>
+                <a href="gumaya.php?id=<?php echo $hotel['id_hotel']; ?>" class="hotel-link">
+                    <div class="hotel-card">
+                        <img src="/JAVAST/Admin/Gambar/Hotel/<?php echo $hotel['gambar_hotel']; ?>" alt="<?php echo $hotel['nama_hotel']; ?>" class="hotel-image">
+                        <div class="hotel-info">
+                            <h5><?php echo $hotel['nama_hotel']; ?></h5>
+                            <p class="hotel-location"><?php echo $hotel['lokasi_hotel'] . ', ' . $hotel['kota_hotel']; ?></p>
+                            <p class="hotel-address"><?php echo $hotel['alamat_hotel']; ?></p>
+                            <div class="hotel-rating">
+                                <span><?php echo str_repeat("⭐", $hotel['bintang_hotel']); ?></span>
+                            </div>
+                            <div class="hotel-price">
+                                <span>1 malam</span>
+                                <span class="price">Rp. <?php echo number_format($hotel['harga_terendah'], 0, ',', '.'); ?></span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
+                <?php endforeach; ?>
+            </div>
 
-                <div class="hotel-card">
-                    <img src="gambar/gambarkota/the royal surakrta.jpg" alt="The Royal Surakarta Heritage" class="hotel-image">
-                    <div class="hotel-info">
-                        <div class="hotel-name">
-                            <h5>The Royal Surakarta Heritage</h5>
-                        </div>
-                        <p class="hotel-location">Surakarta</p>
-                        <p class="hotel-address">Jl. Jl. Slamet Riyadi No.6, 57111 Solo, Indonesia</p>
-                        <div class="hotel-rating">
-                            <span>⭐⭐⭐⭐⭐</span>   
-                        </div>
-                        <div class="hotel-price">
-                            <span>1 malam</span>
-                            <span class="price">Rp. 500.000</span>
-                        </div>
-                    </div>
-                </div>                
-           </div>
 
-        
-        <div class="button-container">
-            <button class="hotel-button">Lihat Hotel Lainnya >></button>
-        </div>
+                
+
+                       
+            </div>
 
     </section> 
 
@@ -228,6 +283,148 @@ $hotels = mysqli_fetch_assoc($query);
         </div>
     </footer>
        
+    <script>
+        // Guest Room Dropdown Functionality
+
+        const trigger = document.getElementById('guestRoomTrigger');
+        const dropdown = document.getElementById('guestRoomDropdown');
+        
+        trigger.addEventListener('click', function(e) {
+            if (e.target.closest('.guest-room-dropdown')) return;
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        });
+        
+        document.addEventListener('click', function(e) {
+            if (!trigger.contains(e.target)) {
+                dropdown.style.display = 'none';
+            }
+        });
+        
+
+
+        // Guest Counter Functionality
+        document.querySelectorAll('.counter-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                const counter = this.parentElement;
+                const valueElement = counter.querySelector('.counter-value');
+                let value = parseInt(valueElement.textContent);
+                
+                if (this.textContent === '+') {
+                    value++;
+                } else {
+                    if (value > 0) {
+                        value--;
+                    }
+                }
+                
+                valueElement.textContent = value;
+                
+                // Update summary text
+                const adultValue = parseInt(document.querySelectorAll('.counter-value')[0].textContent);
+                const childValue = parseInt(document.querySelectorAll('.counter-value')[1].textContent);
+                const roomValue = parseInt(document.querySelectorAll('.counter-value')[2].textContent);
+                
+                trigger.querySelector('.sub-label').textContent = 
+                    `${adultValue} Dewasa, ${childValue} Anak, ${roomValue} Kamar`;
+            });
+        });
+        
+        document.querySelector('.apply-btn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdown.style.display = 'none';
+        });
+
+
+
+        // Date and Duration Functionality
+        const checkInDate = document.getElementById('checkInDate');
+        const checkOutDate = document.getElementById('checkOutDate');
+        const increaseDuration = document.getElementById('increaseDuration');
+        const decreaseDuration = document.getElementById('decreaseDuration');
+        const durationValue = document.getElementById('durationValue');
+
+        // Set default dates
+        const today = new Date();
+        const tomorrow = new Date();
+        tomorrow.setDate(today.getDate() + 1);
+        
+        checkInDate.valueAsDate = today;
+        checkOutDate.valueAsDate = tomorrow;
+
+        // Format tampilan tanggal (YYYY-MM-DD)
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        // mengubah otomatis checkout
+        function updateCheckOutDate() {
+            if (!checkInDate.value) return;
+            
+            const duration = parseInt(durationValue.textContent);
+            const startDate = new Date(checkInDate.value);
+            const endDate = new Date(startDate);
+            endDate.setDate(startDate.getDate() + duration);
+            
+            checkOutDate.value = formatDate(endDate);
+        }
+
+        // ngubah otomatis durasi 
+        increaseDuration.addEventListener('click', function() {
+            let duration = parseInt(durationValue.textContent);
+            duration++;
+            durationValue.textContent = duration;
+            updateCheckOutDate();
+        });
+
+        decreaseDuration.addEventListener('click', function() {
+            let duration = parseInt(durationValue.textContent);
+            if (duration > 1) {
+                duration--;
+                durationValue.textContent = duration;
+                updateCheckOutDate();
+            }
+        });
+
+        // Update check-out pas check-in berubah
+        checkInDate.addEventListener('change', updateCheckOutDate);
+        
+        updateCheckOutDate();
+
+
+    // destinasi
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const locationInput = document.getElementById("locationInput");
+        const locationDropdown = document.getElementById("locationDropdown");
+        const cityListItems = document.querySelectorAll(".city-list li");
+
+      // Tampilkan/ sembunyikan dropdown saat klik input
+    locationInput.addEventListener("click", function(e) {
+        e.stopPropagation();
+        locationDropdown.style.display = locationDropdown.style.display === "block" ? "none" : "block";
+    });
+
+      // Klik kota akan isi input dan tutup dropdown
+    cityListItems.forEach(function(li) {
+        li.addEventListener("click", function() {
+          locationInput.value = li.getAttribute("data-city");
+          locationDropdown.style.display = "none";
+      });
+    });
+
+      // Klik di luar input & dropdown, tutup dropdown
+    document.addEventListener("click", function(event) {
+        if (!locationInput.contains(event.target) && !locationDropdown.contains(event.target)) {
+          locationDropdown.style.display = "none";
+        }
+      });
+    });
+    </script>
 
 </body>
 </html>

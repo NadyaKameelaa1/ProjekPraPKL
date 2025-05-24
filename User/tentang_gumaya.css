@@ -152,41 +152,306 @@ body {
     border-radius: 5px;
   }
 
-  .description {
-    padding-top: 10px;
-    text-align: left; 
-  }
+ /* Gaya Dasar */
+.container-gumaya {
+    padding: 20px;
+    font-family: 'Segoe UI', sans-serif;
+    max-width: 2000px;
+    margin: 0 auto;
+    
+}
 
-  .description h2 {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
+.hotel-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
 
-  .description span {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 14px;
-    color: gray;
-  }
+/* Bagian Gambar */
+.hotel-image-container {
+    padding: 15px 15px 0 15px;
+}
 
-  .bintang {
+.hotel-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Bagian Informasi */
+.hotel-info {
+    padding: 15px;
+}
+
+.description h2 {
+    order: 2; /* Judul setelah rating */
+    font-size: 24px;
+    margin-bottom: 12px;
+    color: #333;
+}
+
+.rating-amenity {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.rating {
     color: orange;
-    font-size: 16px;
-    margin-bottom: 5px;
-  }
+    font-size: 18px;
+}
 
-  .harga {
+.rating i{
+  color: orange;
+}
+
+.amenity {
+    font-size: 14px;
+    color: #555;
+}
+
+.address {
+    font-size: 15px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.location-note {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.location-note a {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+.price-container {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    margin-top: 10px;
+    
+}
+
+.price-position {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    margin-top: 10px;
+    justify-content: right;
+}
+
+.price {
+    font-size: 20px;
     font-weight: bold;
     color: #f7931e;
-    font-size: 18px;
+}
+
+.per-night {
+    font-size: 14px;
+    color: #888;
+}
+
+.price-container {
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+    margin-top: 15px;
+}
+
+/* header hotel */
+
+
+.left-image {
+    width: 60%;
   }
 
-  .per-malam {
-    font-size: 13px;
-    color: gray;
+.left-image img {
+    width: 600px;
+    height: 400px;
+    object-fit: cover;
+    padding: 10px;
+   border-radius: 20px;
   }
 
+
+.left-info {
+    width: 50%;
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 15px;
+  }
+
+
+.small-images {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+.small-images img {
+    width: 500px;
+    height: 155px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+
+
+  /* atas */
+
+   .description {
+    position: relative; /* Container untuk posisi absolut harga */
+    padding-top: 10px; /* Ruang untuk harga */
+  }
+
+
+
+  .container-gumaya {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.hotel-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    overflow: hidden;
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column; /* Ubah ke column layout */
+}
+
+.hotel-image-container {
+    width: 100%;
+    padding: 15px 15px 0 15px; /* Padding hanya di atas dan samping */
+}
+
+.hotel-image {
+    width: 100%;
+    height: 300px; /* Tinggi gambar yang lebih reasonable */
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+}
+
+.hotel-info {
+    padding: 15px;
+}
+
+.description h2 {
+    font-size: 24px;
+    margin-bottom: 8px;
+    color: #333;
+    margin-right: 150px; /* Beri ruang untuk harga */
+}
+
+.hotel-type {
+    order: 3; /* Tipe hotel setelah judul */
+    display: block;
+    font-size: 16px;
+    color: #505050;
+    margin-bottom: 1px;
+}
+
+
+.hotel-address {
+    display: block;
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+
+.facilities {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.facilities-hotel {
+  display: block !important;
+  margin-bottom: 5px !important;
+}
+
+.rating-facilities-hotel {
+    order: 1; /* Rating di atas */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.facilities-hotel span {
+    background-color: #d8d8d8;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.rating {
+    color: orange;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.header-container {
+    position: relative; /* Tambahkan ini */
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    flex-direction: column; /* Ubah ke vertikal */
+    align-items: flex-start; /* Rata kiri */
+}
+
+/* Gaya Harga */
+/* .price-container {
+    
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+} */
+
+
+
+.price {
+    font-size: 24px; /* Lebih besar dari nama hotel */
+    font-weight: bold;
+    color: #f7931e;
+    line-height: 1.2;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    text-align: right;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.price-wrapper { /* Ganti dari .price-container */
+    position: absolute;
+    right: 0;
+    top: 0;
+    text-align: right;
+}
+
+.price-wrapper:hover .price{
+    transform: scale(1.05);
+    transition: transform 0.2s;
+}
+
+.per-night {
+    font-size: 14px;
+    color: #888;
+    margin-top: 2px;
+}
   
 /* tentang */
 
