@@ -2,72 +2,30 @@
 session_start();
 require_once '../Koneksi/koneksi.php';
 
-$sql = "SELECT k.*, kg.gambarA, kg.gambarB, kg.gambarC, kg.gambarD, kg.gambarE 
-        FROM kamar k 
-        LEFT JOIN kamar_gambar kg ON k.id_kamar = kg.id_kamar";
-$query = mysqli_query($koneksi,$sql);
+// Tampilkan pesan error/sukses
+if (isset($_SESSION['errors'])) {
+    echo '<div class="alert alert-danger">';
+    foreach ($_SESSION['errors'] as $error) {
+        echo '<p>'.$error.'</p>';
+    }
+    echo '</div>';
+    unset($_SESSION['errors']);
+}
 
-// if(isset($_POST['upload'])){
-//     $gambar1 = $_FILES['gambarA']['name'];
-//     $gambar2 = $_FILES['gambarB']['name'];
-//     $gambar3 = $_FILES['gambarC']['name'];
-//     $gambar4 = $_FILES['gambarD']['name'];
-//     $gambar5 = $_FILES['gambarE']['name'];
+if (isset($_SESSION['success'])) {
+    echo '<div class="alert alert-success">'.$_SESSION['success'].'</div>';
+    unset($_SESSION['success']);
+}
 
-//     $target_dir = "/JAVAST/Admin/Gambar/GambarKamar/Gumaya/";
-//     $target_file1 = $target_dir . basename($gambar1);
-//     $target_file2 = $target_dir . basename($gambar2);
-//     $target_file3 = $target_dir . basename($gambar3);
-//     $target_file4 = $target_dir . basename($gambar4);
-//     $target_file5 = $target_dir . basename($gambar5);
+// Tentukan mode tampilan
+$mode = isset($_GET['mode']) ? $_GET['mode'] : 'list';
 
-//     $imageFileType1 = strtolower(pathinfo($target_file1, PATHINFO_EXTENSION));
-//     $imageFileType2 = strtolower(pathinfo($target_file2, PATHINFO_EXTENSION));
-//     $imageFileType3 = strtolower(pathinfo($target_file3, PATHINFO_EXTENSION));
-//     $imageFileType4 = strtolower(pathinfo($target_file4, PATHINFO_EXTENSION));
-//     $imageFileType5 = strtolower(pathinfo($target_file5, PATHINFO_EXTENSION));
-
-//     $check1 = getImageSize($_FILES(['gambarA']['tmp_name']));
-//     $check2 = getImageSize($_FILES(['gambarB']['tmp_name']));
-//     $check3 = getImageSize($_FILES(['gambarC']['tmp_name']));
-//     $check4 = getImageSize($_FILES(['gambarD']['tmp_name']));
-//     $check5 = getImageSize($_FILES(['gambarE']['tmp_name']));
-
-//     $extension1 = substr($gambar1, strlen($gambar1)-4, strlen($gambar1));
-//     $extension2 = substr($gambar2, strlen($gambar2)-4, strlen($gambar2));
-//     $extension3 = substr($gambar3, strlen($gambar3)-4, strlen($gambar3));
-//     $extension4 = substr($gambar4, strlen($gambar4)-4, strlen($gambar4));
-//     $extension5 = substr($gambar5, strlen($gambar5)-4, strlen($gambar5));
-
-//     $allowed_extensions = array(".jpg", ".jpeg", ".png", ".webp");
-
-//     if($check1 == false || $check2 == false || $check3 == false || $check4 == false || $check5 == false){
-//         $message = "<div class='alert alert-danfer text-center alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><h5>One or more file is fake image. Only JPEG, JPG, PNG and GIF are allowed</h5></div>" .mysqli_error($koneksi);
-//     } elseif ($_FILES['gambarA']['size'] > 102400 || $_FILES['gambarB']['size'] > 102400 || $_FILES['gambarC']['size'] > 102400 || $_FILES['gambarD']['size'] > 102400 || $_FILES['gambarE']['size'] > 102400 ){
-//         $message = "<div class='alert alert-danfer text-center alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><h5>One or more file is fake image. Only JPEG, JPG, PNG and GIF are allowed</h5></div>" .mysqli_error($koneksi);
-
-//     } else{
-//         if(file_exist($target_file1) || file_exist($target_file2) || file_exist($target_file3) || file_exist($target_file4) || file_exist($target_file5)){
-//             $message = "<div class='alert alert-danfer text-center alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><h5>One or more file is fake image. Only JPEG, JPG, PNG and GIF are allowed</h5></div>" .mysqli_error($koneksi);
-//         } elseif(!in_array($extension1,$allowed_extensions) || !in_array($extension2,$allowed_extensions) || !in_array($extension3,$allowed_extensions) || !in_array($extension4,$allowed_extensions) || !in_array($extension5,$allowed_extensions) ){
-//             $message = "<div class='alert alert-danfer text-center alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><h5>One or more file is fake image. Only JPEG, JPG, PNG and GIF are allowed</h5></div>" .mysqli_error($koneksi);
-//         } else{
-//             move_uploaded_file($_FILES['gambarA']['tmp_name'], $target_file1);
-//             move_uploaded_file($_FILES['gambarB']['tmp_name'], $target_file2);
-//             move_uploaded_file($_FILES['gambarC']['tmp_name'], $target_file3);
-//             move_uploaded_file($_FILES['gambarD']['tmp_name'], $target_file4);
-//             move_uploaded_file($_FILES['gambarE']['tmp_name'], $target_file5);
-
-//             $sql = "INSERT INTO kamar_gambar (gambarA, gambarB, gambarC, gambarD, gambarE) VALUES ('$target_file1','$target_file2','$target_file3','$target_file4','$target_file5')";
-//             $result = $koneksi->query($sql);
-//             if($result){
-//                 header("location: kamar.php?tambahgambar=sukses");
-//             }
-
-//         }
-//     }
-// }
-
+// Query untuk menampilkan data kamar
+$sql = "SELECT k.*, h.nama_hotel 
+        FROM kamar k
+        JOIN hotels h ON k.id_hotel = h.id_hotel
+        ORDER BY k.id_kamar DESC";
+$query = mysqli_query($koneksi, $sql);
 ?>
 
 <!DOCTYPE html>
@@ -194,8 +152,10 @@ $query = mysqli_query($koneksi,$sql);
                         <i class="fas fa-trash"></i>
                     </a>
                 </button>
-                <button class="btn-detailGambar" onclick="openPopupgambar({$kamar['id_kamar']})">
-                    <i class="fa-solid fa-image"></i>
+                <button class="btn-detailGambar">
+                    <a href="kamar_detail_gambar.php?id_kamar={$kamar['id_kamar']}">
+                        <i class="fa-solid fa-image"></i>
+                    </a>
                 </button>
             </td>
             </tr>
