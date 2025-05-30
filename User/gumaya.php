@@ -6,10 +6,10 @@ if (!isset($_SESSION['email_user'])) {
     header("Location: login.php");
     exit;
 }
-// Ambil id_hotel dari URL
+
 $id_hotel = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// Query untuk mengambil data hotel spesifik + harga terendah
+// Query untuk hotel
 $query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harga_terendah 
     FROM hotels
     LEFT JOIN kamar ON hotels.id_hotel = kamar.id_hotel
@@ -18,11 +18,19 @@ $query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harg
 
 $hotels = mysqli_fetch_assoc($query);
 
-// Jika hotel tidak ditemukan, tampilkan pesan
 if (!$hotels) {
     die("Hotel tidak ditemukan!");
 }
+
+// Query untuk kamar dengan gambar
+$query_kamar = mysqli_query($koneksi, "SELECT
+    k.*,
+    kg.gambarA, kg.gambarB, kg.gambarC, kg.gambarD, kg.gambarE
+    FROM kamar k
+    LEFT JOIN kamar_gambar kg ON k.id_kamar = kg.id_kamar
+    WHERE k.id_hotel = $id_hotel");
 ?>
+
 
 
 <!DOCTYPE html>
@@ -65,8 +73,6 @@ if (!$hotels) {
 
     <div class="container-gumaya">
     <div class="hotel-card">
-        
-        
         <div class="hotel-info">
             <div class="description">
               <div class="header-container">
@@ -168,56 +174,72 @@ if (!$hotels) {
       </div>
     
       <!-- Konten kamar -->
-      <div class="kamar-content">
+<div class="kamar-content">
+  <?php while ($kamar = mysqli_fetch_assoc($query_kamar)): ?>
+    <?php
+    // Cari gambar pertama yang tersedia
+    $thumbnail = "";
+    $gambar_fields = ['gambarA', 'gambarB', 'gambarC', 'gambarD', 'gambarE'];
+    
+    foreach ($gambar_fields as $field) {
+        if (!empty($kamar[$field])) {
+            $thumbnail_path = '/JAVAST/Admin/Gambar/Kamar/'.$kamar[$field];
+            $full_path = $_SERVER['DOCUMENT_ROOT'].$thumbnail_path;
+            
+            // Debugging - tampilkan path yang dicoba
+            // echo "Checking: ".$full_path."<br>";
+            
+            if (file_exists($full_path)) {
+                $thumbnail = $thumbnail_path;
+                break;
+            }
+        }
+    }
+    ?>
         <div class="kamar-card">
-          <img src="gambar/new twin room gumaya.jpeg" alt="Kamar Hotel">
+          <?php if ($thumbnail): ?>
+            <img src="<?= $thumbnail ?>" alt="<?= htmlspecialchars($kamar['nama_kamar']) ?>">
+        <?php else: ?>
+            <img src="gambar/default-room.jpg" alt="Kamar Default">
+        <?php endif; ?>
           <div class="kamar-info">
-            <h4><b>New Deluxe Twin Room Only</b></h4>
+             <h4><?= htmlspecialchars($kamar['nama_kamar']) ?></h4>
             
             <div class="facilities">
-              <span>1 Ranjang Twin</span>
-
+              <span><?= htmlspecialchars($kamar['tipe_kasur']) ?></span>
               <br>
               <br>
             
-             <b>Fitur</b>
+             <b>Fasilitas</b>
 
              <br>
 
-              <span>Bathub</span>
-              <span>Ac</span>
-              <span>Air Panas</span>
-              <span>Kulkas</span>
-              <span>Air Panas</span>
-              <span>Smart Tv</span>
-              <span>Sandal</span>
-              <span>Handuk</span>
-            
-              <br>
-              <br>
-
-              <b>Fasilitas</b>
-              <br>
-
-              <span>Spa</span>
-              <span>Bar</span>
-
-              <br>
-              <br>
+              <?php
+              $fasilitas = explode(',', $kamar['fasilitas_kamar']);
+              foreach ($fasilitas as $item) {
+                  $item = trim($item);
+                  if (!empty($item)) {
+                      echo '<span>'.htmlspecialchars($item).'</span> ';
+                  }
+              }
+              ?>
+              <br><br>
 
               <b>Kapasitas</b>
               <br>
 
-              <span>2 Tamu</span>
-         </div>
+              <span><?= $kamar['jumlah_dewasa'] + $kamar['jumlah_anak'] ?> Tamu</span>
+          </div>
 
-         <div class="box-button">
-            <div class="price">Rp. 1.200.000</div>
-            <a href="detail_kmr_gumaya.html"><button class="btn-pilih-kamar">Pilih Kamar</button></a>
+          <div class="box-button">
+              <div class="price">Rp. <?= number_format($kamar['harga_kamar'], 0, ',', '.') ?></div><br>
+              <a href="detail_kmr_gumaya.php?id_kamar=<?= $kamar['id_kamar'] ?>" class="btn-pilih-kamar">Pilih Kamar</a><br><br>
           </div>
          </div>
         </div>
-    
+         <?php endwhile; ?>
+        
+<!-- 
         <div class="kamar-card">
           <img src="gambar/new deluxe king bed.jpeg" alt="Kamar Hotel">
           <div class="kamar-info">
@@ -376,7 +398,7 @@ if (!$hotels) {
             </div>
           </div>
           </div>
-        </div>
+        </div> -->
       
       </div>
     </div>

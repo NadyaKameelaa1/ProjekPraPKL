@@ -1,3 +1,26 @@
+<?php
+session_start();
+require_once '../koneksi/koneksi.php';
+
+$id_kamar = isset($_GET['id_kamar']) ? intval($_GET['id_kamar']) : 0;
+
+// Query untuk mengambil detail kamar beserta semua gambar
+$query = mysqli_query($koneksi, "SELECT 
+    k.*, 
+    h.nama_hotel,
+    kg.gambarA, kg.gambarB, kg.gambarC, kg.gambarD, kg.gambarE
+    FROM kamar k
+    JOIN hotels h ON k.id_hotel = h.id_hotel
+    LEFT JOIN kamar_gambar kg ON k.id_kamar = kg.id_kamar
+    WHERE k.id_kamar = $id_kamar");
+
+$kamar = mysqli_fetch_assoc($query);
+
+if (!$kamar) {
+    die("Kamar tidak ditemukan!");
+}
+?>  
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
