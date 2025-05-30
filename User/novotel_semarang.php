@@ -6,10 +6,10 @@ if (!isset($_SESSION['email_user'])) {
     header("Location: login.php");
     exit;
 }
-
+// Ambil id_hotel dari URL
 $id_hotel = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// Query untuk hotel
+// Query untuk mengambil data hotel spesifik + harga terendah
 $query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harga_terendah 
     FROM hotels
     LEFT JOIN kamar ON hotels.id_hotel = kamar.id_hotel
@@ -18,19 +18,11 @@ $query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harg
 
 $hotels = mysqli_fetch_assoc($query);
 
+// Jika hotel tidak ditemukan, tampilkan pesan
 if (!$hotels) {
     die("Hotel tidak ditemukan!");
 }
-
-// Query untuk kamar dengan gambar
-$query_kamar = mysqli_query($koneksi, "SELECT
-    k.*,
-    kg.gambarA, kg.gambarB, kg.gambarC, kg.gambarD, kg.gambarE
-    FROM kamar k
-    LEFT JOIN kamar_gambar kg ON k.id_kamar = kg.id_kamar
-    WHERE k.id_hotel = $id_hotel");
 ?>
-
 
 
 <!DOCTYPE html>
@@ -38,8 +30,8 @@ $query_kamar = mysqli_query($koneksi, "SELECT
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gumaya Tower</title>
-    <link rel="stylesheet" href="gumaya.css">
+    <title>Santika Premiere</title>
+    <link rel="stylesheet" href="santika_premiere.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
@@ -73,6 +65,8 @@ $query_kamar = mysqli_query($koneksi, "SELECT
 
     <div class="container-gumaya">
     <div class="hotel-card">
+        
+        
         <div class="hotel-info">
             <div class="description">
               <div class="header-container">
@@ -121,7 +115,7 @@ $query_kamar = mysqli_query($koneksi, "SELECT
     <div class="description-card">
       <div class="card-content">
         <p class="hotel-description">
-          Berlokasi di Semarang, 2 km dari Stasiun Semarang Tawang, Gumaya Tower Hotel menawarkan spa & pusat kebugaran dan pemandangan kota. Fasilitas yang tersedia di akomodasi ini adalah restoran, layanan kamar, resepsionis 24 jam, dan WiFi gratis di seluruh area akomodasi.
+        Menginap di Novotel Semarang adalah pilihan yang baik ketika Anda mengunjungi Sekayu. Resepsionis 24 jam tersedia untuk melayani Anda, mulai dari check-in hingga check-out, atau bantuan apa pun yang Anda butuhkan. Jika Anda menginginkan lebih, jangan ragu untuk bertanya kepada resepsionis, kami selalu siap melayani Anda. WiFi tersedia di area umum properti untuk membantu Anda tetap terhubung dengan keluarga dan teman.
           <br>
           <a href="tentang_gumaya.php" class="next-link">lihat selengkapnya &gt;&gt;</a>
       </p>
@@ -133,7 +127,7 @@ $query_kamar = mysqli_query($koneksi, "SELECT
     <div class="location-card">
       <div class="card-content">
         <p class="location-description"><i class="fa-solid fa-location-dot"></i>
-          Jl. Gajahmada No.59-61, 50134 Semarang, Indonesia
+        Jl. Pemuda No.123, Sekayu, Kec. Semarang Tengah, Kota Semarang, Jawa Tengah
         </p>
       </div>
     </div>
@@ -174,79 +168,14 @@ $query_kamar = mysqli_query($koneksi, "SELECT
       </div>
     
       <!-- Konten kamar -->
-<div class="kamar-content">
-  <?php while ($kamar = mysqli_fetch_assoc($query_kamar)): ?>
-    <?php
-    // Cari gambar pertama yang tersedia
-    $thumbnail = "";
-    $gambar_fields = ['gambarA', 'gambarB', 'gambarC', 'gambarD', 'gambarE'];
-    
-    foreach ($gambar_fields as $field) {
-        if (!empty($kamar[$field])) {
-            $thumbnail_path = '/JAVAST/Admin/Gambar/Kamar/'.$kamar[$field];
-            $full_path = $_SERVER['DOCUMENT_ROOT'].$thumbnail_path;
-            
-            // Debugging - tampilkan path yang dicoba
-            // echo "Checking: ".$full_path."<br>";
-            
-            if (file_exists($full_path)) {
-                $thumbnail = $thumbnail_path;
-                break;
-            }
-        }
-    }
-    ?>
+      <div class="kamar-content">
         <div class="kamar-card">
-          <?php if ($thumbnail): ?>
-            <img src="<?= $thumbnail ?>" alt="<?= htmlspecialchars($kamar['nama_kamar']) ?>">
-        <?php else: ?>
-            <img src="gambar/default-room.jpg" alt="Kamar Default">
-        <?php endif; ?>
+          <img src="gambar/Santika Premiere/Standard With 1 Queen Size Bed" alt="Kamar Hotel">
           <div class="kamar-info">
-             <h4><?= htmlspecialchars($kamar['nama_kamar']) ?></h4>
+            <h4><b>Standard With 1 Queen Size Bed</b></h4>
             
             <div class="facilities">
-              <span><?= htmlspecialchars($kamar['tipe_kasur']) ?></span>
-              <br>
-              <br>
-            
-             <b>Fasilitas</b>
-
-             <br>
-
-              <?php
-              $fasilitas = explode(',', $kamar['fasilitas_kamar']);
-              foreach ($fasilitas as $item) {
-                  $item = trim($item);
-                  if (!empty($item)) {
-                      echo '<span>'.htmlspecialchars($item).'</span> ';
-                  }
-              }
-              ?>
-              <br><br>
-
-              <b>Kapasitas</b>
-              <br>
-
-              <span><?= $kamar['jumlah_dewasa'] + $kamar['jumlah_anak'] ?> Tamu</span>
-          </div>
-
-          <div class="box-button">
-              <div class="price">Rp. <?= number_format($kamar['harga_kamar'], 0, ',', '.') ?></div><br>
-              <a href="detail_kmr_gumaya.php?id_kamar=<?= $kamar['id_kamar'] ?>" class="btn-pilih-kamar">Pilih Kamar</a><br><br>
-          </div>
-         </div>
-        </div>
-         <?php endwhile; ?>
-        
-<!-- 
-        <div class="kamar-card">
-          <img src="gambar/new deluxe king bed.jpeg" alt="Kamar Hotel">
-          <div class="kamar-info">
-            <h4><b>New Deluxe King Bed</b></h4>
-
-            <div class="facilities">
-              <span>1 Ranjang Twin</span>
+              <span>1 queen bed</span>
 
               <br>
               <br>
@@ -283,20 +212,68 @@ $query_kamar = mysqli_query($koneksi, "SELECT
          </div>
 
          <div class="box-button">
-            <div class="price">Rp. 1.200.000</div>
-            <button class="btn-pilih-kamar">Pilih Kamar</button>
+            <div class="price">Rp. 650.000</div>
+            <a href="detail_kmr_santika.html"><button class="btn-pilih-kamar">Pilih Kamar</button></a>
+          </div>
+         </div>
+        </div>
+    
+        <div class="kamar-card">
+          <img src="gambar/Novotel/Superior Dengan 1 Tempat Tidur Ukuran Queen" alt="Kamar Hotel">
+          <div class="kamar-info">
+            <h4><b>Superior Dengan 1 Tempat Tidur Ukuran Queen</b></h4>
 
+            <div class="facilities">
+              <span>1 queen bed</span>
+
+              <br>
+              <br>
+            
+             <b>Fitur</b>
+
+             <br>
+
+              <span>Bathub</span>
+              <span>Ac</span>
+              <span>Air Panas</span>
+              <span>Kulkas</span>
+              <span>Air Panas</span>
+              <span>Smart Tv</span>
+              <span>Sandal</span>
+              <span>Handuk</span>
+            
+              <br>
+              <br>
+
+              <b>Fasilitas</b>
+              <br>
+
+              <span>Spa</span>
+              <span>Bar</span>
+
+              <br>
+              <br>
+
+              <b>Kapasitas</b>
+              <br>
+
+              <span>2 Tamu</span>
+         </div>
+
+         <div class="box-button">
+            <div class="price">Rp. 700.000</div>
+            <button class="btn-pilih-kamar">Pilih Kamar</button>
           </div>
           </div>
         </div>
     
         <div class="kamar-card">
-          <img src="gambar/GRand deluxe twin.jpeg" alt="Kamar Hotel">
+          <img src="gambar/Double Superior With 1 Queen Size Bed" alt="Kamar Hotel">
           <div class="kamar-info">
-            <h4><b>Grand Deluxe Twin</b></h4>
+            <h4><b>EDouble Superior With 1 Queen Size Bed</b></h4>
           
             <div class="facilities">
-              <span>1 Ranjang Twin</span>
+              <span>1 Bed</span>
 
               <br>
               <br>
@@ -333,66 +310,11 @@ $query_kamar = mysqli_query($koneksi, "SELECT
          </div>
 
          <div class="box-button">
-            <div class="price">Rp. 1.100.000</div>
+            <div class="price">Rp. 900.000</div>
             <button class="btn-pilih-kamar">Pilih Kamar</button>
-
-            <div class="lihat-detail">
-              <a href="#">Lihat Detail >></a>
-            </div>
           </div>
-
           </div>
         </div>
-
-        <div class="kamar-card">
-          <img src="gambar/tower club.jpeg" alt="Kamar Hotel">
-          <div class="kamar-info">
-            <h4><b>Tower club</b></h4>
-           
-            <div class="facilities">
-              <span>1 Ranjang Twin</span>
-
-              <br>
-              <br>
-            
-             <b>Fitur</b>
-
-             <br>
-
-              <span>Bathub</span>
-              <span>Ac</span>
-              <span>Air Panas</span>
-              <span>Kulkas</span>
-              <span>Air Panas</span>
-              <span>Smart Tv</span>
-              <span>Sandal</span>
-              <span>Handuk</span>
-            
-              <br>
-              <br>
-
-              <b>Fasilitas</b>
-              <br>
-
-              <span>Spa</span>
-              <span>Bar</span>
-
-              <br>
-              <br>
-
-              <b>Kapasitas</b>
-              <br>
-
-              <span>2 Tamu</span>
-         </div>
-
-         <div class="box-button">
-            <div class="price">Rp. 1.100.000</div>
-            <button class="btn-pilih-kamar">Pilih Kamar</button>
-
-          </div>
-          </div>
-        </div> -->
       
       </div>
     </div>
@@ -414,7 +336,6 @@ $query_kamar = mysqli_query($koneksi, "SELECT
                 <h3>Link</h3>
                 <ul>
                     <li><a href="home.html">Beranda</a></li>
-                    <li><a href="#">Hotel</a></li>
                     <li><a href="tentang.html">Tentang</a></li>
                     <li><a href="kontak_kami.html">Kontak Kami Us</a></li>
                 </ul>
