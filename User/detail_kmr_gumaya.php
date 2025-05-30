@@ -2,6 +2,11 @@
 session_start();
 require_once '../koneksi/koneksi.php';
 
+if (!isset($_SESSION['email_user'])) {
+    header("Location: login.php");
+    exit;
+}
+
 $id_kamar = isset($_GET['id_kamar']) ? intval($_GET['id_kamar']) : 0;
 
 // Query untuk mengambil detail kamar beserta semua gambar
@@ -39,9 +44,9 @@ if (!$kamar) {
 
         </div>
         <div class="menu">
-            <a href="home.html">Beranda</a>
-            <a href="tentang.html">Tentang</a>
-            <a href="kontak_kami.html">Kontak Kami</a>
+            <a href="home.php">Beranda</a>
+            <a href="tentang.php">Tentang</a>
+            <a href="kontak_kami.php">Kontak Kami</a>
 
         </div>
 
@@ -50,8 +55,8 @@ if (!$kamar) {
                 <i class="fas fa-user"></i> User_name ▼
             </button>
             <div class="dropdown-menu">
-                <a href="profil.html">Profil</a>
-                <a href="booking.html">Booking</a>
+                <a href="profil.php">Profil</a>
+                <a href="booking.php">Booking</a>
                 <a href="logout.php">Logout</a>
             </div>
         </div>
@@ -63,62 +68,67 @@ if (!$kamar) {
 
     <div class="container-letak">
         <div class="left-panel">
-          <h4 class="title">New Deluxe Twin Room Only</h4>
-    
-          <!-- untuk switch gambar -->
-           
-          <input type="radio" name="slider" id="img1" checked>
-          <input type="radio" name="slider" id="img2" checked>
-          <input type="radio" name="slider" id="img3" checked>
-          <input type="radio" name="slider" id="img4" checked>
-          <input type="radio" name="slider" id="img5" checked>
-    
-          <div class="main-image">
-            <img src="gambar/new deluxe6.jpeg" class="img img1">
-            <img src="gambar/new deluxe king bed4.jpeg" class="img img2">
-            <img src="gambar/new deluxe king bed2.jpeg" class="img img3">
-            <img src="gambar/rstran gumaya tower.jpeg" class="img img4">
-            <img src="gambar/GRand deluxe twin (1).jpeg" class="img img5">
-            
-          </div>
-    
-          <div class="thumbnails">
-            <label for="img1"><img src="gambar/new deluxe6.jpeg"></label>
-            <label for="img2"><img src="gambar/new deluxe king bed4.jpeg"></label>
-            <label for="img3"><img src="gambar/new deluxe king bed2.jpeg"></label>
-            <label for="img4"><img src="gambar/rstran gumaya tower.jpeg"></label>
-            <label for="img5"><img src="gambar/GRand deluxe twin (1).jpeg"></label>
-            
-          </div>
+          <h4 class="title"><?= htmlspecialchars($kamar['nama_kamar']) ?></h4>
+        
+        <!-- Radio buttons untuk slider -->
+        <?php for ($i = 1; $i <= 5; $i++): ?>
+            <input type="radio" name="slider" id="img<?= $i ?>" <?= $i == 1 ? 'checked' : '' ?>>
+        <?php endfor; ?>
+        
+        <div class="main-image">
+            <?php 
+            $gambar_fields = ['gambarA', 'gambarB', 'gambarC', 'gambarD', 'gambarE'];
+            foreach ($gambar_fields as $index => $field): 
+                if (!empty($kamar[$field])): 
+                    $img_num = $index + 1;
+                    $img_path = '/JAVAST/Admin/Gambar/Kamar/'.$kamar[$field];
+            ?>
+                <img src="<?= $img_path ?>" class="img img<?= $img_num ?>" alt="Gambar Kamar <?= $img_num ?>">
+            <?php endif; endforeach; ?>
+        </div>
+        
+        <div class="thumbnails">
+            <?php 
+            foreach ($gambar_fields as $index => $field): 
+                if (!empty($kamar[$field])): 
+                    $img_num = $index + 1;
+                    $img_path = '/JAVAST/Admin/Gambar/Kamar/'.$kamar[$field];
+            ?>
+                <label for="img<?= $img_num ?>">
+                    <img src="<?= $img_path ?>" alt="Thumbnail <?= $img_num ?>">
+                </label>
+            <?php endif; endforeach; ?>
+        </div>
         </div>
     
         <div class="right-panel">
-          <h3>Informasi Kamar</h3>
+          <h3><b>Informasi Kamar</b></h3>
           <ul>
-            <li>🛏️ 1 Ranjang Twin</li>
-            <li>📏 40.0 m²</li>
-            <li>👤 2</li>
-          </ul>
+        <li><i class="fa-solid fa-bed"></i> <?= htmlspecialchars($kamar['tipe_kasur']) ?></li>
+        <li><i class="fa-solid fa-ruler"></i> <?= htmlspecialchars($kamar['ukuran_kamar']) ?> m²</li>
+        <li><i class="fa-solid fa-user"></i>  <?= ($kamar['jumlah_dewasa'] + $kamar['jumlah_anak']) ?> orang</li>
+    </ul>
           <hr>
-          <h4>Fasilitas Kamar</h4>
+          <h4><b>Fasilitas Kamar</b></h4>
           <ul class="fasilitas">
-            <li>🛁 Bathtub</li>
-            <li>🧊 Kulkas</li>
-            <li>💧 Air Panas</li>
-            <li>❄️ Ac</li>
-            <li>📺 Smart TV</li>
-            <li>🩴 Sendal</li>
-            <li>🧴 Handuk</li>
+            <?php
+            $fitur = explode(',', $kamar['fasilitas_kamar']);
+            foreach ($fitur as $item): 
+            $item = trim($item);
+            if (!empty($item)):
+            ?>
+            <li><i class="fa-solid fa-circle-check"></i> <?= htmlspecialchars($item) ?></li>
+        <?php endif; endforeach; ?>
           </ul>
           <hr>
-          <h4>Deskripsi Kamar</h4>
-          <p>
-            Berlokasi di Semarang, 2 km dari Stasiun Semarang Tawang, Gumaya Tower Hotel menawarkan spa & pusat kebugaran dan pemandangan kota. Fasilitas yang tersedia di akomodasi ini adalah restoran, layanan kamar, resepsionis 24 jam, dan WiFi gratis di seluruh area akomodasi.
-          </p>
+          <h4><b>Deskripsi Kamar</b></h4>
+          <p><?= htmlspecialchars($kamar['deskripsi_kamar']) ?></p>
           <hr>
-          <p>mulai dari</p>
-          <p class="harga">Rp. 1.100.000 <span>Per malam</span></p>
-          <a href="pesan_twin_gumaya.html"><button class="pesan">Pesan</button></a>
+          <p>Mulai dari :</p>
+          <p class="harga"><b>Rp. <?= number_format($kamar['harga_kamar'], 0, ',', '.') ?> </b><span>/malam</span></p>
+            <a href="pesan_twin_gumaya.html?id_kamar=<?= $kamar['id_kamar'] ?>">
+                <button class="pesan">Pesan</button>
+            </a>
         </div>
       </div>
 

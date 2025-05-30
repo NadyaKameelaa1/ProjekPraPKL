@@ -200,6 +200,10 @@ body {
   .fasilitas li {
     margin-bottom: 5px;
   }
+
+  .fasilitas i{
+    color: green;
+  }
   
   .harga {
     font-size: 20px;
