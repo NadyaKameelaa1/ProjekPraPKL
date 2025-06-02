@@ -129,10 +129,9 @@
     width: 100%;
           padding: 10px;
           border: 1px solid #ccc;
-          /* border-bottom-left-radius: 0;
-          border-bottom-right-radius: 0; */
-          border-radius: 8px;
+          border-radius: 4px;
           cursor: pointer;
+          margin-bottom: 10px;
 }
 
 
@@ -357,6 +356,14 @@
     justify-content: center;
 }
 
+.duration-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #f0f0f0;
+    border-color: #ddd;
+    color: #999;
+}
+
 .duration-value {
     margin: 0 5px;
     min-width: 15px;
@@ -407,6 +414,23 @@
 .guest-room-label {
     font-weight: bold;
 }
+.guest-room-dropdown {
+    transition: all 0.3s ease;
+}
+.counter-btn {
+    transition: transform 0.1s ease;
+}
+.counter-btn:active {
+    transform: scale(0.9);
+}
+
+.counter-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #f0f0f0;
+    border-color: #ddd;
+    color: #999;
+}
 
 .counter {
     display: flex;
@@ -448,7 +472,7 @@
 }
 
 .sub-label {
-    font-size: 12px;
+    font-size: 15px;
     color: #666;
 }
 

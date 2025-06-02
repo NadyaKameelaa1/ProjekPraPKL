@@ -66,94 +66,112 @@ while ($row = mysqli_fetch_assoc($query)) {
     <br>
     <br>
 
-        <!-- search bar -->
       <div class="search-container">
-        <div class="section-title">Kota, atau nama hotel</div>
-        <input type="text" class="location-input" id="locationInput" placeholder="Kota, hotel" autocomplete="off" />
-
-        <div class="input-wrapper">
-        <div id="locationDropdown">
-            <h4 class="dropdown-title">Destinasi Populer</h4>
-        <hr />
-         <ul class="city-list">
-            <li data-city="Semarang">Semarang <span>182 Hotel</span></li>
-            <li data-city="Surakarta">Surakarta <span>58 Hotel</span></li>
-            <li data-city="Yogyakarta">Yogyakarta <span>38 Hotel</span></li>
-            <li data-city="Purwokerto">Purwokerto <span>15 Hotel</span></li>
-        </ul>
-     </div>
-     </div>
-
-     <!-- Check-in check-out Durasi    -->
-
+        <form action="hasil_pencarian.php" method="GET">
+            <input type="hidden" name="dewasa" id="hiddenDewasa" value="2">
+            <input type="hidden" name="anak" id="hiddenAnak" value="0">
+            <input type="hidden" name="kamar" id="hiddenKamar" value="1">
+            <div class="section-title">Kota, atau nama hotel</div>
+            <input type="text" class="location-input" id="locationInput" name="lokasi" placeholder="Kota, hotel" autocomplete="off" required />
+            
+            <div class="input-wrapper">
+            <div id="locationDropdown">
+                <h4 class="dropdown-title">Destinasi Populer</h4>
+                <hr />
+                <ul class="city-list">
+                    <?php
+                    // Query untuk mendapatkan kota populer dan jumlah hotel
+                    $query = "SELECT kota_hotel, COUNT(*) as jumlah_hotel 
+                              FROM hotels 
+                              GROUP BY kota_hotel 
+                              ORDER BY jumlah_hotel DESC 
+                              LIMIT 4";
+                    $result = mysqli_query($koneksi, $query);
+                    
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo '<li data-city="' . htmlspecialchars($row['kota_hotel']) . '">';
+                        echo htmlspecialchars($row['kota_hotel']) . ' <span>' . $row['jumlah_hotel'] . ' Hotel</span>';
+                        echo '</li>';
+                    }
+                    ?>
+                </ul>
+            </div>
+            </div>
             <div class="section-title">
             <div class="label-container">
                 <div class="check-in-label">Check-in</div>
                 <div class="duration-label">Durasi</div>
                 <div class="check-out-label">Check-out</div>
             </div>
-        </div>
+            </div>
 
         <div class="date-container">
             <div class="date-box">
-                <input type="date" class="date-input" id="checkInDate">
+                <input type="date" class="date-input" id="checkInDate" name="check_in" value="<?php echo date('Y-m-d'); ?>" required>
             </div>
             <div class="duration-box">
                 <div class="duration-counter">
-                    <button class="duration-btn" id="decreaseDuration">-</button>
+                    <button type="button" class="duration-btn" id="decreaseDuration">-</button>
                     <span class="duration-value" id="durationValue">1</span>
-                    <button class="duration-btn" id="increaseDuration">+</button>
+                    <button type="button" class="duration-btn" id="increaseDuration">+</button>
                     <span class="malam">Malam</span>
                 </div>
             </div>
             <div class="date-box">
-                <input type="date" class="date-input" id="checkOutDate" >
+                <input type="date" class="date-input" id="checkOutDate" name="check_out" value="<?php echo date('Y-m-d', strtotime('+1 day')); ?>" readonly>
             </div>
         </div>
 
         <div class="section-title">Tamu dan Kamar</div>
         <div class="search-row">
         <div class="guest-room-box" id="guestRoomTrigger">
-            <div class="sub-label">2 Dewasa, 0 Anak, 1 Kamar</div>
+            <form action="hasil_pencarian.php" method="GET">
+             <input type="hidden" id="dewasa" name="jumlah_dewasa" value="1">
+            <input type="hidden" id="anak" name="jumlah_anak" value="0">
+            <input type="hidden" id="kamar" name="jumlah_kamar" value="1">
             
+            <div class="sub-label" id="guestRoomDisplay">1 Dewasa, 0 Anak, 1 Kamar</div>
+
             <div class="guest-room-dropdown" id="guestRoomDropdown">
-                <div class="guest-room-item">
+                <div class="guest-room-item">   
                     <div class="guest-room-label">Dewasa</div>
                     <div class="counter">
-                        <button class="counter-btn" type="button">-</button>
-                        <span class="counter-value">2</span>
-                        <button class="counter-btn" type="button">+</button>
+                        <button type="button" class="counter-btn" onclick="updateCounter('dewasa', -1)" disabled>-</button>
+                        <span class="counter-value" id="dewasaValue">1</span>
+                        <button type="button" class="counter-btn" onclick="updateCounter('dewasa', 1)">+</button>
                     </div>
                 </div>
                 
                 <div class="guest-room-item">
                     <div class="guest-room-label">Anak</div>
                     <div class="counter">
-                        <button class="counter-btn" type="button">-</button>
-                        <span class="counter-value">0</span>
-                        <button class="counter-btn" type="button">+</button>
+                        <button type="button" class="counter-btn" onclick="updateCounter('anak', -1)" disabled>-</button>
+                        <span class="counter-value" id="anakValue">0</span>
+                        <button type="button" class="counter-btn" onclick="updateCounter('anak', 1)">+</button>
                     </div>
                 </div>
                 
                 <div class="guest-room-item">
                     <div class="guest-room-label">Kamar</div>
                     <div class="counter">
-                        <button class="counter-btn" type="button">-</button>
-                        <span class="counter-value">1</span>
-                        <button class="counter-btn" type="button">+</button>
+                        <button type="button" class="counter-btn" onclick="updateCounter('kamar', -1)" disabled>-</button>
+                        <span class="counter-value" id="kamarValue">1</span>
+                        <button type="button" class="counter-btn" onclick="updateCounter('kamar', 1)">+</button>
                     </div>
                 </div>
-                
-                <button class="apply-btn" type="button">Terapkan</button>
-            </div>
-            
-        </div>
-        <button class="search-btn" onclick="window.location.href='hasil_pencarian.php'">
+                </div>
+                </div>
+        
+            <button type="submit" class="search-btn">
             <i class="fa-solid fa-magnifying-glass"></i>Cari Hotel
-        </button>
-    </div>
+            </button>
+      
+            </div>
+            </div>
+    </form>
 </div>
-</div>
+
+
 
 
     <br>
@@ -284,6 +302,69 @@ while ($row = mysqli_fetch_assoc($query)) {
     </footer>
        
     <script>
+        // Fungsi untuk update counter
+        // function updateCounter(type, change) {
+        //     const input = document.getElementById(type);
+        //     const display = document.getElementById(type + 'Value');
+        //     let value = parseInt(input.value) + change;
+            
+        //     // Validasi minimal value
+        //     if (value < (type === 'kamar' ? 1 : 0)) return;
+            
+        //     input.value = value;
+        //     display.textContent = value;
+        //     updateGuestRoomDisplay();
+        // }
+
+        // function updateGuestRoomDisplay() {
+        //     const dewasa = document.getElementById('dewasa').value;
+        //     const anak = document.getElementById('anak').value;
+        //     const kamar = document.getElementById('kamar').value;
+        //     document.getElementById('guestRoomDisplay').textContent = 
+        //         `${dewasa} Dewasa, ${anak} Anak, ${kamar} Kamar`;
+        // }
+
+        // Fungsi untuk update counter yang lebih reliable
+// function updateCounter(type, change) {
+//     const input = document.getElementById(type);
+//     const display = document.getElementById(type + 'Value'); // Pastikan ID sesuai
+//     let value = parseInt(input.value) + change;
+    
+//     // Validasi minimal value
+//     if (value < (type === 'kamar' ? 1 : 0)) return;
+    
+//     // Update nilai
+//     input.value = value;
+//     display.textContent = value;
+//     updateGuestRoomDisplay();
+
+//     function updateGuestRoomDisplay() {
+//     const dewasa = document.getElementById('dewasa').value;
+//     const anak = document.getElementById('anak').value;
+//     const kamar = document.getElementById('kamar').value;
+//     document.getElementById('guestRoomDisplay').textContent = 
+//         `${dewasa} Dewasa, ${anak} Anak, ${kamar} Kamar`;
+// }
+
+// // Event listener untuk mencegah bubbling
+// document.querySelectorAll('.counter-btn').forEach(button => {
+//     button.addEventListener('click', function(e) {
+//         e.stopPropagation(); // Mencegah event click menyebar ke parent
+//     });
+// });
+
+// // Inisialisasi nilai awal
+// updateGuestRoomDisplay();
+// }
+
+//         function updateHiddenValues() {
+//     document.getElementById('hiddenDewasa').value = document.getElementById('dewasaValue').textContent;
+//     document.getElementById('hiddenAnak').value = document.getElementById('anakValue').textContent;
+//     document.getElementById('hiddenKamar').value = document.getElementById('kamarValue').textContent;
+// }
+
+
+
         // Guest Room Dropdown Functionality
 
         const trigger = document.getElementById('guestRoomTrigger');
@@ -300,42 +381,149 @@ while ($row = mysqli_fetch_assoc($query)) {
             }
         });
         
-
-
-        // Guest Counter Functionality
-        document.querySelectorAll('.counter-btn').forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.stopPropagation();
-                
-                const counter = this.parentElement;
-                const valueElement = counter.querySelector('.counter-value');
-                let value = parseInt(valueElement.textContent);
-                
-                if (this.textContent === '+') {
-                    value++;
-                } else {
-                    if (value > 0) {
-                        value--;
-                    }
-                }
-                
-                valueElement.textContent = value;
-                
-                // Update summary text
-                const adultValue = parseInt(document.querySelectorAll('.counter-value')[0].textContent);
-                const childValue = parseInt(document.querySelectorAll('.counter-value')[1].textContent);
-                const roomValue = parseInt(document.querySelectorAll('.counter-value')[2].textContent);
-                
-                trigger.querySelector('.sub-label').textContent = 
-                    `${adultValue} Dewasa, ${childValue} Anak, ${roomValue} Kamar`;
-            });
+        const locationInput = document.getElementById('locationInput');
+        const locationDropdown = document.getElementById('locationDropdown');
+        const cityListItems = document.querySelectorAll('.city-list li');
+        
+        // Tampilkan dropdown ketika input difokuskan
+        locationInput.addEventListener('focus', function() {
+            locationDropdown.style.display = 'block';
         });
         
-        document.querySelector('.apply-btn').addEventListener('click', function(e) {
-            e.stopPropagation();
-            dropdown.style.display = 'none';
+        // Sembunyikan dropdown ketika klik di luar
+        document.addEventListener('click', function(e) {
+            if (e.target !== locationInput) {
+                locationDropdown.style.display = 'none';
+            }
+        });
+        
+        // Isi input ketika memilih kota dari dropdown
+        cityListItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const city = this.getAttribute('data-city');
+                locationInput.value = city;
+                locationDropdown.style.display = 'none';
+            });
         });
 
+
+        // Guest Counter (untuk menambah/mengurangi 1 nilai)
+        // document.querySelectorAll('.counter-btn').forEach(button => {
+        //     button.addEventListener('click', function(e) {
+        //         e.stopPropagation();
+                
+        //         const counter = this.parentElement;
+        //         const valueElement = counter.querySelector('.counter-value');
+        //         let value = parseInt(valueElement.textContent);
+                
+        //         if (this.textContent === '+') {
+        //             value++;
+        //         } else {
+        //             if (value > 0) {
+        //                 value--;
+        //             }
+        //         }
+                
+        //         valueElement.textContent = value;
+                
+        //         // Update summary text
+        //         const adultValue = parseInt(document.querySelectorAll('.counter-value')[0].textContent);
+        //         const childValue = parseInt(document.querySelectorAll('.counter-value')[1].textContent);
+        //         const roomValue = parseInt(document.querySelectorAll('.counter-value')[2].textContent);
+                
+        //         trigger.querySelector('.sub-label').textContent = 
+        //             `${adultValue} Dewasa, ${childValue} Anak, ${roomValue} Kamar`;
+                
+        //             updateHiddenValues();
+        //     });
+        // });
+        
+        // document.querySelector('.apply-btn').addEventListener('click', function(e) {
+        //     e.stopPropagation();
+        //     dropdown.style.display = 'none';
+        // });
+// ---------------------------------------------------------------------------------------------
+//         function updateCounter(type, change) {
+//     const input = document.getElementById(type);
+//     const display = document.getElementById(type + 'Value');
+//     const btnMinus = display.previousElementSibling; // Tombol minus
+//     let value = parseInt(input.value) + change;
+    
+//     // Validasi nilai minimal
+//     if (type === 'dewasa' || type === 'kamar') {
+//         if (value < 1) return; // Dewasa dan kamar minimal 1
+//     } else if (type === 'anak') {
+//         if (value < 0) return; // Anak minimal 0
+//     }
+    
+//     // Update nilai
+//     input.value = value;
+//     display.textContent = value;
+    
+//     // Nonaktifkan tombol minus jika nilai sudah minimum
+//     if ((type === 'dewasa' || type === 'kamar') && value <= 1) {
+//         btnMinus.disabled = true;
+//     } else if (type === 'anak' && value <= 0) {
+//         btnMinus.disabled = true;
+//     } else {
+//         btnMinus.disabled = false;
+//     }
+    
+//     updateGuestRoomDisplay();
+//     updateHiddenValues();
+// }
+
+// Fungsi untuk update input hidden
+function updateHiddenValues() {
+    document.getElementById('hiddenDewasa').value = document.getElementById('dewasaValue').textContent;
+    document.getElementById('hiddenAnak').value = document.getElementById('anakValue').textContent;
+    document.getElementById('hiddenKamar').value = document.getElementById('kamarValue').textContent;
+}
+
+// Fungsi utama untuk update counter
+function updateCounter(type, change) {
+    const input = document.getElementById(type);
+    const display = document.getElementById(type + 'Value');
+    const btnMinus = display.previousElementSibling; // Tombol minus
+    const btnPlus = display.nextElementSibling; // Tombol plus
+    let value = parseInt(display.textContent) + change;
+
+    // Validasi nilai
+    if (type === 'dewasa') {
+        if (value < 1) return; // Dewasa minimal 1
+        if (value > 15) return; // Dewasa maksimal 15 (baru)
+    } else if (type === 'kamar') {
+        if (value < 1) return; // Kamar minimal 1
+    } else if (type === 'anak') {
+        if (value < 0) return; // Anak minimal 0
+        if (value > 6) return; // Anak maksimal 6
+    }
+
+    // Update nilai
+    display.textContent = value;
+    input.value = value;
+
+    // Logika disable tombol minus
+    if ((type === 'dewasa' || type === 'kamar') && value <= 1) {
+        btnMinus.disabled = true;
+    } else if (type === 'anak' && value <= 0) {
+        btnMinus.disabled = true;
+    } else {
+        btnMinus.disabled = false;
+    }
+
+    // Logika disable tombol plus
+    if (type === 'dewasa' && value >= 15) {
+        btnPlus.disabled = true;
+    } else if (type === 'anak' && value >= 6) {
+        btnPlus.disabled = true;
+    } else {
+        btnPlus.disabled = false;
+    }
+
+    updateGuestRoomDisplay();
+    updateHiddenValues();
+}
 
 
         // Date and Duration Functionality
@@ -374,29 +562,99 @@ while ($row = mysqli_fetch_assoc($query)) {
         }
 
         // ngubah otomatis durasi 
-        increaseDuration.addEventListener('click', function() {
-            let duration = parseInt(durationValue.textContent);
-            duration++;
-            durationValue.textContent = duration;
-            updateCheckOutDate();
-        });
+        // increaseDuration.addEventListener('click', function() {
+        //     let duration = parseInt(durationValue.textContent);
+        //     duration++;
+        //     durationValue.textContent = duration;
+        //     updateCheckOutDate();
+        // });
 
-        decreaseDuration.addEventListener('click', function() {
-            let duration = parseInt(durationValue.textContent);
-            if (duration > 1) {
-                duration--;
-                durationValue.textContent = duration;
-                updateCheckOutDate();
-            }
-        });
+        
 
+        // decreaseDuration.addEventListener('click', function() {
+        //     let duration = parseInt(durationValue.textContent);
+        //     if (duration > 1) {
+        //         duration--;
+        //         durationValue.textContent = duration;
+        //         updateCheckOutDate();
+        //     }
+        // });
+
+        // Button tambah durasi
+increaseDuration.addEventListener('click', function() {
+    let duration = parseInt(durationValue.textContent);
+    if (duration >= 30) return; // Tambahkan validasi maksimal 30
+    duration++;
+    durationValue.textContent = duration;
+    updateCheckOutDate();
+    
+    // Nonaktifkan tombol + jika mencapai maksimal
+    if (duration >= 30) {
+        increaseDuration.disabled = true;
+    }
+    
+    // Aktifkan tombol - jika sebelumnya disabled
+    decreaseDuration.disabled = false;
+});
+
+// Button kurang durasi
+decreaseDuration.addEventListener('click', function() {
+    let duration = parseInt(durationValue.textContent);
+    if (duration > 1) {
+        duration--;
+        durationValue.textContent = duration;
+        updateCheckOutDate();
+        
+        // Aktifkan tombol + jika durasi kurang dari 30
+        if (duration < 30) {
+            increaseDuration.disabled = false;
+        }
+        
+        // Nonaktifkan tombol - jika mencapai minimal
+        if (duration <= 1) {
+            decreaseDuration.disabled = true;
+        }
+    }
+});
         // Update check-out pas check-in berubah
         checkInDate.addEventListener('change', updateCheckOutDate);
         
         updateCheckOutDate();
 
 
+    document.addEventListener('DOMContentLoaded', function() {
+    // Nonaktifkan tombol minus awal
+    document.querySelector('[onclick="updateCounter(\'dewasa\', -1)"]').disabled = true;
+    document.querySelector('[onclick="updateCounter(\'kamar\', -1)"]').disabled = true;
+    
+    // Nonaktifkan tombol plus jika nilai awal sudah maksimal
+    const dewasaValue = parseInt(document.getElementById('dewasaValue').textContent);
+    const anakValue = parseInt(document.getElementById('anakValue').textContent);
+    
+    if (dewasaValue >= 15) {
+        document.querySelector('[onclick="updateCounter(\'dewasa\', 1)"]').disabled = true;
+    }
+    if (anakValue >= 6) {
+        document.querySelector('[onclick="updateCounter(\'anak\', 1)"]').disabled = true;
+    }
+
+    updateHiddenValues();
+});
+
+    // Nonaktifkan tombol + jika durasi awal sudah 30
+if (parseInt(durationValue.textContent) >= 30) {
+    increaseDuration.disabled = true;
+}
+
+// Nonaktifkan tombol - jika durasi awal 1
+if (parseInt(durationValue.textContent) <= 1) {
+    decreaseDuration.disabled = true;
+}
+
+
     // destinasi
+
+    
 
     document.addEventListener("DOMContentLoaded", function() {
         const locationInput = document.getElementById("locationInput");

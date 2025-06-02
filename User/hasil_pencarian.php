@@ -1,13 +1,62 @@
+<?php
+session_start();
+require_once '../Koneksi/Koneksi.php';
+
+if (!isset($_SESSION['email_user'])) {
+    header("Location: login.php");
+    exit;
+}
+
+
+// Ambil parameter pencarian
+$lokasi = isset($_GET['lokasi']) ? mysqli_real_escape_string($koneksi, $_GET['lokasi']) : '';
+$check_in = isset($_GET['check_in']) ? $_GET['check_in'] : date('Y-m-d');
+$check_out = isset($_GET['check_out']) ? $_GET['check_out'] : date('Y-m-d', strtotime('+1 day'));
+$dewasa = isset($_GET['dewasa']) ? intval($_GET['dewasa']) : 1;
+$anak = isset($_GET['anak']) ? intval($_GET['anak']) : 0;
+$kamar = isset($_GET['kamar']) ? intval($_GET['kamar']) : 1;
+
+// Query pencarian hotel dengan filter kapasitas
+$query = "SELECT 
+    h.*,
+    MIN(k.harga_kamar) AS harga_terendah,
+    COUNT(k.id_kamar) AS jumlah_kamar_tersedia
+    FROM hotels h
+    JOIN kamar k ON h.id_hotel = k.id_hotel
+    WHERE (h.nama_hotel LIKE '%$lokasi%' OR h.kota_hotel LIKE '%$lokasi%')
+    AND h.id_hotel NOT IN (
+        SELECT p.id_hotel FROM pesanan p
+        LEFT JOIN pembayaran pb ON p.id_pembayaran = pb.id_pembayaran
+        WHERE (
+            (p.check_in <= '$check_in' AND p.check_out >= '$check_in') OR
+            (p.check_in <= '$check_out' AND p.check_out >= '$check_out') OR
+            (p.check_in >= '$check_in' AND p.check_out <= '$check_out')
+        )
+        AND pb.booking_status != 'Dibatalkan'
+    )
+    AND k.jumlah_dewasa >= $dewasa
+    AND k.jumlah_anak >= $anak
+    AND k.jumlah_kamar >= $kamar
+    GROUP BY h.id_hotel
+    ORDER BY h.bintang_hotel DESC, harga_terendah ASC";
+
+$result = mysqli_query($koneksi, $query);
+if (!$result) {
+    die("Query error: " . mysqli_error($koneksi));
+}
+
+$hotels = mysqli_fetch_all($result, MYSQLI_ASSOC);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hasil Pencarian | Javast</title>
+    <title>Home</title>
     <link rel="stylesheet" href="hasil_pencarian.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-
 </head>
 <body>
 
@@ -31,297 +80,102 @@
             <div class="dropdown-menu">
                 <a href="profil.php">Profil</a>
                 <a href="booking.php">Booking</a>
-                <a href="login.php">Logout</a>
+                <a href="logout.php">Logout</a>
             </div>
         </div>
     </div>
 
     <header class="header">
-        <h5>Javast</h5>
+        <h5>Hotel Jawa Tengah</h5>
         <h2>Hasil Pencarian</h2>
         <hr>
 
-        <div class="search-labels">
-            <div class="search-label">Kota</div>
-
-          </div>
     </header>
 
     <div class="search-bar">
-        <label><i class="fa-solid fa-location-dot"></i></label> 
-              <input type="text" placeholder="Kota">        
-        <button onclick="window.location.href='home2.php'"><i class="fa-solid fa-magnifying-glass"></i>  Selengkapnya</button>
+        <!-- <form method="GET" action="hasil_pencarian.php"> -->
+          
+        <div class="location-group">
+               <label><i class="fa-solid fa-location-dot"></i></label> 
+              <input type="text" class="location-input" id="locationInput" placeholder="Kota, hotel" autocomplete="off" value="<?= htmlspecialchars($lokasi) ?>">
+              <div class="input-wrapper">
+                <div id="locationDropdown">
+                    <h4 class="dropdown-title">Destinasi Populer</h4>
+                <hr />
+                
+     </div>
+     </div>
+</div>
+           
+
+              <input type="date" placeholder="Check-in" value="<?= $check_in ?>">
+              <input type="date" placeholder="Check-out" value="<?= $check_out ?>">   
+
+              <label><i class="fa-solid fa-user-check"></i> </label>
+              <div class="guest-summary">
+                <?= $_GET['dewasa'] ?? '1' ?> Dewasa, 
+                <?= $_GET['anak'] ?? '0' ?> Anak, 
+                <?= $_GET['kamar'] ?? '1' ?> Kamar
+              </div>
+       
+
+        <button><i class="fa-solid fa-magnifying-glass"></i></button>
+        <!-- </form> -->
     </div>
-
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-   
-        <!-- <div class="container-hotel">
+  
+    <?php if (count($hotels) > 0): ?>
+    <div class="container-hotel">
+        <?php foreach ($hotels as $hotel): ?>
             <div class="hotel-card">
                 <div class="hotel-image">
-                    <img src="gambar/gambarkota/Gumaya.jpg" alt="Gumaya Tower Hotel">
+                    <img src="/JAVAST/Admin/Gambar/Hotel/<?= htmlspecialchars($hotel['gambar_hotel']) ?>" alt="<?= htmlspecialchars($hotel['nama_hotel']) ?>">
                 </div>
-                    <div class="hotel-info">
-                        <h2><b>Gumaya Tower Hotel</b></h2>
-                    <div class="rating">Bintang 5 
-                        <span class="stars">★★★★★</span>
+                
+                <div class="hotel-info">
+                    <h2><b><?= htmlspecialchars($hotel['nama_hotel']) ?></b></h2>
+                    <div class="rating">Bintang <?= $hotel['bintang_hotel'] ?>
+                        <span class="stars"><?= str_repeat('★', $hotel['bintang_hotel']) ?></span>
                     </div>
-                        <div class="location">
-                            <i class="fa-solid fa-location-dot"></i>
-                             Semarang Tengah, Jawa Tengah <br>
-                            Jl. Gajahmada No.59-61, 50134 Semarang, Indonesia
-                        </div>
-
-                        <div class="facilities">
-                             <span>Tv</span>
-                             <span>WiFi</span>
-                             <span>Air Hangat</span>
-                             <span>Antar jemput bandara</span>
-                             <span>Spa</span>
-                             <span>Bar</span>
-                        </div>
+                    <div class="location">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <?= htmlspecialchars($hotel['kota_hotel']) ?>, Jawa Tengah<br>
+                        <?= htmlspecialchars($hotel['alamat_hotel']) ?>
                     </div>
+                    <div class="facilities">
+                        <?php
+                        $fitur = array_slice(explode(',', $hotel['fasilitas_hotel']), 0, 6);
+                        foreach ($fitur as $item):
+                            $item = trim($item);
+                            if (!empty($item)):
+                        ?>
+                        <span><?= htmlspecialchars($item) ?></span>
+                        <?php endif; endforeach; ?>
+                    </div>
+                </div>
                 
                 <div class="hotel-booking">
-                    <div class="price">1 malam <br><strong>Rp. 1.167.076</strong></div>
-                        <div class="note">Di luar pajak & biaya</div>
-                        <div class="button">
-                        <button>Pilih Kamar</button>
+                    <div class="price">1 malam <br><strong>Rp <?= number_format($hotel['harga_terendah'], 0, ',', '.') ?></strong></div>
+                    <div class="note">Di luar pajak & biaya</div>
+                    <div class="button">
+                        <a href="detail_hotel.php?id_hotel=<?= $hotel['id_hotel'] ?>&check_in=<?= $check_in ?>&check_out=<?= $check_out ?>&dewasa=<?= $dewasa ?>&anak=<?= $anak ?>&kamar=<?= $kamar ?>">
+                            <button>Pilih Kamar</button>
+                        </a>
                     </div>
+                    
                 </div>
-            </div>
-
-            <br>
-            <br>
-
-            <div class="hotel-card">
-                <div class="hotel-image">
-                    <img src="gambar/gambarkota/santika-premiere.jpg" alt="Santika Premiere">
-                </div>
-                    <div class="hotel-info">
-                        <h2><b>Santika Premiere</b></h2>
-                    <div class="rating">Bintang 4 
-                        <span class="stars">★★★★</span>
-                    </div>
-                        <div class="location">
-                            <i class="fa-solid fa-location-dot"></i>
-                              Pekunden, Jawa Tengah  <br>
-                              Jl. Pandanaran No. 116-120, Pekunden, Kec. Semarang Tengah, Kota Semarang, Jawa Tengah 50134.
-
-                        </div>
-
-                        <div class="facilities">
-                             <span>Tv</span>
-                             <span>WiFi</span>
-                             <span>Air Hangat</span>
-                             <span>Antar jemput bandara</span>
-                             <span>Spa</span>
-                             <span>Bar</span>
-                        </div>
-                    </div>
                 
-                <div class="hotel-booking">
-                    <div class="price">1 malam <br><strong>Rp. 600.000</strong></div>
-                        <div class="note">Di luar pajak & biaya</div>
-                        <div class="button">
-                        <button>Pilih Kamar</button>
-                    </div>
-                </div>
             </div>
-
-            <br>
-            <br>
-
-            <div class="hotel-card">
-                <div class="hotel-image">
-                    <img src="gambar/gambarkota/novotel hotel.jpeg" alt="Novotel Semarang">
-                </div>
-                    <div class="hotel-info">
-                        <h2><b>Novotel Semarang</b></h2>
-                    <div class="rating">Bintang 4 
-                        <span class="stars">★★★★</span>
-                    </div>
-                        <div class="location">
-                            <i class="fa-solid fa-location-dot"></i>
-                              Sekayu, Jawa Tengah   <br>
-                              Jl. Pemuda No.123, Sekayu, Kec. Semarang Tengah, Kota Semarang, Jawa Tengah 50132
-
-                        </div>
-
-                        <div class="facilities">
-                             <span>Tv</span>
-                             <span>WiFi</span>
-                             <span>Air Hangat</span>
-                             <span>Antar jemput bandara</span>
-                             <span>Spa</span>
-                             <span>Bar</span>
-                        </div>
-                    </div>
-                
-                <div class="hotel-booking">
-                    <div class="price">1 malam <br><strong>Rp. 700.000</strong></div>
-                        <div class="note">Di luar pajak & biaya</div>
-                        <div class="button">
-                        <button>Pilih Kamar</button>
-                    </div>
-                </div>
-            </div>
-
-            <br>
-            <br>
-
-            <div class="hotel-card">
-                <div class="hotel-image">
-                    <img src="gambar/gambarkota/PO hotel Semarang.jpeg" alt="PO hotel Semarang">
-                </div>
-                    <div class="hotel-info">
-                        <h2><b>PO hotel Semarang</b></h2>
-                    <div class="rating">Bintang 5
-                        <span class="stars">★★★★★</span>
-                    </div>
-                        <div class="location">
-                            <i class="fa-solid fa-location-dot"></i>
-                              Sekayu, Jawa Tengah   <br>
-                              Jl. Pemuda No 118, 50132, Semarang, Indonesia
-
-                        </div>
-
-                        <div class="facilities">
-                             <span>Tv</span>
-                             <span>WiFi</span>
-                             <span>Air Hangat</span>
-                             <span>Antar jemput bandara</span>
-                             <span>Spa</span>
-                             <span>Bar</span>
-                        </div>
-                    </div>
-                
-                <div class="hotel-booking">
-                    <div class="price">1 malam <br><strong>Rp. 1.700.000</strong></div>
-                        <div class="note">Di luar pajak & biaya</div>
-                        <div class="button">
-                        <button>Pilih Kamar</button>
-                    </div>
-                </div>
-            </div>
-
-            <br>
-            <br>
-
-            <div class="hotel-card">
-                <div class="hotel-image">
-                    <img src="gambar/gambarkota/Ibis Styles .jpg" alt="Ibis Styles Semarang Simpang Lima">
-                </div>
-                    <div class="hotel-info">
-                        <h2><b>Ibis Styles Semarang Simpang Lima</b></h2>
-                    <div class="rating">Bintang 3
-                        <span class="stars">★★★</span>
-                    </div>
-                        <div class="location">
-                            <i class="fa-solid fa-location-dot"></i>
-                              Pleburan, Jawa Tengah   <br>
-                              Jl. Pahlawan no 2-2A, Simpang Lima, Semarang Selatan, Semarang, Jawa Tengah, Indonesia, 50241
-
-                        </div>
-
-                        <div class="facilities">
-                             <span>Tv</span>
-                             <span>WiFi</span>
-                             <span>Air Hangat</span>
-                             <span>Antar jemput bandara</span>
-                             <span>Spa</span>
-                             <span>Bar</span>
-                        </div>
-                    </div>
-                
-                <div class="hotel-booking">
-                    <div class="price">1 malam <br><strong>Rp. 300.000</strong></div>
-                        <div class="note">Di luar pajak & biaya</div>
-                        <div class="button">
-                        <button>Pilih Kamar</button>
-                    </div>
-                </div>
-            </div>
-
-            <br>
-            <br>
-
-            <div class="hotel-card">
-                <div class="hotel-image">
-                    <img src="gambar/gambarkota/D,SEASON PREMIERE JPRA.jpeg " alt="D’SEASON PREMIERE">
-                </div>
-                    <div class="hotel-info">
-                        <h2><b>D'SEASON PREMIERE</b></h2>
-                    <div class="rating">Bintang 3
-                        <span class="stars">★★★</span>
-                    </div>
-                        <div class="location">
-                            <i class="fa-solid fa-location-dot"></i>
-                              Jepara, Jawa Tengah   <br>
-                              Jl. Pariwisata 09, Bandengan, Pusat Kota Jepara,  Jawa Tengah, Indonesia, 59432
-                        </div>
-
-                        <div class="facilities">
-                             <span>Tv</span>
-                             <span>WiFi</span>
-                             <span>Air Hangat</span>
-                             <span>Antar jemput bandara</span>
-                             <span>Spa</span>
-                             <span>Bar</span>
-                        </div>
-                    </div>
-                
-                <div class="hotel-booking">
-                    <div class="price">1 malam <br><strong>Rp. 691.997</strong></div>
-                        <div class="note">Di luar pajak & biaya</div>
-                        <div class="button">
-                        <button>Pilih Kamar</button>
-                    </div>
-                </div>
-            </div>
-
-            <br>
-            <br>
-            
-            <div class="hotel-card">
-                <div class="hotel-image">
-                    <img src="gambar/gambarkota/ocean view.JPG" alt="Ocean View Residence">
-                </div>
-                    <div class="hotel-info">
-                        <h2><b>Ocean View Residence</b></h2>
-                    <div class="rating">Bintang 3
-                        <span class="stars">★★★</span>
-                    </div>
-                        <div class="location">
-                            <i class="fa-solid fa-location-dot"></i>
-                              Jepara, Jawa Tengah   <br>
-                              Ds. Tegalsambi, RT.01/RW.01,Tahunan, Jepara, Jawa Tengah
-                        </div>
-
-                        <div class="facilities">
-                             <span>Tv</span>
-                             <span>WiFi</span>
-                             <span>Air Hangat</span>
-                             <span>Antar jemput bandara</span>
-                             <span>Spa</span>
-                             <span>Bar</span>
-                        </div>
-                    </div>
-                
-                <div class="hotel-booking">
-                    <div class="price">1 malam <br><strong>Rp. 725.400</strong></div>
-                        <div class="note">Di luar pajak & biaya</div>
-                        <div class="button">
-                        <button>Pilih Kamar</button>
-                    </div>
-                </div>
-            </div>
-        </div> -->
+        <?php endforeach; ?>
+        
+    </div>
     
-
+    
+    <?php else: ?>
+    <div class="no-results">
+        <p>Maaf, tidak ditemukan hotel yang sesuai dengan kriteria pencarian Anda.</p>
+    </div>
+    <?php endif; ?>
+    
     <footer>
         <div class="footer-container">
             <div class="footer-logo">
@@ -336,9 +190,10 @@
             <div class="footer-links">
                 <h3>Link</h3>
                 <ul>
-                    <li><a href="#">Beranda</a></li>
-                    <li><a href="#">Tentang</a></li>
-                    <li><a href="#">Kontak Kami Us</a></li>
+                    <li><a href="home.html">Beranda</a></li>
+                    <li><a href="#">Hotel</a></li>
+                    <li><a href="tentang.html">Tentang</a></li>
+                    <li><a href="kontak_kami.html">Kontak Kami Us</a></li>
                 </ul>
             </div>
     
@@ -353,8 +208,277 @@
         </div>
     </footer>
        
+   
+    <script>
+        // Guest Room Dropdown Functionality
+
+        const trigger = document.getElementById('guestRoomTrigger');
+        const dropdown = document.getElementById('guestRoomDropdown');
+        
+        trigger.addEventListener('click', function(e) {
+            if (e.target.closest('.guest-room-dropdown')) return;
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        });
+        
+        document.addEventListener('click', function(e) {
+            if (!trigger.contains(e.target)) {
+                dropdown.style.display = 'none';
+            }
+        });
+        
+
+
+        // Guest Counter Functionality
+        document.querySelectorAll('.counter-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                const counter = this.parentElement;
+                const valueElement = counter.querySelector('.counter-value');
+                let value = parseInt(valueElement.textContent);
+                
+                if (this.textContent === '+') {
+                    value++;
+                } else {
+                    if (value > 0) {
+                        value--;
+                    }
+                }
+                
+                valueElement.textContent = value;
+                
+                // Update summary text
+                const adultValue = parseInt(document.querySelectorAll('.counter-value')[0].textContent);
+                const childValue = parseInt(document.querySelectorAll('.counter-value')[1].textContent);
+                const roomValue = parseInt(document.querySelectorAll('.counter-value')[2].textContent);
+                
+                trigger.querySelector('.sub-label').textContent = 
+                    `${adultValue} Dewasa, ${childValue} Anak, ${roomValue} Kamar`;
+            });
+        });
+        
+        document.querySelector('.apply-btn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdown.style.display = 'none';
+        });
+
+
+
+        // Date and Duration Functionality
+        const checkInDate = document.getElementById('checkInDate');
+        const checkOutDate = document.getElementById('checkOutDate');
+        const increaseDuration = document.getElementById('increaseDuration');
+        const decreaseDuration = document.getElementById('decreaseDuration');
+        const durationValue = document.getElementById('durationValue');
+
+        // Set default dates
+        const today = new Date();
+        const tomorrow = new Date();
+        tomorrow.setDate(today.getDate() + 1);
+        
+        checkInDate.valueAsDate = today;
+        checkOutDate.valueAsDate = tomorrow;
+
+        // Format tampilan tanggal (YYYY-MM-DD)
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        // mengubah otomatis checkout
+        function updateCheckOutDate() {
+            if (!checkInDate.value) return;
+            
+            const duration = parseInt(durationValue.textContent);
+            const startDate = new Date(checkInDate.value);
+            const endDate = new Date(startDate);
+            endDate.setDate(startDate.getDate() + duration);
+            
+            checkOutDate.value = formatDate(endDate);
+        }
+
+        // ngubah otomatis durasi 
+        increaseDuration.addEventListener('click', function() {
+            let duration = parseInt(durationValue.textContent);
+            duration++;
+            durationValue.textContent = duration;
+            updateCheckOutDate();
+        });
+
+        decreaseDuration.addEventListener('click', function() {
+            let duration = parseInt(durationValue.textContent);
+            if (duration > 1) {
+                duration--;
+                durationValue.textContent = duration;
+                updateCheckOutDate();
+            }
+        });
+
+        // Update check-out pas check-in berubah
+        checkInDate.addEventListener('change', updateCheckOutDate);
+        
+        updateCheckOutDate();
+
+
+    // destinasi
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const locationInput = document.getElementById("locationInput");
+        const locationDropdown = document.getElementById("locationDropdown");
+        const cityListItems = document.querySelectorAll(".city-list li");
+
+      // Tampilkan/ sembunyikan dropdown saat klik input
+    locationInput.addEventListener("click", function(e) {
+        e.stopPropagation();
+        locationDropdown.style.display = locationDropdown.style.display === "block" ? "none" : "block";
+    });
+
+      // Klik kota akan isi input dan tutup dropdown
+    cityListItems.forEach(function(li) {
+        li.addEventListener("click", function() {
+          locationInput.value = li.getAttribute("data-city");
+          locationDropdown.style.display = "none";
+      });
+    });
+
+      // Klik di luar input & dropdown, tutup dropdown
+    document.addEventListener("click", function(event) {
+        if (!locationInput.contains(event.target) && !locationDropdown.contains(event.target)) {
+          locationDropdown.style.display = "none";
+        }
+      });
+    });
+        
+
+
+        // Guest Counter Functionality
+        // document.querySelectorAll('.counter-btn').forEach(button => {
+        //     button.addEventListener('click', function(e) {
+        //         e.stopPropagation();
+                
+        //         const counter = this.parentElement;
+        //         const valueElement = counter.querySelector('.counter-value');
+        //         let value = parseInt(valueElement.textContent);
+                
+        //         if (this.textContent === '+') {
+        //             value++;
+        //         } else {
+        //             if (value > 0) {
+        //                 value--;
+        //             }
+        //         }
+                
+        //         valueElement.textContent = value;
+                
+        //         // Update summary text
+        //         const adultValue = parseInt(document.querySelectorAll('.counter-value')[0].textContent);
+        //         const childValue = parseInt(document.querySelectorAll('.counter-value')[1].textContent);
+        //         const roomValue = parseInt(document.querySelectorAll('.counter-value')[2].textContent);
+                
+        //         trigger.querySelector('.sub-label').textContent = 
+        //             `${adultValue} Dewasa, ${childValue} Anak, ${roomValue} Kamar`;
+        //     });
+        // });
+        
+        // document.querySelector('.apply-btn').addEventListener('click', function(e) {
+        //     e.stopPropagation();
+        //     dropdown.style.display = 'none';
+        // });
+
+
+
+        // Date and Duration Functionality
+        // const checkInDate = document.getElementById('checkInDate');
+        // const checkOutDate = document.getElementById('checkOutDate');
+        // const increaseDuration = document.getElementById('increaseDuration');
+        // const decreaseDuration = document.getElementById('decreaseDuration');
+        // const durationValue = document.getElementById('durationValue');
+
+        // Set default dates
+        // const today = new Date();
+        // const tomorrow = new Date();
+        // tomorrow.setDate(today.getDate() + 1);
+        
+        // checkInDate.valueAsDate = today;
+        // checkOutDate.valueAsDate = tomorrow;
+
+        // Format tampilan tanggal (YYYY-MM-DD)
+        // function formatDate(date) {
+        //     const year = date.getFullYear();
+        //     const month = String(date.getMonth() + 1).padStart(2, '0');
+        //     const day = String(date.getDate()).padStart(2, '0');
+        //     return `${year}-${month}-${day}`;
+        // }
+
+        // mengubah otomatis checkout
+        // function updateCheckOutDate() {
+        //     if (!checkInDate.value) return;
+            
+        //     const duration = parseInt(durationValue.textContent);
+        //     const startDate = new Date(checkInDate.value);
+        //     const endDate = new Date(startDate);
+        //     endDate.setDate(startDate.getDate() + duration);
+            
+        //     checkOutDate.value = formatDate(endDate);
+        // }
+
+        // ngubah otomatis durasi 
+        // increaseDuration.addEventListener('click', function() {
+        //     let duration = parseInt(durationValue.textContent);
+        //     duration++;
+        //     durationValue.textContent = duration;
+        //     updateCheckOutDate();
+        // });
+
+        // decreaseDuration.addEventListener('click', function() {
+        //     let duration = parseInt(durationValue.textContent);
+        //     if (duration > 1) {
+        //         duration--;
+        //         durationValue.textContent = duration;
+        //         updateCheckOutDate();
+        //     }
+        // });
+
+        // Update check-out pas check-in berubah
+        // checkInDate.addEventListener('change', updateCheckOutDate);
+        
+        // updateCheckOutDate();
+
+
+    // destinasi
+
+    // document.addEventListener("DOMContentLoaded", function() {
+    //     const locationInput = document.getElementById("locationInput");
+    //     const locationDropdown = document.getElementById("locationDropdown");
+    //     const cityListItems = document.querySelectorAll(".city-list li");
+
+      // Tampilkan/ sembunyikan dropdown saat klik input
+    // locationInput.addEventListener("click", function(e) {
+    //     e.stopPropagation();
+    //     locationDropdown.style.display = locationDropdown.style.display === "block" ? "none" : "block";
+    // });
+
+      // Klik kota akan isi input dan tutup dropdown
+    // cityListItems.forEach(function(li) {
+    //     li.addEventListener("click", function() {
+    //       locationInput.value = li.getAttribute("data-city");
+    //       locationDropdown.style.display = "none";
+    //   });
+    // });
+
+      // Klik di luar input & dropdown, tutup dropdown
+    // document.addEventListener("click", function(event) {
+    //     if (!locationInput.contains(event.target) && !locationDropdown.contains(event.target)) {
+    //       locationDropdown.style.display = "none";
+    //     }
+    //   });
+    // });
+    </script>
+
+  
+      
 
 </body>
 </html>
-
-
