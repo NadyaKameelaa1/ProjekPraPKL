@@ -17,13 +17,19 @@ $anak = isset($_GET['anak']) ? intval($_GET['anak']) : 0;
 $kamar = isset($_GET['kamar']) ? intval($_GET['kamar']) : 1;
 
 // Query pencarian hotel dengan filter kapasitas
-$query = "SELECT 
+// Query pencarian hotel yang sudah diperbaiki
+$query = "SELECT
     h.*,
     MIN(k.harga_kamar) AS harga_terendah,
     COUNT(k.id_kamar) AS jumlah_kamar_tersedia
     FROM hotels h
     JOIN kamar k ON h.id_hotel = k.id_hotel
-    WHERE (h.nama_hotel LIKE '%$lokasi%' OR h.kota_hotel LIKE '%$lokasi%')
+    WHERE (
+        h.nama_hotel LIKE '%$lokasi%' OR 
+        h.kota_hotel LIKE '%$lokasi%' OR
+        h.alamat_hotel LIKE '%$lokasi%' OR
+        h.lokasi_hotel LIKE '%$lokasi%'
+    )
     AND h.id_hotel NOT IN (
         SELECT p.id_hotel FROM pesanan p
         LEFT JOIN pembayaran pb ON p.id_pembayaran = pb.id_pembayaran
@@ -35,7 +41,7 @@ $query = "SELECT
         AND pb.booking_status != 'Dibatalkan'
     )
     AND k.jumlah_dewasa >= $dewasa
-    AND k.jumlah_anak >= $anak
+    AND (k.jumlah_dewasa + k.jumlah_anak) >= ($dewasa + $anak)
     AND k.jumlah_kamar >= $kamar
     GROUP BY h.id_hotel
     ORDER BY h.bintang_hotel DESC, harga_terendah ASC";
@@ -107,10 +113,16 @@ $hotels = mysqli_fetch_all($result, MYSQLI_ASSOC);
      </div>
 </div>
            
+          
 
-              <input type="date" placeholder="Check-in" value="<?= $check_in ?>">
-              <input type="date" placeholder="Check-out" value="<?= $check_out ?>">   
+                <div class="date-box">
+              <input type="date"  class="date-input" placeholder="Check-in" value="<?= $check_in ?>">
+              </div>
 
+              <div class="date-box">
+              <input type="date"  class="date-input" placeholder="Check-out" value="<?= $check_out ?>">   
+              </div>
+    
               <label><i class="fa-solid fa-user-check"></i> </label>
               <div class="guest-summary">
                 <?= $_GET['dewasa'] ?? '1' ?> Dewasa, 
@@ -122,7 +134,8 @@ $hotels = mysqli_fetch_all($result, MYSQLI_ASSOC);
         <button><i class="fa-solid fa-magnifying-glass"></i></button>
         <!-- </form> -->
     </div>
-  
+    
+    
     <?php if (count($hotels) > 0): ?>
     <div class="container-hotel">
         <?php foreach ($hotels as $hotel): ?>
@@ -154,11 +167,11 @@ $hotels = mysqli_fetch_all($result, MYSQLI_ASSOC);
                 </div>
                 
                 <div class="hotel-booking">
-                    <div class="price">1 malam <br><strong>Rp <?= number_format($hotel['harga_terendah'], 0, ',', '.') ?></strong></div>
+                    <div class="price">1 Malam <br><strong>Rp <?= number_format($hotel['harga_terendah'], 0, ',', '.') ?></strong></div>
                     <div class="note">Di luar pajak & biaya</div>
-                    <div class="button">
+                    <div>
                         <a href="detail_hotel.php?id_hotel=<?= $hotel['id_hotel'] ?>&check_in=<?= $check_in ?>&check_out=<?= $check_out ?>&dewasa=<?= $dewasa ?>&anak=<?= $anak ?>&kamar=<?= $kamar ?>">
-                            <button>Pilih Kamar</button>
+                            <button class="button">Pilih Kamar</button>
                         </a>
                     </div>
                     

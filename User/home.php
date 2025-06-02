@@ -80,17 +80,16 @@ while ($row = mysqli_fetch_assoc($query)) {
                 <hr />
                 <ul class="city-list">
                     <?php
-                    // Query untuk mendapatkan kota populer dan jumlah hotel
-                    $query = "SELECT kota_hotel, COUNT(*) as jumlah_hotel 
-                              FROM hotels 
-                              GROUP BY kota_hotel 
-                              ORDER BY jumlah_hotel DESC 
-                              LIMIT 4";
+                    $query = "SELECT DISTINCT kota_hotel, 
+                            (SELECT COUNT(*) FROM hotels WHERE kota_hotel = h.kota_hotel) as jumlah_hotel
+                            FROM hotels h
+                            ORDER BY jumlah_hotel DESC
+                            LIMIT 4";
                     $result = mysqli_query($koneksi, $query);
                     
                     while ($row = mysqli_fetch_assoc($result)) {
-                        echo '<li data-city="' . htmlspecialchars($row['kota_hotel']) . '">';
-                        echo htmlspecialchars($row['kota_hotel']) . ' <span>' . $row['jumlah_hotel'] . ' Hotel</span>';
+                        echo '<li data-city="'.htmlspecialchars($row['kota_hotel']).'">';
+                        echo htmlspecialchars($row['kota_hotel']).' <span>'.$row['jumlah_hotel'].' Hotel</span>';
                         echo '</li>';
                     }
                     ?>
@@ -316,13 +315,13 @@ while ($row = mysqli_fetch_assoc($query)) {
         //     updateGuestRoomDisplay();
         // }
 
-        // function updateGuestRoomDisplay() {
-        //     const dewasa = document.getElementById('dewasa').value;
-        //     const anak = document.getElementById('anak').value;
-        //     const kamar = document.getElementById('kamar').value;
-        //     document.getElementById('guestRoomDisplay').textContent = 
-        //         `${dewasa} Dewasa, ${anak} Anak, ${kamar} Kamar`;
-        // }
+        function updateGuestRoomDisplay() {
+            const dewasa = document.getElementById('dewasa').value;
+            const anak = document.getElementById('anak').value;
+            const kamar = document.getElementById('kamar').value;
+            document.getElementById('guestRoomDisplay').textContent = 
+                `${dewasa} Dewasa, ${anak} Anak, ${kamar} Kamar`;
+        }
 
         // Fungsi untuk update counter yang lebih reliable
 // function updateCounter(type, change) {

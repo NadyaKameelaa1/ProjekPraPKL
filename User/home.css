@@ -244,23 +244,6 @@
     box-sizing: border-box;
 }
 
-/* .date-box {
-
-    flex: 1;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: white;
-}
-
-.date-input {
-    width: 50%;
-    border: none;
-    outline: none;
-    font-size: 14px;
-    color: #666;
-} */
-
 .date-box {
     position: relative; /* Membuat posisi relatif untuk penempatan absolut ikon */
     flex: 1;
