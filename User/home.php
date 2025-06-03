@@ -76,7 +76,7 @@ while ($row = mysqli_fetch_assoc($query)) {
             
             <div class="input-wrapper">
             <div id="locationDropdown">
-                <h4 class="dropdown-title">Destinasi Populer</h4>
+                <h4 class="dropdown-title">Kota yang tersedia :</h4>
                 <hr />
                 <ul class="city-list">
                     <?php
@@ -225,41 +225,46 @@ while ($row = mysqli_fetch_assoc($query)) {
         <hr>
 
     <div class="kota">
-        <div class="kota-card">
-            <div class="overlay"></div>
-            <h3 class="nama-kota">Semarang</h3>
-            <img src="gambar/gambarkota/Semarang.jpg" alt="Semarang" class="image">
-        </div>
+            <a href="semarang.php" class="kota-card">
+                <div class="overlay"></div>
+                <h3 class="nama-kota">Semarang</h3>
+                <img src="gambar/gambarkota/Semarang.jpg" alt="Semarang" class="image">
+            </a>
 
-        <div class="kota-card">
+    
+        <a href="jepara.php" class="kota-card">
             <div class="overlay"></div>
             <h3 class="nama-kota">Jepara</h3>
             <img src="gambar/gambarkota/Jepara.jpeg" alt="Jepara" class="image">
-        </div>
+                </a>
 
-        <div class="kota-card">
+
+        <a href="salatiga.php" class="kota-card">
             <div class="overlay"></div>
             <h3 class="nama-kota">Salatiga</h3>
             <img src="gambar/gambarkota/Salatiga.jpg" alt="Salatiga" class="image">
-        </div>
+            </a>
 
-        <div class="kota-card">
+        <a href="jogja.php" class="kota-card">
             <div class="overlay"></div>
             <h3 class="nama-kota">Jogja</h3>
             <img src="gambar/gambarkota/Jogja.jpeg" alt="Jogja" class="image">
-        </div>
+            </a>
+        
 
-        <div class="kota-card">
+        <a href="purbalingga.php" class="kota-card">
             <div class="overlay"></div>
-            <h3 class="nama-kota">Sukoharjo</h3>
-            <img src="gambar/gambarkota/Sukoharjo.jpg" alt="Sukoharjo" class="image">
-        </div>
+            <h3 class="nama-kota">Purbalingga</h3>
+            <img src="gambar/gambarKota/Purbalingga.jpg" alt="Sukoharjo" class="image">
+            </a>
+        
 
-        <div class="kota-card">
+        <a href="surakarta.php" class="kota-card">
             <div class="overlay"></div>
             <h3 class="nama-kota">Surakarta</h3>
             <img src="gambar/gambarkota/Surakarta.jpeg" alt="Surakarta" class="image">
-        </div>
+            </a>
+        
     </div>
 
         <div class="button-container">
