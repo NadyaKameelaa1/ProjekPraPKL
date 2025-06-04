@@ -106,7 +106,7 @@ while ($row = mysqli_fetch_assoc($query)) {
                             <div class="price">1 malam <br><strong>Rp <?= number_format($hotel['harga_terendah'], 0, ',', '.') ?></strong></div>
                             <div class="note">Di luar pajak & biaya</div>
                             <div>
-                                <a href="detail_hotel.php?id_hotel=<?= $hotel['id_hotel']; ?>">
+                                <a href="hotel.php?id_hotel=<?= $hotel['id_hotel']; ?>">
                                     <button class="button">Pilih Kamar</button>
                                 </a>
                             </div>
