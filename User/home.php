@@ -189,7 +189,7 @@ while ($row = mysqli_fetch_assoc($query)) {
 
                 <div class="container">
                 <?php foreach ($hotels as $hotel): ?>
-                <a href="gumaya.php?id=<?php echo $hotel['id_hotel']; ?>" class="hotel-link">
+                <a href="hotel.php?id_hotel=<?php echo $hotel['id_hotel']; ?>" class="hotel-link">
                     <div class="hotel-card">
                         <img src="/JAVAST/Admin/Gambar/Hotel/<?php echo $hotel['gambar_hotel']; ?>" alt="<?php echo $hotel['nama_hotel']; ?>" class="hotel-image">
                         <div class="hotel-info">
@@ -569,25 +569,6 @@ function updateCounter(type, change) {
             
             checkOutDate.value = formatDate(endDate);
         }
-
-        // ngubah otomatis durasi 
-        // increaseDuration.addEventListener('click', function() {
-        //     let duration = parseInt(durationValue.textContent);
-        //     duration++;
-        //     durationValue.textContent = duration;
-        //     updateCheckOutDate();
-        // });
-
-        
-
-        // decreaseDuration.addEventListener('click', function() {
-        //     let duration = parseInt(durationValue.textContent);
-        //     if (duration > 1) {
-        //         duration--;
-        //         durationValue.textContent = duration;
-        //         updateCheckOutDate();
-        //     }
-        // });
 
         // Button tambah durasi
 increaseDuration.addEventListener('click', function() {

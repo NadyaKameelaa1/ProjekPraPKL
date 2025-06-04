@@ -13,15 +13,22 @@ $user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_us
 $user_data = mysqli_fetch_assoc($user_query);
 $username = $user_data['nama_user'] ?? 'User';
 
+// Ambil parameter pencarian
+$lokasi = isset($_GET['lokasi']) ? mysqli_real_escape_string($koneksi, $_GET['lokasi']) : '';
+$check_in = isset($_GET['check_in']) ? $_GET['check_in'] : date('Y-m-d');
+$check_out = isset($_GET['check_out']) ? $_GET['check_out'] : date('Y-m-d', strtotime('+1 day'));
+$dewasa = isset($_GET['dewasa']) ? intval($_GET['dewasa']) : 1;
+$anak = isset($_GET['anak']) ? intval($_GET['anak']) : 0;
+$kamar = isset($_GET['kamar']) ? intval($_GET['kamar']) : 1;
+
 $id_hotel = isset($_GET['id_hotel']) ? intval($_GET['id_hotel']) : 0;
 
-
-$deskripsi_hotel = [
-    1 => "Hotel Xamar adalah hotel bintang 5 dengan fasilitas mewah...",
-    2 => "Hotel Superior menawarkan kamar nyaman dengan pemandangan kota...",
-    3 => "Hotel Budget dengan harga terjangkau dan fasilitas lengkap...",
-    // Tambahkan deskripsi untuk hotel lainnya
-];
+// $deskripsi_hotel = [
+//     1 => "Hotel Xamar adalah hotel bintang 5 dengan fasilitas mewah...",
+//     2 => "Hotel Superior menawarkan kamar nyaman dengan pemandangan kota...",
+//     3 => "Hotel Budget dengan harga terjangkau dan fasilitas lengkap...",
+//     // Tambahkan deskripsi untuk hotel lainnya
+// ];
 // Query untuk hotel
 $query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harga_terendah 
     FROM hotels
@@ -30,6 +37,8 @@ $query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harg
     GROUP BY hotels.id_hotel");
 
 $hotels = mysqli_fetch_assoc($query);
+
+$query_fasilitas_hotel = mysqli_query($koneksi, "SELECT fasilitas_hotel FROM hotels WHERE id_hotel = '$id_hotel'");
 
 // Query untuk kamar dengan gambar
 $query_kamar = mysqli_query($koneksi, "SELECT
@@ -167,30 +176,36 @@ $query_kamar = mysqli_query($koneksi, "SELECT
       <div class="sidebar">
         <div class="card">
           <h5>Check-in</h5>
-          <input type="text" value="Kam, 20 Feb 2025" readonly>
+          <input type="text" value="<?= $check_in ?>" readonly>
         </div>
         <div class="card">
           <h5>Check-out</h5>
-          <input type="text" value="Kam, 21 Feb 2025" readonly>
+          <input type="text" value="<?= $check_out ?>" readonly>
         </div>
         <div class="card">
-          <h5>FASILITAS HOTEL</h5>
+          <h5>Fasilitas Hotel</h5>
           <ul>
-            <li>AC</li>
-            <li>Restoran</li>
-            <li>Kolam Renang</li>
-            <li>Lift</li>
-            <li>Parkir</li>
-            <li>Resepsionis 24 Jam</li>
+            
+              <?php while ($f_hotel = mysqli_fetch_assoc($query_fasilitas_hotel)): ?>
+              <?php
+              $fasilitas = explode(',', $f_hotel['fasilitas_hotel']);
+              foreach ($fasilitas as $item) {
+                  $item = trim($item);
+                  if (!empty($item)) {
+                      echo '<li>'.htmlspecialchars($item).'</li> ';
+                  }
+              }
+              ?>
+              <?php endwhile ?>
           </ul>
         </div>
         <div class="card">
           <h5>Dewasa</h5>
-          <input type="number" value="2">
+          <input type="number" value="<?= $_GET['dewasa'] ?? '1' ?>" readonly>
         </div>
         <div class="card">
           <h5>Anak - anak</h5>
-          <input type="number" value="0">
+          <input type="number" value="<?= $_GET['anak'] ?? '0' ?>" readonly>
         </div>
       </div>
     
@@ -237,14 +252,25 @@ $query_kamar = mysqli_query($koneksi, "SELECT
 
               <?php
               $fasilitas = explode(',', $kamar['fasilitas_kamar']);
+              $counter = 0; // Penghitung untuk menentukan <br>
+
+              echo '<div class="facilities-container">'; // Container utama
+
               foreach ($fasilitas as $item) {
                   $item = trim($item);
                   if (!empty($item)) {
-                      echo '<span>'.htmlspecialchars($item).'</span> ';
+                      echo '<span class="facility-item">' . htmlspecialchars($item) . '</span>';
+                      
+                      $counter++;
+                      // Tambah <br> setelah setiap 3 fasilitas
+                      if ($counter % 3 == 0) {
+                          echo '<br class="facility-break">';
+                      }
                   }
               }
+
+              echo '</div>';
               ?>
-              <br><br>
 
               <b>Kapasitas</b>
               <br>
@@ -254,7 +280,12 @@ $query_kamar = mysqli_query($koneksi, "SELECT
 
           <div class="box-button">
               <div class="price">Rp. <?= number_format($kamar['harga_kamar'], 0, ',', '.') ?></div><br>
-              <a href="detail_kmr_gumaya.php?id_kamar=<?= $kamar['id_kamar'] ?>" class="btn-pilih-kamar">Pilih Kamar</a><br><br>
+              <div class="btn-pilih-kamar">
+              <a href="detail_kamar.php?id_hotel=<?= $kamar['id_hotel'] ?>&id_kamar=<?= $kamar['id_kamar'] ?>&check_in=<?= htmlspecialchars($check_in) ?>&check_out=<?= htmlspecialchars($check_out) ?>&dewasa=<?= (int)$dewasa ?>&anak=<?= (int)$anak ?>&kamar=<?= (int)$kamar ?>" 
+       class="btn-pilih">Pilih Kamar</a>
+              </div>
+              <br>
+              
           </div>
          </div>
         </div>

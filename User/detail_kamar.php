@@ -7,6 +7,15 @@ if (!isset($_SESSION['email_user'])) {
     exit;
 }
 
+// Ambil parameter pencarian
+$lokasi = isset($_GET['lokasi']) ? mysqli_real_escape_string($koneksi, $_GET['lokasi']) : '';
+$check_in = isset($_GET['check_in']) ? $_GET['check_in'] : date('Y-m-d');
+$check_out = isset($_GET['check_out']) ? $_GET['check_out'] : date('Y-m-d', strtotime('+1 day'));
+$dewasa = isset($_GET['dewasa']) ? intval($_GET['dewasa']) : 1;
+$anak = isset($_GET['anak']) ? intval($_GET['anak']) : 0;
+$kamar = isset($_GET['kamar']) ? intval($_GET['kamar']) : 1;
+
+$id_hotel = isset($_GET['id_hotel']) ? intval($_GET['id_hotel']) : 0;
 $id_kamar = isset($_GET['id_kamar']) ? intval($_GET['id_kamar']) : 0;
 
 // Query untuk mengambil detail kamar beserta semua gambar
@@ -33,7 +42,7 @@ if (!$kamar) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail kamar Gumaya | Javast</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="detail_kmr_gumaya.css">
+    <link rel="stylesheet" href="detail_kamar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
@@ -52,7 +61,7 @@ if (!$kamar) {
 
         <div class="dropdown">
             <button class="dropdown-btn"> 
-                <i class="fas fa-user"></i> User_name ▼
+                <i class="fas fa-user"></i> <?= htmlspecialchars($username) ?> ▼
             </button>
             <div class="dropdown-menu">
                 <a href="profil.php">Profil</a>
@@ -126,7 +135,8 @@ if (!$kamar) {
           <hr>
           <p>Mulai dari :</p>
           <p class="harga"><b>Rp. <?= number_format($kamar['harga_kamar'], 0, ',', '.') ?> </b><span>/malam</span></p>
-            <a href="pesan_twin_gumaya.html?id_kamar=<?= $kamar['id_kamar'] ?>">
+            <a href="pesan.php?id_hotel=<?= $kamar['id_hotel'] ?>&id_kamar=<?= $kamar['id_kamar'] ?>&check_in=<?= htmlspecialchars($check_in) ?>&check_out=<?= htmlspecialchars($check_out) ?>&dewasa=<?= (int)$dewasa ?>&anak=<?= (int)$anak ?>&kamar=<?= (int)$kamar ?>" 
+       class="btn-pilih">
                 <button class="pesan">Pesan</button>
             </a>
         </div>
