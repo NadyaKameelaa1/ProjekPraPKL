@@ -304,6 +304,13 @@ body {
     margin-bottom: 1px;
 }
 
+.hotel-alamat {
+    order: 3; /* Tipe hotel setelah judul */
+    display: block;
+    font-size: 14px;
+    color: #999999;
+    margin-bottom: 1px;
+}
 
 .hotel-address {
     display: block;
@@ -394,17 +401,38 @@ body {
   .description-card {
     max-width: 2000px;
     width: 1200px;
-    height: 100px;
+    height: 60px;
     display: flex;
     justify-content: center;
     background: white;
     border-radius: 8px;
-    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.6);
+    
     padding: 16px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.5;
     margin: 0 auto;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 8px rgba(100, 100, 100, 0.6);
   }
+
+  .description-card:hover{
+    background-color: #8b5e3c;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    border-color: #8b5e3c;
+  }
+
+  
+.description-card i {
+    margin-right: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.description-card:hover i {
+    transform: translateX(-3px);
+}
   
   .hotel-description {
     margin: 0;
@@ -416,12 +444,16 @@ body {
   .next-link {
     display: inline-block;
     margin-bottom: 15px;
-    color: #000;
+    color: #3a3a3a;
     text-decoration: none;
     font-weight: bold;
+    transition: all 0.3s ease;
   }
 
-
+  .next-link:hover{
+    color: white;
+    transform: translateY(-2px);
+  }
   /* card lokasi */
 
 .location-card {
@@ -585,7 +617,46 @@ input[type="text"], input[type="number"] {
 }
 
 
+/* Style untuk tombol kembali */
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 15px;
+    margin: 0 15px;
+    background-color: #f8f9fa;
+    color: #8b5e3c;
+    text-decoration: none;
+    border-radius: 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
 
+.back-button:hover {
+    background-color: #8b5e3c;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    border-color: #8b5e3c;
+}
+
+.back-button i {
+    margin-right: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.back-button:hover i {
+    transform: translateX(-3px);
+}
+
+/* Tambahkan ini jika tombol berada di dalam container tertentu */
+.container-header {
+    padding: 10px;
+    background-color: white;
+    border-bottom: 1px solid #eee;
+}
 
 
 

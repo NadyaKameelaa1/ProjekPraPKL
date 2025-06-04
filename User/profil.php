@@ -8,15 +8,22 @@ if (!isset($_SESSION['email_user'])) {
     exit;
 }
 
+
+
+
 // Ambil data user
 $email = $_SESSION['email_user'];
 $sql = "SELECT * FROM users WHERE email_user = '$email'";
 $result = mysqli_query($koneksi, $sql);
 $user = mysqli_fetch_assoc($result);
 
+$user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_user = '$email'");
+$user_data = mysqli_fetch_assoc($user_query);
+$username = $user_data['nama_user'] ?? 'User';
+
 // Simpan nilai awal
 $initial_values = [
-    'nama_user' => $user['name_user'],
+    'nama_user' => $user['nama_user'],
     'no_telp' => $user['no_telp'],
     'alamat_user' => $user['alamat_user']
 ];
@@ -52,7 +59,7 @@ $initial_values = [
 
         <div class="dropdown">
             <button class="dropdown-btn"> 
-                <i class="fas fa-user"></i> User_name ▼
+                <i class="fas fa-user"></i> <?= htmlspecialchars($username) ?> ▼
             </button>
             <div class="dropdown-menu">
                 <a href="profil.php">Profil</a>

@@ -7,6 +7,11 @@ if (!isset($_SESSION['email_user'])) {
     exit;
 }
 
+$email = $_SESSION['email_user'];
+$user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_user = '$email'");
+$user_data = mysqli_fetch_assoc($user_query);
+$username = $user_data['nama_user'] ?? 'User';
+
 // Query untuk mengambil hotel dengan id_hotel 2027, 2028, dan 2029 + harga terendah
 $query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harga_terendah 
     FROM hotels
@@ -48,11 +53,11 @@ while ($row = mysqli_fetch_assoc($query)) {
 
         <div class="dropdown">
             <button class="dropdown-btn"> 
-                <i class="fas fa-user"></i> User_name ▼
+                <i class="fas fa-user"></i> <?= htmlspecialchars($username) ?> ▼
             </button>
             <div class="dropdown-menu">
                 <a href="profil.php">Profil</a>
-                <a href="booking.html">Booking</a>
+                <a href="booking.php">Booking</a>
                 <a href="logout.php">Logout</a>
             </div>
         </div>
@@ -255,7 +260,7 @@ while ($row = mysqli_fetch_assoc($query)) {
         <a href="purbalingga.php" class="kota-card">
             <div class="overlay"></div>
             <h3 class="nama-kota">Purbalingga</h3>
-            <img src="gambar/gambarKota/Purbalingga.jpg" alt="Sukoharjo" class="image">
+            <img src="gambar/purbalingga/purbalingga.jpeg" alt="Purbalingga" class="image">
             </a>
         
 

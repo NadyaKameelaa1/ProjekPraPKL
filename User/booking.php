@@ -1,3 +1,19 @@
+<?php
+session_start();
+require_once '../Koneksi/koneksi.php';
+
+if (!isset($_SESSION['email_user'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$email = $_SESSION['email_user'];
+$user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_user = '$email'");
+$user_data = mysqli_fetch_assoc($user_query);
+$username = $user_data['nama_user'] ?? 'User';
+
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -19,20 +35,19 @@
 
         </div>
         <div class="menu">
-            <a href="index.php">Beranda</a>
-            <a href="#">Hotel</a>
-            <a href="tentang.html">Tentang</a>
-            <a href="kontak_kami.html">Kontak Kami</a>
+            <a href="home.php">Beranda</a>
+            <a href="tentang.php">Tentang</a>
+            <a href="kontak_kami.php">Kontak Kami</a>
 
         </div>
 
         <div class="dropdown">
             <button class="dropdown-btn"> 
-                <i class="fas fa-user"></i> User_name ▼
+                <i class="fas fa-user"></i> <?= htmlspecialchars($username) ?> ▼
             </button>
             <div class="dropdown-menu">
                 <a href="profil.php">Profil</a>
-                <a href="booking.html">Booking</a>
+                <a href="booking.php">Booking</a>
                 <a href="logout.php">Logout</a>
             </div>
         </div>
@@ -126,10 +141,9 @@
             <div class="footer-links">
                 <h3>Link</h3>
                 <ul>
-                    <li><a href="#">Beranda</a></li>
-                    <li><a href="#">Hotel</a></li>
-                    <li><a href="tentang.html">Tentang</a></li>
-                    <li><a href="kontak_kami.html">Kontak Kami Us</a></li>
+                    <li><a href="home.php">Beranda</a></li>
+                    <li><a href="tentang.php">Tentang</a></li>
+                    <li><a href="kontak_kami.php">Kontak Kami Us</a></li>
                 </ul>
             </div>
     
