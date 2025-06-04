@@ -1,3 +1,19 @@
+<?php
+session_start();
+require_once '../Koneksi/koneksi.php';
+
+if (!isset($_SESSION['email_user'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$email = $_SESSION['email_user'];
+$user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_user = '$email'");
+$user_data = mysqli_fetch_assoc($user_query);
+$username = $user_data['nama_user'] ?? 'User';
+
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -25,7 +41,7 @@
 
         <div class="dropdown">
             <button class="dropdown-btn"> 
-                <i class="fas fa-user"></i> User_name ▼
+                <i class="fas fa-user"></i> <?= htmlspecialchars($username) ?> ▼
             </button>
             <div class="dropdown-menu">
                 <a href="profil.php">Profil</a>

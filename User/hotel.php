@@ -7,8 +7,21 @@ if (!isset($_SESSION['email_user'])) {
     exit;
 }
 
-$id_hotel = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
+$email = $_SESSION['email_user'];
+$user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_user = '$email'");
+$user_data = mysqli_fetch_assoc($user_query);
+$username = $user_data['nama_user'] ?? 'User';
+
+$id_hotel = isset($_GET['id_hotel']) ? intval($_GET['id_hotel']) : 0;
+
+
+$deskripsi_hotel = [
+    1 => "Hotel Xamar adalah hotel bintang 5 dengan fasilitas mewah...",
+    2 => "Hotel Superior menawarkan kamar nyaman dengan pemandangan kota...",
+    3 => "Hotel Budget dengan harga terjangkau dan fasilitas lengkap...",
+    // Tambahkan deskripsi untuk hotel lainnya
+];
 // Query untuk hotel
 $query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harga_terendah 
     FROM hotels
@@ -17,10 +30,6 @@ $query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harg
     GROUP BY hotels.id_hotel");
 
 $hotels = mysqli_fetch_assoc($query);
-
-if (!$hotels) {
-    die("Hotel tidak ditemukan!");
-}
 
 // Query untuk kamar dengan gambar
 $query_kamar = mysqli_query($koneksi, "SELECT
@@ -38,8 +47,8 @@ $query_kamar = mysqli_query($koneksi, "SELECT
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gumaya Tower</title>
-    <link rel="stylesheet" href="gumaya.css">
+    <title><?= $hotels['nama_hotel'];?> | Javast</title>
+    <link rel="stylesheet" href="hotel.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
@@ -59,7 +68,7 @@ $query_kamar = mysqli_query($koneksi, "SELECT
 
     <div class="dropdown">
         <button class="dropdown-btn"> 
-            <i class="fas fa-user"></i> User_name ▼
+            <i class="fas fa-user"></i> <?= htmlspecialchars($username) ?> ▼
         </button>
         <div class="dropdown-menu">
             <a href="profil.php">Profil</a>
@@ -70,9 +79,27 @@ $query_kamar = mysqli_query($koneksi, "SELECT
     
 </div>
 
+    <!-- <div class="container-header">
+    
+</div> -->
 
     <div class="container-gumaya">
+      
     <div class="hotel-card">
+      <div class="container-header">
+      <a href="hasil_pencarian.php?<?php
+        echo http_build_query([
+            'lokasi' => $_GET['lokasi'] ?? '',
+            'check_in' => $_GET['check_in'] ?? '',
+            'check_out' => $_GET['check_out'] ?? '',
+            'dewasa' => $_GET['dewasa'] ?? 1,
+            'anak' => $_GET['anak'] ?? 0,
+            'kamar' => $_GET['kamar'] ?? 1
+        ]);
+    ?>" class="back-button">
+        <i class="fa-solid fa-arrow-left"></i> Kembali
+    </a>
+    </div>
         <div class="hotel-info">
             <div class="description">
               <div class="header-container">
@@ -94,7 +121,11 @@ $query_kamar = mysqli_query($koneksi, "SELECT
                 </div>
                 <h2 class="title"><?php echo strtoupper($hotels['nama_hotel']); ?></h2>
                     <span class="hotel-type">
-                        <i class="fa-solid fa-location-dot"></i><?php echo  $hotels['lokasi_hotel']; ?>
+                        <i class="fa-solid fa-location-dot"></i> <?php echo  $hotels['lokasi_hotel']; ?>
+                    </span>
+
+                    <span class="hotel-alamat">
+                        <?php echo  $hotels['alamat_hotel']; ?>
                     </span>
                 
                      <div class="price-wrapper">
@@ -121,24 +152,14 @@ $query_kamar = mysqli_query($koneksi, "SELECT
     <div class="description-card">
       <div class="card-content">
         <p class="hotel-description">
-          Berlokasi di Semarang, 2 km dari Stasiun Semarang Tawang, Gumaya Tower Hotel menawarkan spa & pusat kebugaran dan pemandangan kota. Fasilitas yang tersedia di akomodasi ini adalah restoran, layanan kamar, resepsionis 24 jam, dan WiFi gratis di seluruh area akomodasi.
-          <br>
-          <a href="tentang_gumaya.php" class="next-link">lihat selengkapnya &gt;&gt;</a>
+          <?php echo $deskripsi_hotel[$id_hotel] ?? "Deskripsi belum tersedia."; ?>
       </p>
       </div>
     </div>
 
     <br>
 
-    <div class="location-card">
-      <div class="card-content">
-        <p class="location-description"><i class="fa-solid fa-location-dot"></i>
-          Jl. Gajahmada No.59-61, 50134 Semarang, Indonesia
-        </p>
-      </div>
-    </div>
-
-    <br>
+    
 
 
     <div class="container-sidebar">

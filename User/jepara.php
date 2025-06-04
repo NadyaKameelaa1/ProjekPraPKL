@@ -12,7 +12,7 @@ $query = mysqli_query($koneksi, "SELECT
     MIN(k.harga_kamar) AS harga_terendah
     FROM hotels h
     LEFT JOIN kamar k ON h.id_hotel = k.id_hotel
-    WHERE h.kota_hotel LIKE '%Semarang%'
+    WHERE h.kota_hotel LIKE '%Jepara%'
     GROUP BY h.id_hotel
     ORDER BY h.bintang_hotel DESC, harga_terendah ASC");
 

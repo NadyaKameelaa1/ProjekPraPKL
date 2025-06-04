@@ -7,6 +7,10 @@ if (!isset($_SESSION['email_user'])) {
     exit;
 }
 
+$email = $_SESSION['email_user'];
+$user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_user = '$email'");
+$user_data = mysqli_fetch_assoc($user_query);
+$username = $user_data['nama_user'] ?? 'User';
 
 // Ambil parameter pencarian
 $lokasi = isset($_GET['lokasi']) ? mysqli_real_escape_string($koneksi, $_GET['lokasi']) : '';
@@ -81,7 +85,7 @@ $hotels = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
         <div class="dropdown">
             <button class="dropdown-btn"> 
-                <i class="fas fa-user"></i> User_name ▼
+                <i class="fas fa-user"></i> <?= htmlspecialchars($username) ?> ▼
             </button>
             <div class="dropdown-menu">
                 <a href="profil.php">Profil</a>
@@ -99,22 +103,18 @@ $hotels = mysqli_fetch_all($result, MYSQLI_ASSOC);
     </header>
 
     <div class="search-bar">
-        <!-- <form method="GET" action="hasil_pencarian.php"> -->
-          
         <div class="location-group">
                <label><i class="fa-solid fa-location-dot"></i></label> 
               <input type="text" class="location-input" id="locationInput" placeholder="Kota, hotel" autocomplete="off" value="<?= htmlspecialchars($lokasi) ?>">
               <div class="input-wrapper">
                 <div id="locationDropdown">
-                    <h4 class="dropdown-title">Destinasi Populer</h4>
+                    <h4 class="dropdown-title">Kota yang tersedia</h4>
                 <hr />
                 
      </div>
      </div>
 </div>
            
-          
-
                 <div class="date-box">
               <input type="date"  class="date-input" placeholder="Check-in" value="<?= $check_in ?>">
               </div>
@@ -132,7 +132,6 @@ $hotels = mysqli_fetch_all($result, MYSQLI_ASSOC);
        
 
         <button><i class="fa-solid fa-magnifying-glass"></i></button>
-        <!-- </form> -->
     </div>
     
     
@@ -170,7 +169,7 @@ $hotels = mysqli_fetch_all($result, MYSQLI_ASSOC);
                     <div class="price">1 Malam <br><strong>Rp <?= number_format($hotel['harga_terendah'], 0, ',', '.') ?></strong></div>
                     <div class="note">Di luar pajak & biaya</div>
                     <div>
-                        <a href="detail_hotel.php?id_hotel=<?= $hotel['id_hotel'] ?>&check_in=<?= $check_in ?>&check_out=<?= $check_out ?>&dewasa=<?= $dewasa ?>&anak=<?= $anak ?>&kamar=<?= $kamar ?>">
+                        <a href="hotel.php?id_hotel=<?= $hotel['id_hotel'] ?>&check_in=<?= $check_in ?>&check_out=<?= $check_out ?>&dewasa=<?= $dewasa ?>&anak=<?= $anak ?>&kamar=<?= $kamar ?>">
                             <button class="button">Pilih Kamar</button>
                         </a>
                     </div>
