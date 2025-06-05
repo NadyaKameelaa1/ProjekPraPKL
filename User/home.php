@@ -292,10 +292,9 @@ while ($row = mysqli_fetch_assoc($query)) {
             <div class="footer-links">
                 <h3>Link</h3>
                 <ul>
-                    <li><a href="#">Beranda</a></li>
-                    <li><a href="#">Hotel</a></li>
-                    <li><a href="#">Tentang</a></li>
-                    <li><a href="#">Kontak Kami Us</a></li>
+                    <li><a href="home.php">Beranda</a></li>
+                    <li><a href="tentang.php">Tentang</a></li>
+                    <li><a href="kontak_kami.php">Kontak Kami Us</a></li>
                 </ul>
             </div>
     
@@ -311,19 +310,7 @@ while ($row = mysqli_fetch_assoc($query)) {
     </footer>
        
     <script>
-        // Fungsi untuk update counter
-        // function updateCounter(type, change) {
-        //     const input = document.getElementById(type);
-        //     const display = document.getElementById(type + 'Value');
-        //     let value = parseInt(input.value) + change;
-            
-        //     // Validasi minimal value
-        //     if (value < (type === 'kamar' ? 1 : 0)) return;
-            
-        //     input.value = value;
-        //     display.textContent = value;
-        //     updateGuestRoomDisplay();
-        // }
+
 
         function updateGuestRoomDisplay() {
             const dewasa = document.getElementById('dewasa').value;
@@ -333,44 +320,6 @@ while ($row = mysqli_fetch_assoc($query)) {
                 `${dewasa} Dewasa, ${anak} Anak, ${kamar} Kamar`;
         }
 
-        // Fungsi untuk update counter yang lebih reliable
-// function updateCounter(type, change) {
-//     const input = document.getElementById(type);
-//     const display = document.getElementById(type + 'Value'); // Pastikan ID sesuai
-//     let value = parseInt(input.value) + change;
-    
-//     // Validasi minimal value
-//     if (value < (type === 'kamar' ? 1 : 0)) return;
-    
-//     // Update nilai
-//     input.value = value;
-//     display.textContent = value;
-//     updateGuestRoomDisplay();
-
-//     function updateGuestRoomDisplay() {
-//     const dewasa = document.getElementById('dewasa').value;
-//     const anak = document.getElementById('anak').value;
-//     const kamar = document.getElementById('kamar').value;
-//     document.getElementById('guestRoomDisplay').textContent = 
-//         `${dewasa} Dewasa, ${anak} Anak, ${kamar} Kamar`;
-// }
-
-// // Event listener untuk mencegah bubbling
-// document.querySelectorAll('.counter-btn').forEach(button => {
-//     button.addEventListener('click', function(e) {
-//         e.stopPropagation(); // Mencegah event click menyebar ke parent
-//     });
-// });
-
-// // Inisialisasi nilai awal
-// updateGuestRoomDisplay();
-// }
-
-//         function updateHiddenValues() {
-//     document.getElementById('hiddenDewasa').value = document.getElementById('dewasaValue').textContent;
-//     document.getElementById('hiddenAnak').value = document.getElementById('anakValue').textContent;
-//     document.getElementById('hiddenKamar').value = document.getElementById('kamarValue').textContent;
-// }
 
 
 
@@ -415,72 +364,6 @@ while ($row = mysqli_fetch_assoc($query)) {
             });
         });
 
-
-        // Guest Counter (untuk menambah/mengurangi 1 nilai)
-        // document.querySelectorAll('.counter-btn').forEach(button => {
-        //     button.addEventListener('click', function(e) {
-        //         e.stopPropagation();
-                
-        //         const counter = this.parentElement;
-        //         const valueElement = counter.querySelector('.counter-value');
-        //         let value = parseInt(valueElement.textContent);
-                
-        //         if (this.textContent === '+') {
-        //             value++;
-        //         } else {
-        //             if (value > 0) {
-        //                 value--;
-        //             }
-        //         }
-                
-        //         valueElement.textContent = value;
-                
-        //         // Update summary text
-        //         const adultValue = parseInt(document.querySelectorAll('.counter-value')[0].textContent);
-        //         const childValue = parseInt(document.querySelectorAll('.counter-value')[1].textContent);
-        //         const roomValue = parseInt(document.querySelectorAll('.counter-value')[2].textContent);
-                
-        //         trigger.querySelector('.sub-label').textContent = 
-        //             `${adultValue} Dewasa, ${childValue} Anak, ${roomValue} Kamar`;
-                
-        //             updateHiddenValues();
-        //     });
-        // });
-        
-        // document.querySelector('.apply-btn').addEventListener('click', function(e) {
-        //     e.stopPropagation();
-        //     dropdown.style.display = 'none';
-        // });
-// ---------------------------------------------------------------------------------------------
-//         function updateCounter(type, change) {
-//     const input = document.getElementById(type);
-//     const display = document.getElementById(type + 'Value');
-//     const btnMinus = display.previousElementSibling; // Tombol minus
-//     let value = parseInt(input.value) + change;
-    
-//     // Validasi nilai minimal
-//     if (type === 'dewasa' || type === 'kamar') {
-//         if (value < 1) return; // Dewasa dan kamar minimal 1
-//     } else if (type === 'anak') {
-//         if (value < 0) return; // Anak minimal 0
-//     }
-    
-//     // Update nilai
-//     input.value = value;
-//     display.textContent = value;
-    
-//     // Nonaktifkan tombol minus jika nilai sudah minimum
-//     if ((type === 'dewasa' || type === 'kamar') && value <= 1) {
-//         btnMinus.disabled = true;
-//     } else if (type === 'anak' && value <= 0) {
-//         btnMinus.disabled = true;
-//     } else {
-//         btnMinus.disabled = false;
-//     }
-    
-//     updateGuestRoomDisplay();
-//     updateHiddenValues();
-// }
 
 // Fungsi untuk update input hidden
 function updateHiddenValues() {
