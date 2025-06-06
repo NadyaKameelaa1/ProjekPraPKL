@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../Koneksi/koneksi.php';
+require_once '../koneksi/koneksi.php';
 
 if (!isset($_SESSION['email_user'])) {
     header("Location: login.php");
@@ -12,6 +12,26 @@ $user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_us
 $user_data = mysqli_fetch_assoc($user_query);
 $username = $user_data['nama_user'] ?? 'User';
 
+
+// Ambil data pembayaran
+$query = "SELECT p.*, h.nama_hotel, h.kota_hotel, k.nama_kamar, k.harga_kamar,
+          py.metode_pembayaran, py.booking_status, py.id_order, py.tanggal_bayar, py.upload_bukti
+          FROM pesanan p
+          JOIN hotels h ON p.id_hotel = h.id_hotel
+          JOIN kamar k ON p.id_kamar = k.id_kamar
+          JOIN pembayaran py ON p.id_pesanan = py.id_pesanan
+          JOIN users u ON p.id_user = u.id_user
+          WHERE u.email_user = '$email'
+          ORDER BY p.tanggal_pesan DESC";
+
+$result = mysqli_query($koneksi, $query);
+
+// Ambil data tambahan user
+$query_user = "SELECT nama_user FROM users WHERE email_user = ?";
+$stmt_user = $koneksi->prepare($query_user);
+$stmt_user->bind_param("s", $_SESSION['email_user']);
+$stmt_user->execute();
+$user_data = $stmt_user->get_result()->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
@@ -69,56 +89,58 @@ $username = $user_data['nama_user'] ?? 'User';
     <br>
 
     <div class="booking-container">
-        <!-- Card 1 -->
-        <div class="booking-card">
-            <h3>SEMARANG</h3>
-            <h4>GUMAYA TOWER SEMARANG</h4>
-            <p>New Deluxe Twin Room Only</p>
-            <p>Rp. 1.167.076 per-malam</p>
-            <p><b>Check-out:</b> 02-20-2025</p>
-            <p><b>Check-in:</b> 02-21-2025</p>
-            <p><b>Jumlah:</b> Rp. 1.167.076</p>
-            <p><b>Waktu:</b> 02-20-2025</p>
-            <p><b>Metode pembayaran:</b> BCA</p>
-            <br>
-            <br>
-            <span class="status pending">Menunggu Verifikasi Admin</span>
-            <input type="submit" value="Download Kuitansi" class="buttonn-download">
-        </div>
-
-        <!-- Card 2 -->
-        <div class="booking-card">
-            <h3>SURAKARTA</h3>
-            <h4>THE ROYAL SURAKARTA HERITAGE</h4>
-            <p><b>Superior 1 King Size Bed</b></p>
-            <p>Rp. 512.396 per-malam</p>
-            <p><b>Check-out:</b> 02-12-2025</p>
-            <p><b>Check-in:</b> 02-13-2025</p>
-            <p><b>Jumlah:</b> Rp. 512.396</p>
-            <p><b>Waktu:</b> 02-12-2025</p>
-            <p><b>Metode pembayaran:</b> Dana</p>
-            <br>
-            <br>
-            <span class="status cancelled">Dibatalkan</span>
-            <input type="submit" value="Download Kuitansi" class="buttonn-download">
-        </div>
-
-        <!-- Card 3 -->
-        <div class="booking-card">
-            <h3>JEPARA</h3>
-            <h4>SAJIWA INN AND SUITE HOTEL</h4>
-            <p><b>Superior King</b></p>
-            <p>Rp. 368.550 per-malam</p>
-            <p><b>Check-out:</b> 03-01-2025</p>
-            <p><b>Check-in:</b> 03-02-2025</p>
-            <p><b>Jumlah:</b> Rp. 368.550</p>
-            <p><b>Waktu:</b> 03-01-2025</p>
-            <p><b>Metode pembayaran:</b> Bayar di hotel</p>
-            <p><b>ID Order:</b> ORD_28784829</p>
-            <br>
-            <span class="status paid">Dibayar</span>
-            <input type="submit" value="Download Kuitansi" class="buttonn-download">
-        </div>
+        <?php if (mysqli_num_rows($result) > 0): ?>
+            <?php while ($transaksi = mysqli_fetch_assoc($result)): ?>
+                <?php
+                // Format tanggal
+                $check_in = date('d-m-Y', strtotime($transaksi['check_in']));
+                $check_out = date('d-m-Y', strtotime($transaksi['check_out']));
+                $tanggal_bayar = date('d-m-Y', strtotime($transaksi['tanggal_bayar']));
+                ?>
+                
+                <div class="booking-card">
+                    <h3><?= htmlspecialchars($transaksi['kota_hotel']) ?></h3>
+                    <h4><?= htmlspecialchars($transaksi['nama_hotel']) ?></h4>
+                    <p><b><?= htmlspecialchars($transaksi['nama_kamar']) ?></b></p>
+                    <p>Rp. <?= number_format($transaksi['harga_kamar'], 0, ',', '.') ?> /Malam</p>
+                    <p><b>Check-out:</b> <?= $check_out ?></p>
+                    <p><b>Check-in:</b> <?= $check_in ?></p>
+                    <p><b>Total Bayar:</b> Rp. <?= number_format($transaksi['total_bayar'], 0, ',', '.') ?></p>
+                    <p><b>Waktu:</b> <?= $tanggal_bayar ?></p>
+                    <p><b>Metode pembayaran:</b> <?= htmlspecialchars($transaksi['metode_pembayaran']) ?></p>
+                    
+                    <?php if ($transaksi['metode_pembayaran'] != 'Bayar di hotel'): ?>
+                        <p><b>Bukti Foto:</b> <?= htmlspecialchars(basename($transaksi['upload_bukti'])) ?></p>
+                    <?php else:?>
+                        <p><b>Bukti Foto:</b> Tidak ada bukti foto.</p>
+                    <?php endif; ?>
+                    
+                    <p><b>ID Order:</b> <?= htmlspecialchars($transaksi['id_order']) ?></p>
+                    
+                    <span class="status <?php
+                        if ($transaksi['booking_status'] == 'Menunggu Konfirmasi Admin') {
+                            echo 'pending';
+                        } elseif ($transaksi['booking_status'] == 'Dibatalkan') {
+                            echo 'cancelled';
+                        } elseif ($transaksi['booking_status'] == 'Dibayar') {
+                            echo 'paid';
+                        } elseif ($transaksi['booking_status'] == 'Belum dibayar') {
+                            echo 'pending';
+                        } else {
+                            echo 'pending'; // default fallback
+                        }
+                    ?>">
+                        <?= htmlspecialchars($transaksi['booking_status']) ?>
+                    </span>
+                    
+                    <button class="buttonn-download" onclick="window.location.href='download_kuitansi.php?id_pesanan=<?= $transaksi['id_pesanan'] ?>'">
+                        Download Kuitansi
+                    </button>
+                </div>
+            <?php endwhile; ?>
+        <?php else: ?>
+            <p>Belum ada riwayat booking.</p>
+        <?php endif; ?>
     </div>
 
 

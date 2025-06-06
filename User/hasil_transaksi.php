@@ -10,15 +10,17 @@ if (!isset($_SESSION['email_user'])) {
 $id_pesanan = $_GET['id_pesanan'];
 $bayar_di_hotel = isset($_GET['bayar_di_hotel']) ? true : false;
 
-// Ambil data pembayaran
+// Di bagian query, pastikan mengambil id_user
 $query = "SELECT p.*, h.nama_hotel, h.kota_hotel, k.nama_kamar, k.harga_kamar,
-          py.metode_pembayaran, py.booking_status, py.id_order, py.tanggal_bayar, py.upload_bukti
+          py.metode_pembayaran, py.booking_status, py.id_order, py.tanggal_bayar, py.upload_bukti,
+          u.id_user
           FROM pesanan p
           JOIN hotels h ON p.id_hotel = h.id_hotel
           JOIN kamar k ON p.id_kamar = k.id_kamar
           JOIN pembayaran py ON p.id_pesanan = py.id_pesanan
+          JOIN users u ON p.id_user = u.id_user
           WHERE p.id_pesanan = ?";
-
+          
 $stmt = $koneksi->prepare($query);
 $stmt->bind_param("i", $id_pesanan);
 $stmt->execute();
