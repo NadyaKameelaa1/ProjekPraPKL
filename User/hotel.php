@@ -23,12 +23,7 @@ $kamar = isset($_GET['kamar']) ? intval($_GET['kamar']) : 1;
 
 $id_hotel = isset($_GET['id_hotel']) ? intval($_GET['id_hotel']) : 0;
 
-// $deskripsi_hotel = [
-//     1 => "Hotel Xamar adalah hotel bintang 5 dengan fasilitas mewah...",
-//     2 => "Hotel Superior menawarkan kamar nyaman dengan pemandangan kota...",
-//     3 => "Hotel Budget dengan harga terjangkau dan fasilitas lengkap...",
-//     // Tambahkan deskripsi untuk hotel lainnya
-// ];
+
 // Query untuk hotel
 $query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harga_terendah 
     FROM hotels
@@ -211,20 +206,17 @@ $query_kamar = mysqli_query($koneksi, "SELECT
     
       <!-- Konten kamar -->
 <div class="kamar-content">
-  <?php while ($kamar = mysqli_fetch_assoc($query_kamar)): ?>
+  <?php while ($data_kamar = mysqli_fetch_assoc($query_kamar)): ?>
     <?php
     // Cari gambar pertama yang tersedia
     $thumbnail = "";
     $gambar_fields = ['gambarA', 'gambarB', 'gambarC', 'gambarD', 'gambarE'];
     
     foreach ($gambar_fields as $field) {
-        if (!empty($kamar[$field])) {
-            $thumbnail_path = '/JAVAST/Admin/Gambar/Kamar/'.$kamar[$field];
+        if (!empty($data_kamar[$field])) {
+            $thumbnail_path = '/JAVAST/Admin/Gambar/Kamar/'.$data_kamar[$field];
             $full_path = $_SERVER['DOCUMENT_ROOT'].$thumbnail_path;
-            
-            // Debugging - tampilkan path yang dicoba
-            // echo "Checking: ".$full_path."<br>";
-            
+
             if (file_exists($full_path)) {
                 $thumbnail = $thumbnail_path;
                 break;
@@ -234,15 +226,16 @@ $query_kamar = mysqli_query($koneksi, "SELECT
     ?>
         <div class="kamar-card">
           <?php if ($thumbnail): ?>
-            <img src="<?= $thumbnail ?>" alt="<?= htmlspecialchars($kamar['nama_kamar']) ?>">
+            <img src="<?= $thumbnail ?>" alt="<?= htmlspecialchars($data_kamar['nama_kamar']) ?>">
         <?php else: ?>
             <img src="gambar/default-room.jpg" alt="Kamar Default">
         <?php endif; ?>
           <div class="kamar-info">
-             <h4><?= htmlspecialchars($kamar['nama_kamar']) ?></h4>
+             <h4><?= htmlspecialchars($data_kamar['nama_kamar']) ?></h4>
+             
             
             <div class="facilities">
-              <span><?= htmlspecialchars($kamar['tipe_kasur']) ?></span>
+              <span><?= htmlspecialchars($data_kamar['tipe_kasur']) ?></span>
               <br>
               <br>
             
@@ -251,7 +244,7 @@ $query_kamar = mysqli_query($koneksi, "SELECT
              <br>
 
               <?php
-              $fasilitas = explode(',', $kamar['fasilitas_kamar']);
+              $fasilitas = explode(',', $data_kamar['fasilitas_kamar']);
               $counter = 0; // Penghitung untuk menentukan <br>
 
               echo '<div class="facilities-container">'; // Container utama
@@ -275,13 +268,13 @@ $query_kamar = mysqli_query($koneksi, "SELECT
               <b>Kapasitas</b>
               <br>
 
-              <span><?= $kamar['jumlah_dewasa'] + $kamar['jumlah_anak'] ?> Tamu</span>
+              <span><?= $data_kamar['jumlah_dewasa'] + $data_kamar['jumlah_anak'] ?> Tamu</span>
           </div>
 
           <div class="box-button">
-              <div class="price">Rp. <?= number_format($kamar['harga_kamar'], 0, ',', '.') ?></div><br>
+              <div class="price">Rp. <?= number_format($data_kamar['harga_kamar'], 0, ',', '.') ?></div><br>
               <div class="btn-pilih-kamar">
-              <a href="detail_kamar.php?id_hotel=<?= $kamar['id_hotel'] ?>&id_kamar=<?= $kamar['id_kamar'] ?>&check_in=<?= htmlspecialchars($check_in) ?>&check_out=<?= htmlspecialchars($check_out) ?>&dewasa=<?= (int)$dewasa ?>&anak=<?= (int)$anak ?>&kamar=<?= (int)$kamar ?>" 
+              <a href="detail_kamar.php?id_hotel=<?= $data_kamar['id_hotel'] ?>&id_kamar=<?= $data_kamar['id_kamar'] ?>&check_in=<?= htmlspecialchars($check_in) ?>&check_out=<?= htmlspecialchars($check_out) ?>&dewasa=<?=(int)$dewasa ?>&anak=<?=(int)$anak ?>&kamar=<?=(int)$kamar ?>" 
        class="btn-pilih">Pilih Kamar</a>
               </div>
               <br>

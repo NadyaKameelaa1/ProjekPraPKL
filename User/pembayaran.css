@@ -191,16 +191,20 @@ body {
   .metode-pembayaran h4 {
     margin-bottom: 5px;
   }
-
+.metode-pembayaran p{
+  color: rgb(97, 97, 97);
+}
   .opsi-metode {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin: 10px 0;
     justify-content: center;
+    margin-left: -30px;
   }
 
-  .opsi-metode button {
+
+  /* .opsi-metode button {
     background-color: #CBCBCB;
     border: none;
     padding: 15px;
@@ -214,8 +218,34 @@ body {
   .opsi-metode button img {
     width: 90px;
     height: 40px;
-  }
+  } */
 
+  
+.opsi-metode button {
+    background-color: #CBCBCB;
+    border: none;
+    padding: 10px 90px;
+    width: 35%;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1); 
+    
+}
+
+.opsi-metode button img {
+    width: 90px;
+    height: 40px;
+    object-fit: contain;
+    padding: 10px 10px;
+}
+
+.opsi-metode button span {
+    font-weight: bold;
+    color: #333;
+    text-transform: uppercase;
+    font-size: 14px;
+}
   .atau {
     text-align: center;
     margin: 15px 0;
@@ -229,17 +259,24 @@ body {
   }
 
   .bayar-di-hotel {
-    background-color: #CBCBCB;
-    color: black;
-    font-weight: bold;
-    border: none;
-    width: 50%;
-    padding: 12px;
-    font-size: 16px;
+    background-color: #f8f9fa;
+    color: #333;
+    border: 1px solid #ddd;
+    padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+    width: 100%;
+    cursor: pointer;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
   }
+
+
+.bayar-di-hotel:hover {
+    transform: scale(1.05);
+}
 
 
 
@@ -341,4 +378,160 @@ footer {
 
 .footer-social ul li a i {
     margin-right: 8px;
+}
+/* 
+.hidden-checkbox {
+    display: none;
+}
+
+.opsi-metode {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.metode-btn {
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.metode-btn:hover {
+    transform: scale(1.05);
+}
+
+.metode-btn img {
+    width: 80px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    display: none;
+    z-index: 1000;
+}
+
+.popup-upload {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    width: 400px;
+    padding: 20px;
+    border-radius: 8px;
+    display: none;
+    z-index: 1001;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+#popupBukti:checked ~ .popup-overlay,
+#popupBukti:checked ~ .popup-upload {
+    display: block;
+}
+
+.close-popup {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+} */
+
+  .popup-overlay {
+    display: block; /* atau none, tergantung checked */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    display: none;
+    z-index: 1000;
+  }
+  
+  .popup-upload {
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    width: 400px;
+    padding: 20px;
+    border-radius: 8px;
+    display: none;
+    z-index: 1000;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  }
+  
+  .popup-upload .popup-content h4 {
+    margin-bottom: 10px;
+  }
+  
+  .popup-upload .popup-content p {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 20px;
+  }
+  
+  .popup-upload input[type="text"],
+  .popup-upload input[type="file"] {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .btn-submit {
+    width: 100%;
+    background-color: #FFA500;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .close-popup {
+    position: absolute;
+    top: 8px;
+    right: 15px;
+    font-size: 20px;
+    color: #aaa;
+    cursor: pointer;
+  }
+  
+  /* Aktifkan popup jika checkbox dicentang */
+  #popupBukti:checked ~ .popup-overlay {
+    display: block;
+  }
+  
+  #popupBukti:checked ~ .popup-upload {
+    display: block;
+  }
+
+.metode-btn {
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.metode-btn:hover {
+    transform: scale(1.05);
+}
+
+.metode-btn img {
+    width: 100px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
