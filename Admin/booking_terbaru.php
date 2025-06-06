@@ -1,3 +1,31 @@
+<?php
+session_start();
+require_once '../Koneksi/koneksi.php';
+
+if (!isset($_SESSION['email_user'])) {
+    header("Location: login.php");
+    exit;
+}
+
+// Query untuk mengambil data pesanan
+$query = "SELECT p.*,
+    h.nama_hotel,
+    k.nama_kamar, k.harga_kamar,
+    u.nama_user, u.no_telp,
+    py.metode_pembayaran, py.booking_status, py.tanggal_bayar
+    FROM pesanan p
+    JOIN hotels h ON p.id_hotel = h.id_hotel
+    JOIN kamar k ON p.id_kamar = k.id_kamar
+    JOIN users u ON p.id_user = u.id_user
+    JOIN pembayaran py ON p.id_pesanan = py.id_pesanan
+    WHERE py.booking_status IN ('Belum dibayar', 'Menunggu Konfirmasi Admin')
+    ORDER BY p.tanggal_pesan DESC";
+
+$result = mysqli_query($koneksi, $query);
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -66,7 +94,7 @@
         <h1>BOOKING TERBARU</h1>
     </div>
     <div class="header-2">
-        <h1>Pembayaran</h1>
+        <h1>Pesanan dan Pembayaran</h1>
     </div>
 
     <div class="table-controls">
@@ -88,47 +116,76 @@
                     <th>Detail User</th>
                     <th>Detail Kamar</th>
                     <th>Detail Booking</th>
+                    <th>Metode Pembayaran</th>
                     <th>Status</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 
-                    <tr>
-                        <td>401</td>
-                        <td>201</td>
-                        <td>
-                            <strong>Name:</strong> Nadya<br>
-                            <strong>No. Telp:</strong> +62 857 122 7029
+                    <?php while($pesanan = mysqli_fetch_assoc($result)): ?>
+                        <?php
+                        // Format tanggal
+                        $check_in = date('d-m-Y', strtotime($pesanan['check_in']));
+                        $check_out = date('d-m-Y', strtotime($pesanan['check_out']));
+                        // $tanggal_bayar = date('d-m-Y', strtotime($pesanan['tanggal_bayar']));
+                        ?>
+                        <tr>
+                            <td><?= htmlspecialchars($pesanan['id_pesanan']) ?></td>
+                            <td><?= htmlspecialchars($pesanan['id_hotel']) ?></td>
+                            <td>
+                                <strong>Nama:</strong> <?= htmlspecialchars($pesanan['nama_user']) ?><br>
+                                <strong>No. Telp:</strong> <?= htmlspecialchars($pesanan['no_telp']) ?>
+                            </td>
+                            <td>
+                                <strong>Kamar:</strong> <?= htmlspecialchars($pesanan['nama_kamar']) ?><br>
+                                <strong>Harga:</strong> Rp. <?= number_format($pesanan['harga_kamar'], 0, ',', '.') ?>
+                            </td>
+                            <td>
+                                <strong>Check-In:</strong> <?= $check_in ?><br>
+                                <strong>Check-Out:</strong> <?= $check_out ?><br>
+                                <strong>Bayar:</strong> Rp. <?= number_format($pesanan['total_bayar'], 0, ',', '.') ?><br>
+                                <strong>Waktu:</strong> <?= htmlspecialchars($pesanan['tanggal_bayar']) ?>
+                            </td>
+                            <td>
+                                <?= htmlspecialchars($pesanan['metode_pembayaran']) ?>
+                            </td>
+                            <td>
+                                <span class="status <?php
+                                if ($pesanan['booking_status'] == 'Menunggu Konfirmasi Admin') {
+                                    echo 'pending';
+                                } elseif ($pesanan['booking_status'] == 'Dibatalkan') {
+                                    echo 'cancelled';
+                                } elseif ($pesanan['booking_status'] == 'Dibayar') {
+                                    echo 'paid';
+                                } elseif ($pesanan['booking_status'] == 'Belum dibayar') {
+                                    echo 'pending';
+                                } else {
+                                    echo 'pending';
+                                }
+                            ?>">
+                                <?= htmlspecialchars($pesanan['booking_status']) ?>
+                            </span>
+                            </td>
+                            <td>
+                            <?php if ($pesanan['booking_status'] == 'Belum dibayar' || $pesanan['booking_status'] == 'Menunggu Konfirmasi Admin'): ?>
+                                <button class="action-btn verify-btn" onclick="verifyBooking(<?= $pesanan['id_pesanan'] ?>)">
+                                    <i class="fa-solid fa-user-check"></i> Verifikasi
+                                </button>
+                            <?php endif; ?>
+
+                            <?php if ($pesanan['booking_status'] == 'Belum dibayar' || $pesanan['booking_status'] == 'Menunggu Konfirmasi Admin'): ?>
+                            <button class="action-btn cancel-btn" onclick="cancelBooking(<?= $pesanan['id_pesanan'] ?>)">
+                                <i class="fa-solid fa-user-xmark"></i> Batal
+                            </button>
+                            <?php endif; ?>
+                            
+                            <button class="action-btn bukti-btn" onclick="viewPaymentProof(<?= $pesanan['id_pesanan'] ?>)">
+                                <i class="fa-solid fa-dollar-sign"></i> Bukti Pembayaran
+                            </button>
                         </td>
-                        <td>
-                            <strong>Kamar:</strong> New Deluxe Twin Room Only<br>
-                            <strong>Harga:</strong> Rp. 1.167.076
-                        </td>
-                        <td>
-                            <strong>Check-In:</strong> 01-01-2025<br>
-                            <strong>Check-Out:</strong> 01-02-2025
-                            <br>
-                                <strong>Bayar:</strong> Rp. 1.167.076<br>
-                                <strong>Waktu:</strong> 01-01-2025
-                    
-                        </td>
-                    <td>
-                        <span class="status waiting">Menunggu Verifikasi Admin</span>
-                    </td>
-                    <td>
-                        <button class="action-btn verify-btn">
-                            <i class="fa-solid fa-user-check"></i> Verifikasi
-                        </button>
-                        <button class="action-btn cancel-btn">
-                            <i class="fa-solid fa-user-xmark"></i> Batal
-                        </button>
-                        <button class="action-btn bukti-btn">
-                            <i class="fa-solid fa-dollar-sign"></i> Bukti Pembayaran
-                        </button>
-                    </td>
-                    </tr>
-                
+                        </tr>
+                    <?php endwhile; ?>
                     
                 
 
@@ -151,6 +208,25 @@
         row.style.display = text.includes(searchValue) ? '' : 'none';
     });
 });
+
+
+//---------------
+
+function verifyBooking(id) {
+            if(confirm('Apakah Anda yakin ingin memverifikasi pesanan ini?')) {
+                window.location.href = 'proses_verifikasi.php?id_pesanan=' + id;
+            }
+        }
+        
+        function cancelBooking(id) {
+            if(confirm('Apakah Anda yakin ingin membatalkan pesanan ini?')) {
+                window.location.href = 'proses_batal.php?id_pesanan=' + id;
+            }
+        }
+        
+        function viewPaymentProof(id) {
+            window.location.href = 'lihat_bukti.php?id_pesanan=' + id;
+        }
 </script>
 
 </body>

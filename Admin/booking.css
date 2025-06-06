@@ -394,8 +394,22 @@
 }
 
 /* Warna Status Dibayar (Hijau) */
-.status-paid {
+.paid {
     background-color: #2ecc71;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none; /* Hilangkan underline link */
+    display: inline-block; /* Agar padding bekerja */
+}
+
+.cancelled{
+  background-color: #cc2e2e;
     color: white;
     font-weight: bold;
     text-align: center;

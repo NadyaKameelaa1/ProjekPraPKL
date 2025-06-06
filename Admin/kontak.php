@@ -3,6 +3,11 @@ session_start();
 
 require_once '../Koneksi/koneksi.php';
 
+if (!isset($_SESSION['email_user'])) {
+    header("Location: login.php");
+    exit;
+}
+
 $sql = "SELECT * FROM kontak_kami";
 $query = mysqli_query($koneksi,$sql);
 

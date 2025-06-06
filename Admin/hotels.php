@@ -2,6 +2,11 @@
 session_start();
 require_once '../Koneksi/koneksi.php';
 
+if (!isset($_SESSION['email_user'])) {
+    header("Location: login.php");
+    exit;
+}
+
 $sql = "SELECT * FROM hotels";
 $query = mysqli_query($koneksi,$sql);
 

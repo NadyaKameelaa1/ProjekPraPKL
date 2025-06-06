@@ -459,6 +459,22 @@
     font-weight: 500;
 }
 
+/* Warna status */
+.pending {
+    background-color: orange;
+    color: white;
+}
+
+.cancelled {
+    background-color: red;
+    color: white;
+}
+
+.paid {
+    background-color: green;
+    color: white;
+}
+
 .waiting {
     background-color: #f99922;
     color: white;
