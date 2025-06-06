@@ -211,7 +211,7 @@
                     </div>
                 
                 <div class="hotel-booking">
-                    <div class="price">1 malam <br><strong>Rp. 385.000</strong></div>
+                    <div class="price">1 malam <br><strong>Rp. 400.000</strong></div>
                         <div class="note">Di luar pajak & biaya</div>
                         <div class="button">
                         <button>Pilih Kamar</button>

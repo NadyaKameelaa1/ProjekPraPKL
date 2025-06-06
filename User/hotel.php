@@ -458,10 +458,9 @@ $query_kamar = mysqli_query($koneksi, "SELECT
             <div class="footer-links">
                 <h3>Link</h3>
                 <ul>
-                    <li><a href="home.html">Beranda</a></li>
-                    <li><a href="#">Hotel</a></li>
-                    <li><a href="tentang.html">Tentang</a></li>
-                    <li><a href="kontak_kami.html">Kontak Kami Us</a></li>
+                    <li><a href="home.php">Beranda</a></li>
+                    <li><a href="tentang.php">Tentang</a></li>
+                    <li><a href="kontak_kami.php">Kontak Kami Us</a></li>
                 </ul>
             </div>
     
