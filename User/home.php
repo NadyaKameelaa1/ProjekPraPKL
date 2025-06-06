@@ -12,14 +12,12 @@ $user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_us
 $user_data = mysqli_fetch_assoc($user_query);
 $username = $user_data['nama_user'] ?? 'User';
 
-// Query untuk mengambil hotel dengan id_hotel 2027, 2028, dan 2029 + harga terendah
 $query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harga_terendah 
     FROM hotels
     LEFT JOIN kamar ON hotels.id_hotel = kamar.id_hotel
     WHERE hotels.id_hotel IN (2027, 2028, 2029)
     GROUP BY hotels.id_hotel");
 
-// Simpan semua hasil query ke dalam array (bukan hanya 1 row)
 $hotels = [];
 while ($row = mysqli_fetch_assoc($query)) {
     $hotels[] = $row;
@@ -252,8 +250,8 @@ while ($row = mysqli_fetch_assoc($query)) {
 
         <a href="jogja.php" class="kota-card">
             <div class="overlay"></div>
-            <h3 class="nama-kota">Jogja</h3>
-            <img src="gambar/gambarkota/Jogja.jpeg" alt="Jogja" class="image">
+            <h3 class="nama-kota">Yogyakarta</h3>
+            <img src="gambar/gambarkota/Jogja.jpeg" alt="Yogyakarta" class="image">
             </a>
         
 
