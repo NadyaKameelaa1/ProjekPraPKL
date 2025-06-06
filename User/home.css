@@ -194,10 +194,10 @@
 
   .popup.show {
     display: block;
-    max-width: 1083px;  /* Anda bisa sesuaikan sesuai kebutuhan */
+    max-width: 1083px;  
     background: #ffffff;
     border-radius: 12px;    
-    width: 100%;  /* Tambahkan untuk menjamin penuh dari elemen induk */
+    width: 100%;  
     margin-top: 10;
   }
 
@@ -245,14 +245,14 @@
 }
 
 .date-box {
-    position: relative; /* Membuat posisi relatif untuk penempatan absolut ikon */
+    position: relative; 
     flex: 1;
     padding: 12px;
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: white;
-    display: flex; /* Menggunakan flexbox untuk mengatur tata letak */
-    align-items: center; /* Pusatkan vertikal */
+    display: flex; 
+    align-items: center; 
 }
 
 .date-input {
@@ -261,14 +261,14 @@
     outline: none;
     font-size: 14px;
     color: #666;
-    padding-right: 25px; /* Beri ruang untuk ikon di kanan */
-    background: transparent; /* Pastikan background transparan */
+    padding-right: 25px; 
+    background: transparent; 
 }
 
 /* Style untuk ikon kalender (diasumsikan menggunakan pseudo-element) */
 .date-input::-webkit-calendar-picker-indicator {
     position: absolute;
-    right: 10px; /* Posisikan di kanan */
+    right: 10px; 
     cursor: pointer;
 }
 
@@ -281,16 +281,16 @@
 .label-container {
     display: flex;
     width: 100%;
-    align-items: center; /* Ini kunci utamanya */
+    align-items: center; 
 }
 
 .check-in-label, 
 .duration-label, 
 .check-out-label {
     flex: 1;
-    height: 100%; /* Pastikan mengambil tinggi penuh */
+    height: 100%; 
     display: inline-flex;
-    align-items: center; /* Pusatkan vertikal */
+    align-items: center; 
 }
 
 .check-in-label {
@@ -356,8 +356,8 @@
 
 .search-row {
     display: flex;
-    align-items: center; /* sejajarkan vertikalnya */
-    gap: 10px; /* beri jarak antara input dan tombol */
+    align-items: center; 
+    gap: 10px; 
     margin-bottom: 20px;
 }
 
@@ -673,16 +673,15 @@ h4 {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 5px 8px rgba(0, 0, 0, 0.8);
-    height: 295px; /* Tambahkan tinggi yang sesuai dengan gambar */
-    display: block; /* Karena ini adalah link (<a>) */
-    text-decoration: none; /* Menghilangkan underline pada link */
-    transition: transform 0.3s ease; /* Efek hover */
-    /* width: 100%; Gunakan full width grid cell */
+    height: 295px; 
+    display: block; 
+    text-decoration: none; 
+    transition: transform 0.3s ease; 
     margin-bottom: 20px;
 }
 
 .kota-card:hover {
-    transform: translateY(-5px); /* Efek mengangkat saat hover */
+    transform: translateY(-5px); 
 }
 
 .image {
@@ -709,7 +708,7 @@ h4 {
 
 .nama-kota {
     position: absolute; 
-    bottom: 15px; /* Diubah dari 250px ke 15px */
+    bottom: 15px; 
     left: 15px; 
     color: white;
     font-size: 18px;
