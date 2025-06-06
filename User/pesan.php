@@ -15,7 +15,9 @@ $check_in = isset($_GET['check_in']) ? $_GET['check_in'] : date('Y-m-d');
 $check_out = isset($_GET['check_out']) ? $_GET['check_out'] : date('Y-m-d', strtotime('+1 day'));
 $dewasa = isset($_GET['dewasa']) ? intval($_GET['dewasa']) : 1;
 $anak = isset($_GET['anak']) ? intval($_GET['anak']) : 0;
-$jumlah_kamar = isset($_GET['kamar']) ? intval($_GET['kamar']) : 1;
+$kamar = isset($_GET['kamar']) ? intval($_GET['kamar']) : 1;
+
+
 
 // Ambil data kamar
 $query_kamar = mysqli_query($koneksi, "SELECT k.*, kg.gambarA, kg.gambarB, kg.gambarC, kg.gambarD, kg.gambarE, h.nama_hotel 
@@ -29,6 +31,8 @@ if (!$detail_kamar) {
     die("Kamar tidak ditemukan!");
 }
 
+
+
 $query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harga_terendah 
     FROM hotels
     LEFT JOIN kamar ON hotels.id_hotel = kamar.id_hotel
@@ -37,17 +41,20 @@ $query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harg
 
 $hotels = mysqli_fetch_assoc($query);
 
+// Hitung total bayar sebelum form submission
+$harga_kamar = $detail_kamar['harga_kamar'];
+$jumlah_hari = (new DateTime($check_out))->diff(new DateTime($check_in))->days;
+$total_bayar = $harga_kamar * $jumlah_hari * $kamar;
+
+
 // Ambil data user
 $email = $_SESSION['email_user'];
 $query_user = mysqli_query($koneksi, "SELECT nama_user, no_telp, alamat_user FROM users WHERE email_user = '$email'");
 $user = mysqli_fetch_assoc($query_user);
 
-$tanggal1 = new DateTime($check_in);
-$tanggal2 = new DateTime($check_out);
-$jumlah_hari = $tanggal2->diff($tanggal1)->days;
-
-// Hitung total bayar awal
-$total_bayar = $detail_kamar['harga_kamar'] * $jumlah_hari * $jumlah_kamar;
+$user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_user = '$email'");
+$user_data = mysqli_fetch_assoc($user_query);
+$username = $user_data['nama_user'] ?? 'User';
 ?>
 
 
@@ -57,7 +64,7 @@ $total_bayar = $detail_kamar['harga_kamar'] * $jumlah_hari * $jumlah_kamar;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pesan <?= $hotels['nama_hotel'];?> | Javast</title>
+    <title>Pesan Kamar <?= $hotels['nama_hotel'];?> | Javast</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="pesan.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -125,8 +132,11 @@ $total_bayar = $detail_kamar['harga_kamar'] * $jumlah_hari * $jumlah_kamar;
                 <input type="hidden" name="check_out" value="<?= $check_out ?>">
               <input type="hidden" id="hiddenDewasa" name="dewasa" value="<?= $dewasa ?>">
               <input type="hidden" id="hiddenAnak" name="anak" value="<?= $anak ?>">
-              <input type="hidden" id="hiddenKamar" name="kamar" value="<?= $jumlah_kamar ?>">
+
+              <input type="hidden" id="hiddenKamar" name="kamar" value="<?= $kamar ?>">
               <input type="hidden" id="hiddenTotalBayar" name="total_bayar" value="<?= $total_bayar ?>">
+              <input type="hidden" name="jumlah_hari" value="<?= $jumlah_hari ?>">
+              
             <div class="input-group">
               <label>Nama</label>
               <input type="text" value="<?= htmlspecialchars($user['nama_user']) ?>" readonly>
@@ -141,7 +151,7 @@ $total_bayar = $detail_kamar['harga_kamar'] * $jumlah_hari * $jumlah_kamar;
               <label>Tamu dan Kamar</label>
               <div class="guest-room-container">
                   <div class="guest-room-trigger" id="guestRoomTrigger">
-                      <span id="guestRoomDisplay"><?= "$dewasa Dewasa, $anak Anak, $jumlah_kamar Kamar" ?></span>
+                      <span id="guestRoomDisplay"><?= "$dewasa Dewasa, $anak Anak, $kamar Kamar" ?></span>
                       <i class="fas fa-chevron-down"></i>
                   </div>
                   
@@ -167,9 +177,9 @@ $total_bayar = $detail_kamar['harga_kamar'] * $jumlah_hari * $jumlah_kamar;
                       <div class="guest-room-item">
                           <div class="guest-room-label"><b>Kamar</b></div>
                           <div class="counter">
-                              <button type="button" class="counter-btn" onclick="updateCounter('kamar', -1)" <?= $jumlah_kamar <= 1 ? 'disabled' : '' ?>>-</button>
-                              <span class="counter-value" id="kamarValue"><?= $jumlah_kamar ?></span>
-                              <button type="button" class="counter-btn" onclick="updateCounter('kamar', 1)" <?= $jumlah_kamar >= 10 ? 'disabled' : '' ?>>+</button>
+                              <button type="button" class="counter-btn" onclick="updateCounter('kamar', -1)" <?= $kamar <= 1 ? 'disabled' : '' ?>>-</button>
+                              <span class="counter-value" id="kamarValue"><?= $kamar ?></span>
+                              <button type="button" class="counter-btn" onclick="updateCounter('kamar', 1)" <?= $kamar >= 10 ? 'disabled' : '' ?>>+</button>
                           </div>
                       </div>
                   </div>
@@ -206,8 +216,16 @@ $total_bayar = $detail_kamar['harga_kamar'] * $jumlah_hari * $jumlah_kamar;
 </div>
             <p class="total">Total Bayar : Rp. <?= number_format($total_bayar, 0, ',', '.') ?></p>
     
-           <a href="pembayaran.php?id_hotel=<?= $detail_kamar['id_hotel'] ?>&id_kamar=<?= $detail_kamar['id_kamar'] ?>&check_in=<?= htmlspecialchars($check_in) ?>&check_out=<?= htmlspecialchars($check_out) ?>&dewasa=<?= (int)$dewasa ?>&anak=<?= (int)$anak ?>&kamar=<?= (int)$detail_kamar ?>" ><button type="button">Lanjutkan ke pembayaran</button></a> 
+           <input type="submit" value="Lanjutkan ke pembayaran"> 
           </form>
+
+          <?php // Tambahkan ini untuk memastikan nilai:
+// echo "<pre>Debug Values:";
+// echo "\nHarga Kamar: " . $detail_kamar['harga_kamar'];
+// echo "\nJumlah Hari: " . $jumlah_hari;
+// echo "\nJumlah Kamar: " . $kamar;
+// echo "\nTotal Bayar: " . $total_bayar;
+// echo "</pre>";?>
           
         </div>
       </div>

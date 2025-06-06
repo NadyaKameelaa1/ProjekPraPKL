@@ -28,11 +28,24 @@ $query = mysqli_query($koneksi, "SELECT
     LEFT JOIN kamar_gambar kg ON k.id_kamar = kg.id_kamar
     WHERE k.id_kamar = $id_kamar");
 
-$kamar = mysqli_fetch_assoc($query);
+$data_kamar = mysqli_fetch_assoc($query);
 
-if (!$kamar) {
+if (!$data_kamar) {
     die("Kamar tidak ditemukan!");
 }
+
+$query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harga_terendah 
+    FROM hotels
+    LEFT JOIN kamar ON hotels.id_hotel = kamar.id_hotel
+    WHERE hotels.id_hotel = $id_hotel
+    GROUP BY hotels.id_hotel");
+
+$hotels = mysqli_fetch_assoc($query);
+
+$email = $_SESSION['email_user'];
+$user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_user = '$email'");
+$user_data = mysqli_fetch_assoc($user_query);
+$username = $user_data['nama_user'] ?? 'User';
 ?>  
 
 <!DOCTYPE html>
@@ -40,7 +53,7 @@ if (!$kamar) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail kamar Gumaya | Javast</title>
+    <title>Detail Kamar <?= $hotels['nama_hotel'];?> | Javast</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="detail_kamar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -77,7 +90,7 @@ if (!$kamar) {
 
     <div class="container-letak">
         <div class="left-panel">
-          <h4 class="title"><?= htmlspecialchars($kamar['nama_kamar']) ?></h4>
+          <h4 class="title"><?= htmlspecialchars($data_kamar['nama_kamar']) ?></h4>
         
         <!-- Radio buttons untuk slider -->
         <?php for ($i = 1; $i <= 5; $i++): ?>
@@ -88,9 +101,9 @@ if (!$kamar) {
             <?php 
             $gambar_fields = ['gambarA', 'gambarB', 'gambarC', 'gambarD', 'gambarE'];
             foreach ($gambar_fields as $index => $field): 
-                if (!empty($kamar[$field])): 
+                if (!empty($data_kamar[$field])): 
                     $img_num = $index + 1;
-                    $img_path = '/JAVAST/Admin/Gambar/Kamar/'.$kamar[$field];
+                    $img_path = '/JAVAST/Admin/Gambar/Kamar/'.$data_kamar[$field];
             ?>
                 <img src="<?= $img_path ?>" class="img img<?= $img_num ?>" alt="Gambar Kamar <?= $img_num ?>">
             <?php endif; endforeach; ?>
@@ -99,9 +112,9 @@ if (!$kamar) {
         <div class="thumbnails">
             <?php 
             foreach ($gambar_fields as $index => $field): 
-                if (!empty($kamar[$field])): 
+                if (!empty($data_kamar[$field])): 
                     $img_num = $index + 1;
-                    $img_path = '/JAVAST/Admin/Gambar/Kamar/'.$kamar[$field];
+                    $img_path = '/JAVAST/Admin/Gambar/Kamar/'.$data_kamar[$field];
             ?>
                 <label for="img<?= $img_num ?>">
                     <img src="<?= $img_path ?>" alt="Thumbnail <?= $img_num ?>">
@@ -113,15 +126,15 @@ if (!$kamar) {
         <div class="right-panel">
           <h3><b>Informasi Kamar</b></h3>
           <ul>
-        <li><i class="fa-solid fa-bed"></i> <?= htmlspecialchars($kamar['tipe_kasur']) ?></li>
-        <li><i class="fa-solid fa-ruler"></i> <?= htmlspecialchars($kamar['ukuran_kamar']) ?> m²</li>
-        <li><i class="fa-solid fa-user"></i>  <?= ($kamar['jumlah_dewasa'] + $kamar['jumlah_anak']) ?> orang</li>
+        <li><i class="fa-solid fa-bed"></i> <?= htmlspecialchars($data_kamar['tipe_kasur']) ?></li>
+        <li><i class="fa-solid fa-ruler"></i> <?= htmlspecialchars($data_kamar['ukuran_kamar']) ?> m²</li>
+        <li><i class="fa-solid fa-user"></i>  <?= ($data_kamar['jumlah_dewasa'] + $data_kamar['jumlah_anak']) ?> orang</li>
     </ul>
           <hr>
           <h4><b>Fasilitas Kamar</b></h4>
           <ul class="fasilitas">
             <?php
-            $fitur = explode(',', $kamar['fasilitas_kamar']);
+            $fitur = explode(',', $data_kamar['fasilitas_kamar']);
             foreach ($fitur as $item): 
             $item = trim($item);
             if (!empty($item)):
@@ -131,11 +144,11 @@ if (!$kamar) {
           </ul>
           <hr>
           <h4><b>Deskripsi Kamar</b></h4>
-          <p><?= htmlspecialchars($kamar['deskripsi_kamar']) ?></p>
+          <p><?= htmlspecialchars($data_kamar['deskripsi_kamar']) ?></p>
           <hr>
           <p>Mulai dari :</p>
-          <p class="harga"><b>Rp. <?= number_format($kamar['harga_kamar'], 0, ',', '.') ?> </b><span>/malam</span></p>
-            <a href="pesan.php?id_hotel=<?= $kamar['id_hotel'] ?>&id_kamar=<?= $kamar['id_kamar'] ?>&check_in=<?= htmlspecialchars($check_in) ?>&check_out=<?= htmlspecialchars($check_out) ?>&dewasa=<?= (int)$dewasa ?>&anak=<?= (int)$anak ?>&kamar=<?= (int)$kamar ?>" 
+          <p class="harga"><b>Rp. <?= number_format($data_kamar['harga_kamar'], 0, ',', '.') ?> </b><span>/malam</span></p>
+            <a href="pesan.php?id_hotel=<?= $data_kamar['id_hotel'] ?>&id_kamar=<?= $data_kamar['id_kamar'] ?>&check_in=<?= htmlspecialchars($check_in) ?>&check_out=<?= htmlspecialchars($check_out) ?>&dewasa=<?= $dewasa ?>&anak=<?= $anak ?>&kamar=<?= $kamar ?>" 
        class="btn-pilih">
                 <button class="pesan">Pesan</button>
             </a>
