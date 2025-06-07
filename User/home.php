@@ -255,10 +255,10 @@ while ($row = mysqli_fetch_assoc($query)) {
             </a>
         
 
-        <a href="purbalingga.php" class="kota-card">
+        <a href="purwokerto.php" class="kota-card">
             <div class="overlay"></div>
-            <h3 class="nama-kota">Purbalingga</h3>
-            <img src="gambar/purbalingga/purbalingga.jpeg" alt="Purbalingga" class="image">
+            <h3 class="nama-kota">Purwokerto</h3>
+            <img src="gambar/gambarKota/Purwokerto.jpeg" alt="Purwokerto" class="image">
             </a>
         
 
@@ -270,9 +270,9 @@ while ($row = mysqli_fetch_assoc($query)) {
         
     </div>
 
-        <div class="button-container">
-            <button class="kota-button">Lihat Hotel Lainnya >></button>
-        </div>
+        <!-- <div class="button-container">
+            <button class="kota-button" >Lihat Hotel Lainnya >></button>
+        </div> -->
 
     </section>
 
