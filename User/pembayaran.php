@@ -145,7 +145,7 @@ $total_bayar = $pesanan['total_bayar'];
             <h5><b>Metode Pembayaran</b></h5>
             <p>Pilih salah satu metode pembayaran dibawah :</p>
             <hr>
-            <div class="opsi-metode">
+            <div class="card-opsi">
                 <div class="opsi-metode">
                   <label for="popupBukti" class="metode-btn" onclick="setMetode('BRI')">
                       <img src="gambar/pembayaran/logo_BRI.png" alt="BANK_BRI">
@@ -159,9 +159,9 @@ $total_bayar = $pesanan['total_bayar'];
                   <label for="popupBukti" class="metode-btn" onclick="setMetode('GOPAY')">
                       <img src="gambar/pembayaran/logo-gopay-vector.png" alt="GOPAY">
                   </label>
-              </div>
-                
+              </div>    
             </div>
+
             <div class="atau">Atau</div>
             <div class="card-byr-hotel">
               <form action="proses_bayar_hotel.php" method="post">
