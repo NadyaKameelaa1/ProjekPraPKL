@@ -2,20 +2,20 @@
 session_start();
 require_once '../koneksi/koneksi.php';
 
-// Tampilkan pesan error/sukses
-if (isset($_SESSION['errors'])) {
-    echo '<div class="alert alert-danger">';
-    foreach($_SESSION['errors'] as $error) {
-        echo '<p>'.$error.'</p>';
-    }
-    echo '</div>';
-    unset($_SESSION['errors']);
-}
+// // Tampilkan pesan error/sukses
+// if (isset($_SESSION['errors'])) {
+//     echo '<div class="alert alert-danger">';
+//     foreach($_SESSION['errors'] as $error) {
+//         echo '<p>'.$error.'</p>';
+//     }
+//     echo '</div>';
+//     unset($_SESSION['errors']);
+// }
 
-if (isset($_SESSION['success'])) {
-    echo '<div class="alert alert-success">'.$_SESSION['success'].'</div>';
-    unset($_SESSION['success']);
-}
+// if (isset($_SESSION['success'])) {
+//     echo '<div class="alert alert-success">'.$_SESSION['success'].'</div>';
+//     unset($_SESSION['success']);
+// }
 
 // Validasi ID Kamar
 $id_kamar = isset($_GET['id_kamar']) ? intval($_GET['id_kamar']) : 0;

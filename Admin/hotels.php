@@ -263,7 +263,7 @@ $query = mysqli_query($koneksi,$sql);
           <input type="file" name="gambar_hotel" id="editgambar" accept=".jpg,.png,.svg">
           <small>Biarkan kosong jika tidak ingin mengubah gambar</small>
     </div>
-
+ 
     <div class="form-actions">
         <button type="button" class="btn-cancel" onclick="closePopupedit()">Batal</button>
         <button type="submit" class="btn-submit" id="submitButton">Simpan Perubahan</button>
@@ -355,18 +355,11 @@ function closePopupedit() {
 }
 
 document.getElementById('editHotelForm').addEventListener('submit', function(e) {
-    console.log('Form submitted!'); // Pastikan ini muncul di console
-    // Biarkan form submit normal
+    console.log('Form submitted!'); 
 });
 
 document.getElementById('hotelEditForm').addEventListener('submit', function(e) {
     console.log('Form submit diproses...');
-    
-    // // Untuk debugging, tampilkan data form
-    // const formData = new FormData(this);
-    // for (let [key, value] of formData.entries()) {
-    //     console.log(key + ': ' + value);
-    // }
 });
   </script>
 
