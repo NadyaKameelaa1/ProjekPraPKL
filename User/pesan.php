@@ -216,7 +216,8 @@ $username = $user_data['nama_user'] ?? 'User';
 </div>
             <p class="total">Total Bayar : Rp. <?= number_format($total_bayar, 0, ',', '.') ?></p>
     
-           <input type="submit" value="Lanjutkan ke pembayaran"> 
+            
+           <button type="submit" class="lanjutkan-pembayaran" value="Lanjutkan ke pembayaran">Lanjutkan ke pembayaran </button>
           </form>
 
           <?php // Tambahkan ini untuk memastikan nilai:

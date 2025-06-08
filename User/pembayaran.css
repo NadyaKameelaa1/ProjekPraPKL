@@ -191,18 +191,41 @@ body {
   .metode-pembayaran h4 {
     margin-bottom: 5px;
   }
-.metode-pembayaran p{
+  .metode-pembayaran p{
   color: rgb(97, 97, 97);
 }
+
+  .card-opsi {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  }
+
   .opsi-metode {
-    display: flex;
+    /* display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin: 10px 0;
     justify-content: center;
-    margin-left: -30px;
+    margin-left: -30px; */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 kolom */
+    gap: 15px; /* Jarak antar item */
+    max-width: 300px; /* Sesuaikan lebar container */
+    margin: 0 auto; /* Pusatkan jika perlu */
+    justify-content: center;
   }
 
+  .metode-btn {
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .metode-btn img {
+  width: 100%; /* Gambar mengisi lebar label */
+  height: auto;
+  border-radius: 8px; /* Opsional: sudut melengkung */
+  }
 
   /* .opsi-metode button {
     background-color: #CBCBCB;
