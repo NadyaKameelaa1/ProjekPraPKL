@@ -181,7 +181,7 @@ $result = mysqli_query($koneksi, $query);
                             <?php endif; ?>
                             
                             <button class="action-btn bukti-btn" onclick="viewPaymentProof(<?= $pesanan['id_pesanan'] ?>)">
-                                <i class="fa-solid fa-dollar-sign"></i> Bukti Pembayaran
+                            <i class="fa-solid fa-dollar-sign"></i> Bukti pembayaran
                             </button>
                         </td>
                         </tr>
@@ -193,6 +193,25 @@ $result = mysqli_query($koneksi, $query);
             </tbody>
         </table>
     </div>
+
+<div id="paymentProofModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal" onclick="window.location.href='booking_terbaru.php'">&times;</span>
+    <h2>Bukti Pembayaran</h2>
+    
+    <div class="payment-info">
+      <p><span id="orderId"></span></p>
+      <p><span id="paymentMethod"></span></p>
+      <p><span id="paymentStatus"></span></p>
+      <p><span id="paymentDate"></span></p>
+    </div>
+    
+    <div id="proofImageContainer">
+      <!-- Content will be loaded here -->
+    </div>
+  </div>
+</div>
+
 </div>
 </div>
 
@@ -224,9 +243,79 @@ function verifyBooking(id) {
             }
         }
         
-        function viewPaymentProof(id) {
-            window.location.href = 'lihat_bukti.php?id_pesanan=' + id;
-        }
+
+
+        // -------
+function viewPaymentProof(id_pesanan) {
+    // Show loading state
+    document.getElementById('proofImageContainer').innerHTML = '<p>Memuat data pembayaran...</p>';
+    document.getElementById('orderId').textContent = '';
+    document.getElementById('paymentDate').textContent = '';
+    document.getElementById('paymentMethod').textContent = '';
+    document.getElementById('paymentStatus').textContent = '';
+    
+    fetch('booking_bukti_pembayaran.php?id_pesanan=' + id_pesanan)
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                // Update basic info
+                document.getElementById('orderId').textContent = data.id_pesanan;
+                document.getElementById('paymentDate').textContent = data.tanggal_bayar;
+                document.getElementById('paymentMethod').textContent = data.metode_pembayaran;
+                document.getElementById('paymentStatus').textContent = data.status;
+                
+                // Handle different payment methods
+                if (data.is_hotel_payment) {
+                    // Hotel payment - no proof needed
+                    document.getElementById('proofImageContainer').innerHTML = 
+                        '<div class="hotel-payment">' +
+                        '<i class="fa-solid fa-hotel"></i>' +
+                        '<p>' + data.message + '</p>' +
+                        '</div>';
+                } else {
+                    // Online payment - show proof
+                    const img = document.createElement('img');
+                    img.src = data.image_url;
+                    img.alt = 'Bukti Pembayaran';
+                    img.style.maxWidth = '100%';
+                    img.style.maxHeight = '500px';
+                    img.onerror = function() {
+                        document.getElementById('proofImageContainer').innerHTML = 
+                            '<div class="error-message">' +
+                            '<i class="fa-solid fa-image"></i>' +
+                            '<p>Gagal memuat bukti pembayaran</p>' +
+                            '</div>';
+                    };
+                    
+                    const container = document.getElementById('proofImageContainer');
+                    container.innerHTML = '';
+                    container.appendChild(img);
+                }
+                
+                // Show modal
+                document.getElementById('paymentProofModal').style.display = 'block';
+            } else {
+                document.getElementById('proofImageContainer').innerHTML = 
+                    '<div class="error-message">' +
+                    '<i class="fa-solid fa-circle-exclamation"></i>' +
+                    '<p>' + data.message + '</p>' +
+                    '</div>';
+                document.getElementById('paymentProofModal').style.display = 'block';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('proofImageContainer').innerHTML = 
+                '<div class="error-message">' +
+                '<i class="fa-solid fa-circle-exclamation"></i>' +
+                '<p>Terjadi kesalahan saat memuat data pembayaran</p>' +
+                '</div>';
+            document.getElementById('paymentProofModal').style.display = 'block';
+        });
+}
 </script>
 
 </body>
