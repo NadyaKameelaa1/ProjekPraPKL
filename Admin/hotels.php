@@ -2,6 +2,11 @@
 session_start();
 require_once '../Koneksi/koneksi.php';
 
+if (!isset($_SESSION['email_user'])) {
+    header("Location: login.php");
+    exit;
+}
+
 $sql = "SELECT * FROM hotels";
 $query = mysqli_query($koneksi,$sql);
 
@@ -98,6 +103,7 @@ $query = mysqli_query($koneksi,$sql);
             <?= $_SESSION['error']; unset($_SESSION['error']); ?>
         </div>
     <?php endif; ?>  
+    
     <div class="table-container">
         <table class="crud-table">
             <thead>
@@ -149,19 +155,6 @@ $query = mysqli_query($koneksi,$sql);
 </div>
 
 </div>
-
-<script>
-    document.getElementById('userSearch').addEventListener('input', function() {
-    const searchValue = this.value.toLowerCase();
-    const rows = document.querySelectorAll('.crud-table tbody tr');
-    
-    rows.forEach(row => {
-        const text = row.textContent.toLowerCase();
-        row.style.display = text.includes(searchValue) ? '' : 'none';
-    });
-});
-</script>
-
 
   
   <!-- Popup tambah -->
@@ -228,8 +221,10 @@ $query = mysqli_query($koneksi,$sql);
         <span class="close-btn" onclick="closePopupedit()">&times;</span>
       </div>
 
-<form action="hotels_proses_edit.php" method="POST" class="hotel-form" enctype="multipart/form-data">
-    <input type="hidden" name="id_hotel" value="<?= $_GET['edit_id'] ?? '' ?>">
+<form id="editHotelForm" action="hotels_proses_edit.php" class="hotel-form" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="id_hotel" id="hotelIdInput" value="">
+    <input type="hidden" name="edithotel" value="1">
+    
     <div class="form-row">
         <div class="form-group">
             <label>Kota Hotel</label>
@@ -265,13 +260,13 @@ $query = mysqli_query($koneksi,$sql);
     <img src="" id="editgambar" width="100%" class="mb-3"><br>
     <div class="form-group">
           <label>Edit Gambar Hotel (Max: 1)</label>
-          <input type="file" name="gambar_hotel" id="hotel-image" accept=".jpg,.png,.svg">
+          <input type="file" name="gambar_hotel" id="editgambar" accept=".jpg,.png,.svg">
           <small>Biarkan kosong jika tidak ingin mengubah gambar</small>
     </div>
 
     <div class="form-actions">
         <button type="button" class="btn-cancel" onclick="closePopupedit()">Batal</button>
-        <button type="submit" class="btn-submit" name="edithotel">Simpan Perubahan</button>
+        <button type="submit" class="btn-submit" id="submitButton">Simpan Perubahan</button>
     </div>
     </form>
     </div>
@@ -280,13 +275,17 @@ $query = mysqli_query($koneksi,$sql);
 
     <script>
 
-        // Script untuk menampilkan nama file yang dipilih
-        document.getElementById('hotel-image').addEventListener('change', function(e) {
-            const fileName = e.target.files[0] ? e.target.files[0].name : 'No file chosen';
-            document.querySelector('.file-chosen').textContent = fileName;
-        });
+    document.getElementById('userSearch').addEventListener('input', function() {
+    const searchValue = this.value.toLowerCase();
+    const rows = document.querySelectorAll('.crud-table tbody tr');
+    
+    rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(searchValue) ? '' : 'none';
+    });
+});
  
-    // tambah
+    // memunculkan popup tambah
     function openPopup() {
       document.getElementById("popup").style.display = "flex";
     }
@@ -295,53 +294,81 @@ $query = mysqli_query($koneksi,$sql);
       document.getElementById("popup").style.display = "none";
     }
 
-    // edit
-    // Fungsi untuk membuka popup edit dengan data hotel
-    function openPopupedit(id_hotel) {
-        // Ambil data hotel via AJAX
-        fetch('hotels_data.php?id_hotel=' + id_hotel)
-            .then(response => response.json())
-            .then(data => {
-                if(data.success) {
-                    // Isi form dengan data yang diterima
-                    document.getElementById('editkota').value = data.kota_hotel;
-                    document.getElementById('editnama').value = data.nama_hotel;
-                    document.getElementById('editbintang').value = data.bintang_hotel;
-                    document.getElementById('editlokasi').value = data.lokasi_hotel;
-                    document.getElementById('editalamat').value = data.alamat_hotel;
-                    document.getElementById('editfasilitas').value = data.fasilitas_hotel;
-                    document.getElementById('editgambar').src = data.gambar_hotel;
-                    
-                    // Tambahkan input hidden untuk id_hotel
-                    const form = document.querySelector('.hotel-form');
-                    let idInput = form.querySelector('input[name="id_hotel"]');
-                    if(!idInput) {
-                        idInput = document.createElement('input');
-                        idInput.type = 'hidden';
-                        idInput.name = 'id_hotel';
-                        form.prepend(idInput);
-                    }
-                    idInput.value = id_hotel;
-                    
-                    // Tampilkan popup
-                    document.getElementById("popupedit").style.display = "flex";
-                    document.querySelector('#popupedit h3').textContent = data.name_hotel;
-                } else {
-                    alert('Gagal memuat data hotel');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Terjadi kesalahan saat memuat data');
-            });
-    }
-
+    // memunculkan popup edit dengan data hotel
+function openPopupedit(id_hotel) {
+    console.log('Mengedit hotel ID:', id_hotel);
     
-    function closePopupedit() {
-      document.getElementById("popupedit").style.display = "none";
-    }
-  </script>
+    // Pastikan ini mengisi nilai form
+    document.getElementById('hotelIdInput').value = id_hotel;
+    
+    fetch('hotels_data.php?id_hotel=' + id_hotel)
+    .then(response => {
+        if(!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if(data.success) {
+            // Isi form dengan data yang diterima
+            document.getElementById('editkota').value = data.kota_hotel;
+            document.getElementById('editnama').value = data.nama_hotel;
+            document.getElementById('editbintang').value = data.bintang_hotel;
+            document.getElementById('editlokasi').value = data.lokasi_hotel;
+            document.getElementById('editalamat').value = data.alamat_hotel;
+            document.getElementById('editfasilitas').value = data.fasilitas_hotel;
+            
+            // Tampilkan gambar saat ini
+            if(data.gambar_hotel) {
+                document.getElementById('editgambar').src = data.gambar_hotel;
+                document.getElementById('editgambar').style.display = 'block';
+            }
 
+            // Tambahkan input hidden untuk id_hotel
+            const form = document.querySelector('.hotel-form');
+            let idInput = form.querySelector('input[name="id_hotel"]');
+            if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id_hotel';
+                form.prepend(idInput);
+            }
+            idInput.value = id_hotel;
+
+            // Tampilkan nama hotel di header popup
+            document.querySelector('#popupedit h3').textContent = data.nama_hotel;
+            
+            // Tampilkan popup
+            document.getElementById("popupedit").style.display = "flex";
+        } else {
+            alert(data.error || 'Gagal memuat data hotel');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat memuat data: ' + error.message);
+    });
+}
+
+function closePopupedit() {
+    document.getElementById("popupedit").style.display = "none";
+}
+
+document.getElementById('editHotelForm').addEventListener('submit', function(e) {
+    console.log('Form submitted!'); // Pastikan ini muncul di console
+    // Biarkan form submit normal
+});
+
+document.getElementById('hotelEditForm').addEventListener('submit', function(e) {
+    console.log('Form submit diproses...');
+    
+    // // Untuk debugging, tampilkan data form
+    // const formData = new FormData(this);
+    // for (let [key, value] of formData.entries()) {
+    //     console.log(key + ': ' + value);
+    // }
+});
+  </script>
 
 </body>
 </html>

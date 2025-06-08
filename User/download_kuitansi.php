@@ -131,10 +131,10 @@ EOD;
 $pdf->writeHTML($html, true, false, true, false, '');
 
 // Garis tanda tangan
-$pdf->SetY(-50);
-$pdf->Line(50, $pdf->GetY(), 160, $pdf->GetY());
-$pdf->SetFont('helvetica', 'I', 10);
-$pdf->Cell(0, 5, 'Tanda Tangan', 0, 1, 'C');
+// $pdf->SetY(-50);
+// $pdf->Line(50, $pdf->GetY(), 160, $pdf->GetY());
+// $pdf->SetFont('helvetica', 'I', 10);
+// $pdf->Cell(0, 5, 'Tanda Tangan', 0, 1, 'C');
 
 // Close and output PDF document
 $pdf->Output('kuitansi_'.$transaksi['id_order'].'.pdf', 'D');

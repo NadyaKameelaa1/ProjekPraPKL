@@ -7,6 +7,12 @@ if (!isset($_SESSION['email_user'])) {
     exit;
 }
 
+$email = $_SESSION['email_user'];
+$user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_user = '$email'");
+$user_data = mysqli_fetch_assoc($user_query);
+$username = $user_data['nama_user'] ?? 'User';
+
+
 $query = mysqli_query($koneksi, "SELECT 
     h.*,
     MIN(k.harga_kamar) AS harga_terendah
@@ -64,6 +70,7 @@ while ($row = mysqli_fetch_assoc($query)) {
         <h5>Javast</h5>
         <h2>Semarang</h2>
         <hr>
+        <h5>Lihat semua hotel yang ada di kota Semarang.</h5>
     </header>
 
     <br>
@@ -105,11 +112,11 @@ while ($row = mysqli_fetch_assoc($query)) {
                         <div class="hotel-booking">
                             <div class="price">1 malam <br><strong>Rp <?= number_format($hotel['harga_terendah'], 0, ',', '.') ?></strong></div>
                             <div class="note">Di luar pajak & biaya</div>
-                            <div>
-                                <a href="hotel.php?id_hotel=<?= $hotel['id_hotel']; ?>">
+                            <!-- <div>
+                                <a href="hotel.php?id_hotel=">
                                     <button class="button">Pilih Kamar</button>
                                 </a>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 <?php endforeach; ?>

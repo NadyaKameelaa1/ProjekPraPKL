@@ -1,3 +1,60 @@
+<?php
+
+session_start();
+require_once '../Koneksi/koneksi.php';
+
+if (!isset($_SESSION['email_user'])) {
+    header("Location: login.php");
+    exit;
+}
+
+// total booking hari ini
+$query_today = "SELECT COUNT(*) as total FROM pesanan WHERE DATE(tanggal_pesan) = CURDATE()";
+$result_today = mysqli_query($koneksi, $query_today);
+$today_booking = mysqli_fetch_assoc($result_today)['total'];
+
+// pesan kontak yang belum dibaca
+$query_unread = "SELECT COUNT(*) as total FROM kontak_kami WHERE status_dibaca = 0";
+$result_unread = mysqli_query($koneksi, $query_unread);
+$unread_contact = mysqli_fetch_assoc($result_unread)['total'];
+
+// total semua booking
+$query_total = "SELECT 
+                COUNT(*) as total_count,
+                SUM(CASE WHEN py.booking_status = 'Dibayar' THEN p.total_bayar ELSE 0 END) as total_amount
+                FROM pesanan p
+                JOIN pembayaran py ON p.id_pesanan = py.id_pesanan";
+$result_total = mysqli_query($koneksi, $query_total);
+$total_stats = mysqli_fetch_assoc($result_total);
+
+// booking aktif (status booking: dibayar)
+$query_active = "SELECT 
+                COUNT(*) as active_count,
+                SUM(p.total_bayar) as active_amount
+                FROM pesanan p
+                JOIN pembayaran py ON p.id_pesanan = py.id_pesanan
+                WHERE py.booking_status = 'Dibayar'";
+$result_active = mysqli_query($koneksi, $query_active);
+$active_stats = mysqli_fetch_assoc($result_active);
+
+// booking dibatalkan
+$query_cancelled = "SELECT 
+                   COUNT(*) as cancelled_count,
+                   SUM(p.total_bayar) as cancelled_amount
+                   FROM pesanan p
+                   JOIN pembayaran py ON p.id_pesanan = py.id_pesanan
+                   WHERE py.booking_status = 'Dibatalkan'";
+$result_cancelled = mysqli_query($koneksi, $query_cancelled);
+$cancelled_stats = mysqli_fetch_assoc($result_cancelled);
+
+// perlu verifikasi (status: belum dibayar/menunggu konfirmasi)
+$query_pending = "SELECT COUNT(*) as pending_count
+                 FROM pembayaran
+                 WHERE booking_status IN ('Belum dibayar', 'Menunggu Konfirmasi Admin')";
+$result_pending = mysqli_query($koneksi, $query_pending);
+$pending_count = mysqli_fetch_assoc($result_pending)['pending_count'];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -69,12 +126,12 @@
     <div class="stats-grid">
         <div class="stat-card booking-card">
           <h3 class="booking">BOOKING</h3>
-          <div class="booking-value">0</div>
+          <div class="booking-value"><?= $today_booking ?></div>
         </div>
 
         <div class="stat-card kontak-card">
           <h3 class="kontak">KONTAK KAMI</h3>
-          <div class="kontak-value">0</div>
+          <div class="kontak-value"><?= $unread_contact ?></div>
         </div>
       </div>
   
@@ -85,18 +142,18 @@
       <div class="analysis-grid">
         <div class="stat-card total-card">
           <h3 class="total">TOTAL BOOKING</h3>
-          <div class="total-value">3</div>
-          <div class="total-amount">RP. 2.048.022</div>
+          <div class="total-value"><?= $total_stats['total_count'] ?></div>
+          <div class="total-amount">RP. <?= number_format($total_stats['total_amount'], 0, ',', '.') ?></div>
         </div>
         <div class="stat-card">
           <h3 class="bookingAktif">BOOKING AKTIF</h3>
-          <div class="bookingAktif-value">2</div>
-          <div class="bookingAktif-amount">RP. 1.535.626</div>
+          <div class="bookingAktif-value"><?= $active_stats['active_count'] ?></div>
+          <div class="bookingAktif-amount">RP. <?= number_format($active_stats['active_amount'], 0, ',', '.') ?></div>
         </div>
         <div class="stat-card">
           <h3 class="bookingBatal">BOOKING DIBATALKAN</h3>
-          <div class="bookingBatal-value">1</div>
-          <div class="bookingBatal-amount">RP. 512.396</div>
+          <div class="bookingBatal-value"><?= $cancelled_stats['cancelled_count'] ?></div>
+          <div class="bookingBatal-amount">RP. <?= number_format($cancelled_stats['cancelled_amount'], 0, ',', '.') ?></div>
         </div>
       </div>
   
@@ -106,8 +163,8 @@
 
       <div class="analysis-card">
         <h3 class="bookingTerbaru">PERLU VERIFIKASI</h3>
-        <div class="bookingTerbaru-value">2</div>
-        <a href="booking.php" class="detail-link">DETAIL ></a>
+        <div class="bookingTerbaru-value"><?= $pending_count ?></div>
+        <a href="booking_terbaru.php" class="detail-link">DETAIL >></a>
       </div>
     </div>
 

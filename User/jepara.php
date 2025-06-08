@@ -7,6 +7,12 @@ if (!isset($_SESSION['email_user'])) {
     exit;
 }
 
+$email = $_SESSION['email_user'];
+$user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_user = '$email'");
+$user_data = mysqli_fetch_assoc($user_query);
+$username = $user_data['nama_user'] ?? 'User';
+
+
 $query = mysqli_query($koneksi, "SELECT 
     h.*,
     MIN(k.harga_kamar) AS harga_terendah
@@ -27,8 +33,8 @@ while ($row = mysqli_fetch_assoc($query)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Semarang | Javast</title>
-    <link rel="stylesheet" href="semarang.css">
+    <title>Jepara | Javast</title>
+    <link rel="stylesheet" href="jepara.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
@@ -62,8 +68,9 @@ while ($row = mysqli_fetch_assoc($query)) {
     <header class="header">
         
         <h5>Javast</h5>
-        <h2>Semarang</h2>
+        <h2>Jepara</h2>
         <hr>
+        <h5>Lihat semua hotel yang ada di kota Jepara.</h5>
     </header>
 
     <br>
@@ -105,17 +112,12 @@ while ($row = mysqli_fetch_assoc($query)) {
                         <div class="hotel-booking">
                             <div class="price">1 malam <br><strong>Rp <?= number_format($hotel['harga_terendah'], 0, ',', '.') ?></strong></div>
                             <div class="note">Di luar pajak & biaya</div>
-                            <div>
-                                <a href="detail_hotel.php?id_hotel=<?= $hotel['id_hotel']; ?>">
-                                    <button class="button">Pilih Kamar</button>
-                                </a>
-                            </div>
                         </div>
                     </div>
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <p class="no-results">Tidak ada hotel yang ditemukan di Semarang.</p>
+            <p class="no-results">Tidak ada hotel yang ditemukan di Jepara.</p>
         <?php endif; ?>
     </div>
 

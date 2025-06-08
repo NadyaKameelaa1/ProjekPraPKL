@@ -18,7 +18,7 @@ $query = mysqli_query($koneksi, "SELECT
     MIN(k.harga_kamar) AS harga_terendah
     FROM hotels h
     LEFT JOIN kamar k ON h.id_hotel = k.id_hotel
-    WHERE h.kota_hotel LIKE '%Purwokerto%'
+    WHERE h.kota_hotel LIKE '%Yogyakarta%'
     GROUP BY h.id_hotel
     ORDER BY h.bintang_hotel DESC, harga_terendah ASC");
 
@@ -33,8 +33,8 @@ while ($row = mysqli_fetch_assoc($query)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Purwokerto | Javast</title>
-    <link rel="stylesheet" href="purwokerto.css">
+    <title>Yogyakarta | Javast</title>
+    <link rel="stylesheet" href="yogyakarta.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
@@ -68,9 +68,9 @@ while ($row = mysqli_fetch_assoc($query)) {
     <header class="header">
         
         <h5>Javast</h5>
-        <h2>Purwokerto</h2>
+        <h2>Yogyakarta</h2>
         <hr>
-        <h5>Lihat semua hotel yang ada di kota Purwokerto.</h5>
+        <h5>Lihat semua hotel yang ada di kota Yogyakarta.</h5>
     </header>
 
     <br>
@@ -117,7 +117,7 @@ while ($row = mysqli_fetch_assoc($query)) {
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <p class="no-results">Tidak ada hotel yang ditemukan di Purwokerto.</p>
+            <p class="no-results">Tidak ada hotel yang ditemukan di Yogyakarta.</p>
         <?php endif; ?>
     </div>
 

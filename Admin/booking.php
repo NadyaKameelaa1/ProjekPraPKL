@@ -1,3 +1,29 @@
+<?php
+session_start();
+require_once '../Koneksi/koneksi.php';
+
+if (!isset($_SESSION['email_user'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$query = "SELECT p.*,
+    h.nama_hotel,
+    k.nama_kamar, k.harga_kamar,
+    u.nama_user, u.no_telp,
+    py.id_pembayaran, py.metode_pembayaran, py.booking_status, py.tanggal_bayar, py.id_order
+    FROM pesanan p
+    JOIN hotels h ON p.id_hotel = h.id_hotel
+    JOIN kamar k ON p.id_kamar = k.id_kamar
+    JOIN users u ON p.id_user = u.id_user
+    JOIN pembayaran py ON p.id_pesanan = py.id_pesanan
+    WHERE py.booking_status IN ('Dibayar', 'Dibatalkan')
+    ORDER BY p.tanggal_pesan DESC";
+
+$result = mysqli_query($koneksi, $query);
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -83,49 +109,61 @@
         <table class="crud-table">
             <thead>
                 <tr>
-                    <th>Id Pesan</th>
+                    <th>Id Pembayaran</th>
+                    <th>Id Pesanan</th>
                     <th>Id Hotel</th>
                     <th>Detail User</th>
                     <th>Detail Kamar</th>
                     <th>Detail Booking</th>
                     <th>Status</th>
-                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
+                <?php while($pesanan = mysqli_fetch_assoc($result)): ?>
+                        <?php
+                        // Format tanggal
+                        $check_in = date('d-m-Y', strtotime($pesanan['check_in']));
+                        $check_out = date('d-m-Y', strtotime($pesanan['check_out']));
+                        // $tanggal_bayar = date('d-m-Y', strtotime($pesanan['tanggal_bayar']));
+                        ?>
                 <tr>
-                    <td>501</td>
-                    <td>201</td>
+                    <td><?= htmlspecialchars($pesanan['id_pembayaran']) ?></td>
+                    <td><?= htmlspecialchars($pesanan['id_pesanan']) ?></td>
+                    <td><?= htmlspecialchars($pesanan['id_hotel']) ?></td>
                     <td>
-                        <span class="order-id">ID ORDER: ORD_27668816</span><br>
-                        <strong>Name:</strong> Nadya<br>
-                        <strong>No. Telp:</strong> +62 857 122 7029
+                        <span class="order-id">ID ORDER: <?= htmlspecialchars($pesanan['id_order']) ?></span><br>
+                        <strong>Nama:</strong> <?= htmlspecialchars($pesanan['nama_user']) ?><br>
+                        <strong>No. Telp:</strong> <?= htmlspecialchars($pesanan['no_telp']) ?>
                     </td>
                     <td>
-                        <strong>Kamar:</strong> New Deluxe Twin Room Only<br>
-                        <strong>Harga:</strong> Rp. 1.167.076
+                        <strong>Kamar:</strong> <?= htmlspecialchars($pesanan['nama_kamar']) ?><br>
+                        <strong>Harga:</strong> Rp. <?= number_format($pesanan['harga_kamar'], 0, ',', '.') ?>
                     </td>
                     <td>
-                        <strong>Check-In:</strong> 01-01-2025<br>
-                        <strong>Check-Out:</strong> 01-02-2025
+                        <strong>Check-In:</strong> <?= $check_in ?><br>
+                        <strong>Check-Out:</strong> <?= $check_out ?>
                         <br>
-                            <strong>Bayar:</strong> Rp. 1.167.076<br>
-                            <strong>Waktu:</strong> 01-01-2025
+                            <strong>Bayar:</strong> Rp. <?= number_format($pesanan['total_bayar'], 0, ',', '.') ?><br>
+                            <strong>Waktu:</strong>  <?= htmlspecialchars($pesanan['tanggal_bayar']) ?>
                 
                     </td>
                    
                     <td class="status-cell">
-                        <span class="status-paid">Dibayar</span>
-                    </td>
-                    <td>
-                        <button class="btn-delete">Hapus</button>
+                            <span class="status <?php
+                                if ($pesanan['booking_status'] == 'Dibayar') {
+                                    echo 'paid';
+                                } elseif ($pesanan['booking_status'] == 'Dibatalkan') {
+                                    echo 'cancelled';
+                                } else {
+                                    echo 'cancelled';
+                                }
+                                ?>">
+                                <?= htmlspecialchars($pesanan['booking_status']) ?>
+                            </span>
                     </td>
                 </tr>
-                
-                    
-                
-
-
+                <?php endwhile; ?>
+        
             </tbody>
         </table>
     </div>
