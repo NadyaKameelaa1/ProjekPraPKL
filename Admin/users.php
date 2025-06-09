@@ -99,7 +99,6 @@ $query = mysqli_query($koneksi,$sql);
                     <th>Email User</th>
                     <th>No. Telp</th>
                     <th>Alamat</th>
-                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -112,9 +111,6 @@ $query = mysqli_query($koneksi,$sql);
             <td>$user[email_user]</td>
             <td>$user[no_telp]</td>
             <td>$user[alamat_user]</td>
-            <td>
-                <button class="btn-delete"><a href="users_hapus.php?id_user=$user[id_user]"><i class="fas fa-trash"></i>Hapus</a></button>
-            </td>
             </tr>
             
             user;

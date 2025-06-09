@@ -60,7 +60,7 @@ $hotel_descriptions = [
     }
     
     // Fallback if no description exists
-    return "Welcome to " . htmlspecialchars($hotel_name) . ". This hotel offers comfortable accommodation with excellent facilities and service for your stay. Experience the best hospitality and modern amenities during your visit.";
+    return "Selamat datang di " . htmlspecialchars($hotel_name) . ". Hotel ini menawarkan akomodasi yang nyaman dengan fasilitas dan layanan yang sangat baik untuk masa menginap Anda. Nikmati keramahtamahan terbaik dan fasilitas modern selama kunjungan Anda.";
 }
 
 $current_hotel_description = getHotelDescription($id_hotel, $hotels['nama_hotel']);
@@ -299,33 +299,7 @@ $current_hotel_description = getHotelDescription($id_hotel, $hotels['nama_hotel'
               
               <b>Ketersediaan kamar</b>
               <br>
-          <?php
-// Get room availability - UPDATED SOLUTION
-if ($id_kamar > 0) {
-    // Method 1: Get specific room availability
-    $stmt = mysqli_prepare($koneksi, "SELECT jumlah_kamar FROM kamar WHERE id_kamar = ?");
-    mysqli_stmt_bind_param($stmt, 'i', $id_kamar);
-} else {
-    // Method 2: Get total available rooms for the hotel if no specific room selected
-    $stmt = mysqli_prepare($koneksi, "SELECT jumlah_kamar AS jumlah_kamar FROM kamar WHERE id_hotel = ?");
-    mysqli_stmt_bind_param($stmt, 'i', $id_hotel);
-}
-
-mysqli_stmt_execute($stmt);
-$result = mysqli_stmt_get_result($stmt);
-
-if ($result && $row = mysqli_fetch_assoc($result)) {
-    $jumlah_kamar = (int)$row['jumlah_kamar'];
-    error_log("Room availability found: $jumlah_kamar");
-} else {
-    $jumlah_kamar = 0;
-    error_log("No room availability data found");
-}
-mysqli_stmt_close($stmt);
-?>
-
-
-              <span><?= $jumlah_kamar ?> Kamar </span>
+              <span><?= $data_kamar['jumlah_kamar'] ?> Kamar </span>
           </div>
 
           <div class="box-button">
