@@ -402,25 +402,23 @@ body {
   .description-card {
     max-width: 2000px;
     width: 1200px;
-    height: 60px;
     display: flex;
     justify-content: center;
     background: white;
     border-radius: 8px;
-    
     padding: 16px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.5;
     margin: 0 auto;
     transition: all 0.3s ease;
     box-shadow: 0 5px 8px rgba(100, 100, 100, 0.6);
+    position: relative;   
+    z-index: 10;          
   }
 
   .description-card:hover{
-    background-color: #e7e7e7;
-    color: rgb(124, 124, 124);
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     border-color: #ebebeb;
   }
 
@@ -442,7 +440,7 @@ body {
     text-align: justify;
   }
 
-  .next-link {
+  /* .next-link {
     display: inline-block;
     margin-bottom: 15px;
     color: #3a3a3a;
@@ -454,7 +452,9 @@ body {
   .next-link:hover{
     color: white;
     transform: translateY(-2px);
-  }
+  } */
+
+  
   /* card lokasi */
 
 .location-card {
