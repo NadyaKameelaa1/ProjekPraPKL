@@ -131,7 +131,7 @@ $hotels = mysqli_fetch_all($result, MYSQLI_ASSOC);
               </div>
        
 
-        <button><i class="fa-solid fa-magnifying-glass"></i></button>
+        <button onclick="window.location.href='home.php?pesan=IsiSearchBarDisini!'"><i class="fa-solid fa-magnifying-glass"></i></button>
     </div>
     
     

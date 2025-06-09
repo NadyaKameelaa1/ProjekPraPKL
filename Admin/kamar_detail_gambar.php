@@ -206,7 +206,7 @@ $gambar = mysqli_fetch_assoc(mysqli_query($koneksi,
                          class="preview-image" 
                          style="max-width: 200px; display: block; margin: 10px 0;">
                 <?php endif; ?>
-                <input type="file" name="<?= $field ?>" accept="image/*">
+                <input type="file" name="<?= $field ?>" multiple accept=".jpg,.png,.webp,.svg">
                 <!-- PERBAIKAN 7: Tampilkan nama file jika ada -->
                 <?php if ($current): ?>
                     <div class="current-file">File saat ini: <?= $current ?></div>
