@@ -417,11 +417,11 @@ body {
   }
 
   .description-card:hover{
-    background-color: #8b5e3c;
-    color: white;
+    background-color: #e7e7e7;
+    color: rgb(124, 124, 124);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    border-color: #8b5e3c;
+    border-color: #ebebeb;
   }
 
   

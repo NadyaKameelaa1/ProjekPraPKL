@@ -7,7 +7,6 @@ if (!isset($_SESSION['email_user'])) {
     exit;
 }
 
-
 $email = $_SESSION['email_user'];
 $user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_user = '$email'");
 $user_data = mysqli_fetch_assoc($user_query);
@@ -42,6 +41,30 @@ $query_kamar = mysqli_query($koneksi, "SELECT
     FROM kamar k
     LEFT JOIN kamar_gambar kg ON k.id_kamar = kg.id_kamar
     WHERE k.id_hotel = $id_hotel");
+
+
+
+$hotel_descriptions = [
+    2042 => "Berlokasi strategis tepat di tepi Pantai Bandengan yang populer, D’SEASON Premiere menjadi hotel bintang 3 terbaik untuk Anda yang ingin berlibur dengan menikmati pemandangan  laut yang begitu memesona berbalut suasana Jawa yang kental. Akomodasi ini menjadi opsi paling tepat bagi penikmat pantai maupun penyuka alam yang ingin sejenak melepaskan diri dari penatnya kesibukan. D'SEASON Premiere menawarkan kemudahan akses ke berbagai tempat wisata menarik di Jepara, seperti Pantai Bandengan, Pantai Kartini, Benteng Portugis, dan Museum Kartini. Akomodasi ini juga sangat mudah dijangkau baik dengan kendaraan pribadi maupun moda transportasi umum. Tak hanya itu, fasilitas yang ditawarkan juga memadai, memenuhi kebutuhan tamu yang menginap untuk kebutuhan bisnis maupun berlibur. Tipe kamarnya juga cukup variatif, memberikan pilihan yang lebih beragam untuk tamu sehingga bisa mendapatkan kamar yang sesuai dengan kebutuhan. D'SEASON Premiere Jepara memanjakan tamu yang menginap dengan menyediakan fasilitas yang lengkap, baik di dalam maupun di luar kamar. Beberapa fasilitas di kamar antara lain AC, televisi layar datar dengan saluran premium, air mineral gratis, kulkas, meja, serta mesin pembuat kopi dan teh. Beberapa tipe kamar juga dilengkapi dengan kamar mandi pribadi dan bathtub serta balkon yang menawarkan pemandangan pantai yang luas dan sangat menawan. Sementar itu, di luar kamar, D’SEASON Premiere menawarkan fasilitas penunjang berupa kolam renang, area bermain anak, pusat kebugaran, spa, restoran, dan bar. Bagi tamu yang memiliki kepentingan bisnis atau acara khusus, tersedia pula area fungsional dengan alat penunjang yang lengkap dan modern.Tak ketinggalan, guna memenuhi kebutuhan para tamu selama menginap, seperti penatu dan penitipan bagasi, Hotel D’SEASON Premiere juga didukung dengan layanan resepsionis 24 jam. Hotel D'SEASON Premiere beralamat di Jalan Pariwisata No.9, Bandengan, Jepara, Jawa Tengah. Aksesnya cukup mudah untuk dijangkau para tamu yang menggunakan kendaraan pribadi maupun moda transportasi umum. Tamu yang menggunakan kendaraan pribadi dapat mengakses Jalan Jepara-Bangsri, lalu berbelok ke Jalan Raya Tirta Samudra hingga sampai ke akomodasi. Tamu bisa memarkir kendaraan di area yang tersedia dengan jaminan keamanan 24 jam. Sementara bagi tamu yang menggunakan bus, Terminal Jepara akan menjadi destinasi pemberhentian terakhir. Lalu, tamu bisa melanjutkan perjalanan dengan moda transportasi umum lainnya.",
+    
+    2027 => "Berlokasi di Semarang, 2 km dari Stasiun Semarang Tawang, Gumaya Tower Hotel menawarkan spa & pusat kebugaran dan pemandangan kota. Fasilitas yang tersedia di akomodasi ini adalah restoran, layanan kamar, resepsionis 24 jam, dan WiFi gratis di seluruh area akomodasi.Brown Canyon lokasinya sejauh 16 km, dan Tugu Muda berjarak 2 km dari hotel. Hotel menyediakan kamar ber-AC dengan meja kerja, mesin kopi, kulkas, brankas, TV layar datar, dan kamar mandi pribadi dengan bidet. Di Gumaya Tower Hotel, setiap kamar memiliki sprei dan handuk. Sarapan hariannya menawarkan pilihan prasmanan, ala Amerika, atau Asia. Gumaya Tower Hotel menawarkan akomodasi bintang 5 dengan sauna dan kolam renang outdoor sepanjang tahun.Gumaya Tower Hotel Semarang terletak di Jalan Gajahmada Nomor 59-61, Kembangsari, Kecamatan Semarang Tengah, Kota Semarang, Jawa Tengah. Berada di pusat kota, hotel ini mudah diakses dengan transportasi umum maupun kendaraan pribadi. Selain itu, para tamu dapat dengan mudah mengakses berbagai destinasi utama di Semarang. Hotel ini menyediakan layanan sewa mobil dan pusat layanan taksi untuk memudahkan Anda menjelajahi kota. Berbagai tipe kamar mewah juga tersedia di Gumaya Tower Hotel Semarang.",
+    
+    2032 => "Ibis Styles Semarang adalah pilihan akomodasi yang tepat bagi Anda yang ingin menginap di Kota Semarang. Lokasinya yang berada di pusat kota, membuat hotel ini mudah dijangkau dan memberikan kemudahan akses ke berbagai tempat penting di Kota Semarang. Cocok bagi Anda yang ingin berlibur maupun mengadakan perjalanan bisnis di Kota Semarang. Dengan lokasi yang strategis di pusat kota Semarang, Ibis Styles Semarang sangat cocok untuk akomodasi berlibur maupun perjalanan bisnis. Ada banyak tempat-tempat menarik dan penting di Semarang yang lokasinya tidak jauh dari hotel. Sehingga Anda dapat dengan mudah mengakses berbagai tempat wisata, pusat perbelanjaan, restoran, dan fasilitas umum lainnya. Selain itu hotel ini juga memberikan kenyamanan maksimal karena setiap kamarnya sudah dilengkapi dengan fasilitas modern yang akan memenuhi kebutuhan Anda selama menginap.",
+];
+
+    function getHotelDescription($hotel_id, $hotel_name = '') {
+    global $hotel_descriptions;
+    
+    if (isset($hotel_descriptions[$hotel_id])) {
+        return $hotel_descriptions[$hotel_id];
+    }
+    
+    // Fallback if no description exists
+    return "Welcome to " . htmlspecialchars($hotel_name) . ". This hotel offers comfortable accommodation with excellent facilities and service for your stay. Experience the best hospitality and modern amenities during your visit.";
+}
+
+$current_hotel_description = getHotelDescription($id_hotel, $hotels['nama_hotel']);
+
 ?>
 
 
@@ -155,9 +178,10 @@ $query_kamar = mysqli_query($koneksi, "SELECT
 
     <div class="description-card">
       <div class="card-content">
+        <h4>Deskripsi Hotel</h4>
         <p class="hotel-description">
-          <?php echo $deskripsi_hotel[$id_hotel] ?? "Deskripsi belum tersedia."; ?>
-      </p>
+            <?php echo $current_hotel_description; ?>
+        </p>
       </div>
     </div>
 
