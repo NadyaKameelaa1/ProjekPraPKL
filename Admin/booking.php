@@ -7,6 +7,28 @@ if (!isset($_SESSION['email_user'])) {
     exit;
 }
 
+if (isset($_GET['action']) && $_GET['action'] == 'complete' && isset($_GET['id_pembayaran'])) {
+    $id_pembayaran = (int)$_GET['id_pembayaran'];
+    
+    $update_query = "UPDATE pembayaran 
+                    SET booking_status = 'Selesai' 
+                    WHERE id_pembayaran = ?";
+    
+    $stmt = mysqli_prepare($koneksi, $update_query);
+    mysqli_stmt_bind_param($stmt, 'i', $id_pembayaran);
+    mysqli_stmt_execute($stmt);
+    
+    if (mysqli_stmt_affected_rows($stmt) > 0) {
+        $_SESSION['success_message'] = "Status booking berhasil diubah menjadi Selesai";
+    } else {
+        $_SESSION['error_message'] = "Gagal mengubah status booking";
+    }
+    
+    header("Location: booking.php?selesaikan=berhasil");
+    exit;
+}
+
+
 $query = "SELECT p.*,
     h.nama_hotel,
     k.nama_kamar, k.harga_kamar,
@@ -17,7 +39,7 @@ $query = "SELECT p.*,
     JOIN kamar k ON p.id_kamar = k.id_kamar
     JOIN users u ON p.id_user = u.id_user
     JOIN pembayaran py ON p.id_pesanan = py.id_pesanan
-    WHERE py.booking_status IN ('Dibayar', 'Dibatalkan')
+    WHERE py.booking_status IN ('Dibayar', 'Dibatalkan', 'Selesai')
     ORDER BY p.tanggal_pesan DESC";
 
 $result = mysqli_query($koneksi, $query);
@@ -104,6 +126,16 @@ $result = mysqli_query($koneksi, $query);
     </div>
     
     
+    <div class="main-content">
+    <?php if (isset($_SESSION['success_message'])): ?>
+        <div class="alert alert-success"><?= $_SESSION['success_message'] ?></div>
+        <?php unset($_SESSION['success_message']); ?>
+    <?php endif; ?>
+    
+    <?php if (isset($_SESSION['error_message'])): ?>
+        <div class="alert alert-danger"><?= $_SESSION['error_message'] ?></div>
+        <?php unset($_SESSION['error_message']); ?>
+    <?php endif; ?>
 
     <div class="table-container">
         <table class="crud-table">
@@ -116,6 +148,7 @@ $result = mysqli_query($koneksi, $query);
                     <th>Detail Kamar</th>
                     <th>Detail Booking</th>
                     <th>Status</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -154,12 +187,24 @@ $result = mysqli_query($koneksi, $query);
                                     echo 'paid';
                                 } elseif ($pesanan['booking_status'] == 'Dibatalkan') {
                                     echo 'cancelled';
-                                } else {
+                                } elseif ($pesanan['booking_status'] == 'Selesai') {
+                                    echo 'selesai';
+                                }    else {
                                     echo 'cancelled';
                                 }
                                 ?>">
                                 <?= htmlspecialchars($pesanan['booking_status']) ?>
                             </span>
+                    </td>
+
+                    <td>
+                            <?php if ($pesanan['booking_status'] == 'Dibayar'): ?>
+                                <a href="booking.php?action=complete&id_pembayaran=<?= $pesanan['id_pembayaran'] ?>" 
+                                   class="action-btn selesai-btn" 
+                                   onclick="return confirm('Apakah Anda yakin ingin menyelesaikan booking ini?')">
+                                    Selesaikan
+                                </a>
+                            <?php endif; ?>
                     </td>
                 </tr>
                 <?php endwhile; ?>
