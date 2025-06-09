@@ -420,6 +420,7 @@
     transition: background-color 0.3s;
     text-decoration: none; /* Hilangkan underline link */
     display: inline-block; /* Agar padding bekerja */
+    font-size: 13px;
 }
 
 /* Status Dibayar (Hijau) */
@@ -511,3 +512,44 @@
         font-size: 14px;
     }
 }
+
+ /* Distribusi lebar kolom */
+ .crud-table th:nth-child(1),
+ .crud-table td:nth-child(1) {
+     width: 1%;
+ }
+ 
+ .crud-table th:nth-child(2),
+ .crud-table td:nth-child(2) {
+     width: 1%;
+ }
+ 
+ .crud-table th:nth-child(3),
+ .crud-table td:nth-child(3) {
+     width: 1%;
+ }
+ 
+ .crud-table th:nth-child(4),
+ .crud-table td:nth-child(4) {
+     width: 25%;
+ }
+ 
+ .crud-table th:nth-child(5),
+ .crud-table td:nth-child(5) {
+     width: 20%;
+ }
+ 
+ .crud-table th:nth-child(6),
+ .crud-table td:nth-child(6) {
+     width: 25%;
+ }
+ 
+ .crud-table th:nth-child(7),
+ .crud-table td:nth-child(7) {
+     width: 10%;
+ }
+
+  .crud-table th:nth-child(8),
+ .crud-table td:nth-child(8) {
+     width: 10%;
+ }
