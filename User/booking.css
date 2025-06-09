@@ -216,6 +216,11 @@ body {
     color: white;
 }
 
+.selesai {
+    background-color: #56d3b8;
+    color: white;
+}
+
 /* Tombol */
 .buttonn-download {
     background-color: #5e3c1b;

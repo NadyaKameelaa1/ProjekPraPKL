@@ -126,6 +126,8 @@ $user_data = $stmt_user->get_result()->fetch_assoc();
                             echo 'paid';
                         } elseif ($transaksi['booking_status'] == 'Belum dibayar') {
                             echo 'pending';
+                        } elseif ($transaksi['booking_status'] == 'Selesai') {
+                            echo 'selesai';
                         } else {
                             echo 'pending'; // default fallback
                         }
