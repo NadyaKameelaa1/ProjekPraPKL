@@ -7,7 +7,6 @@ if (!isset($_SESSION['email_user'])) {
     header("Location: login.php");
     exit;
 }
-
 // Ambil parameter
 $id_hotel = isset($_GET['id_hotel']) ? intval($_GET['id_hotel']) : 0;
 $id_kamar = isset($_GET['id_kamar']) ? intval($_GET['id_kamar']) : 0;
@@ -21,7 +20,6 @@ $total_bayar = isset($_GET['total_bayar']) ? intval($_GET['total_bayar']) : 0;
 
 $id_pesanan = intval($_GET['id_pesanan']);
 
-
 // Ambil data kamar
 $query_kamar = mysqli_query($koneksi, "SELECT k.*, kg.gambarA, kg.gambarB, kg.gambarC, kg.gambarD, kg.gambarE, h.nama_hotel 
                                      FROM kamar k 
@@ -34,17 +32,30 @@ if (!$detail_kamar) {
     die("Kamar tidak ditemukan!");
 }
 
+
 $query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harga_terendah 
     FROM hotels
     LEFT JOIN kamar ON hotels.id_hotel = kamar.id_hotel
     WHERE hotels.id_hotel = $id_hotel
     GROUP BY hotels.id_hotel");
-
 $hotels = mysqli_fetch_assoc($query);
 
+// IMPORTANT: Calculate total payment here
+$harga_kamar = $hotels['harga_kamar'];
 
-// // Ambil id_pesanan dari URL
-// $id_pesanan = intval($_GET['id_pesanan']);
+// Calculate number of days if not provided
+if ($jumlah_hari <= 0) {
+    $harga_kamar = isset($hotels['harga_kamar']) ? $hotels['harga_kamar'] : 0;
+    $jumlah_hari = (new DateTime($check_out))->diff(new DateTime($check_in))->days;
+}
+
+// Recalculate total payment
+$recalculated_total = $harga_kamar * $jumlah_hari * $jumlah_kamar;
+
+// Use recalculated total if it differs from the passed parameter
+if ($total_bayar != $recalculated_total || $total_bayar == 0) {
+    $total_bayar = $recalculated_total;
+}
 
 $query_pesanan = "SELECT p.*, k.nama_kamar, k.harga_kamar, h.nama_hotel 
                   FROM pesanan p 
@@ -70,8 +81,8 @@ $user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_us
 $user_data = mysqli_fetch_assoc($user_query);
 $username = $user_data['nama_user'] ?? 'User';
 // Gunakan data dari database
-$jumlah_hari = $pesanan['jumlah_hari'];
-$total_bayar = $pesanan['total_bayar'];
+ $jumlah_hari = $pesanan['jumlah_hari'];
+ $total_bayar = $pesanan['total_bayar'];
 
 
 ?>
@@ -172,14 +183,14 @@ $total_bayar = $pesanan['total_bayar'];
           </div>
         
         </div>
-        <input type="hidden" name="id_hotel" value="<?= $id_hotel ?>">
+                <input type="hidden" name="id_hotel" value="<?= $id_hotel ?>">
                 <input type="hidden" name="id_kamar" value="<?= $id_kamar ?>">
                 <input type="hidden" name="check_in" value="<?= $check_in ?>">
                 <input type="hidden" name="check_out" value="<?= $check_out ?>">
-              <input type="hidden" id="hiddenDewasa" name="dewasa" value="<?= $dewasa ?>">
-              <input type="hidden" id="hiddenAnak" name="anak" value="<?= $anak ?>">
-              <input type="hidden" id="hiddenKamar" name="kamar" value="<?= $jumlah_kamar ?>">
-              <input type="hidden" id="hiddenTotalBayar" name="total_bayar" value="<?= $total_bayar ?>">
+                <input type="hidden" id="hiddenDewasa" name="dewasa" value="<?= $dewasa ?>">
+                <input type="hidden" id="hiddenAnak" name="anak" value="<?= $anak ?>">
+                <input type="hidden" id="hiddenKamar" name="kamar" value="<?= $jumlah_kamar ?>">
+                <input type="hidden" id="total_bayar" name="total_bayar" value="<?= $total_bayar ?>">
         <div class="order-box">
           <h4><b>Bayar</b></h4>
           <form>
@@ -210,8 +221,7 @@ $total_bayar = $pesanan['total_bayar'];
               <br>
               <br><br><br><br><br>
             <p>Jumlah Hari: <strong><?= $jumlah_hari ?></strong></p>
-            <p class="total">Total Bayar : <span> Rp. <?= number_format($total_bayar, 0, ',', '.') ?></span></p>
-
+            <p class="total">Total Bayar : <span id="total_bayar">Rp. <?= number_format($total_bayar, 0, ',', '.') ?></span></p>
             
           </form>
         </div>
@@ -293,6 +303,60 @@ function setMetode(metode) {
     header.innerHTML = `Upload Bukti Pembayaran <span style="color: #FFA500">${metode}</span>`;
     header.style.marginBottom = '10px';
 }
+
+const bookingData = {
+    roomPrice: <?= $harga_kamar ?>,
+    numberOfRooms: <?= $jumlah_kamar ?>,
+    numberOfDays: <?= $jumlah_hari ?>,
+    totalPayment: <?= $total_bayar ?>, // This will now have the correct calculated value
+    checkIn: '<?= $check_in ?>',
+    checkOut: '<?= $check_out ?>',
+    adults: <?= $dewasa ?>,
+    children: <?= $anak ?>
+};
+
+// Function to recalculate total if needed (for future dynamic updates)
+function recalculatePaymentTotal() {
+    const newTotal = bookingData.roomPrice * bookingData.numberOfRooms * bookingData.numberOfDays;
+    bookingData.totalPayment = newTotal;
+    
+    // Update display
+    document.querySelectorAll('.total span').forEach(span => {
+        span.textContent = `Rp. ${number_format(newTotal, 0, ',', '.')}`;
+    });
+    
+    // Update hidden input
+    const totalInput = document.getElementById('total_bayar');
+    if (totalInput) {
+        totalInput.value = newTotal;
+    }
+}
+// Function to format numbers (similar to PHP's number_format)
+function number_format(number, decimals = 0, dec_point = ',', thousands_sep = '.') {
+    const n = !isFinite(+number) ? 0 : +number;
+    const prec = !isFinite(+decimals) ? 0 : Math.abs(decimals);
+    const sep = (typeof thousands_sep === 'undefined') ? '.' : thousands_sep;
+    const dec = (typeof dec_point === 'undefined') ? ',' : dec_point;
+    const toFixedFix = function(n, prec) {
+        const k = Math.pow(10, prec);
+        return '' + (Math.round(n * k) / k).toFixed(prec);
+    };
+    const s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+    if (s[0].length > 3) {
+        s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+    }
+    if ((s[1] || '').length < prec) {
+        s[1] = s[1] || '';
+        s[1] += new Array(prec - s[1].length + 1).join('0');
+    }
+    return s.join(dec);
+}
+// Verify calculation on page load
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Booking Data:', bookingData);
+    console.log('Calculation: ' + bookingData.roomPrice + ' * ' + bookingData.numberOfRooms + ' * ' + bookingData.numberOfDays + ' = ' + bookingData.totalPayment);
+    recalculatePaymentTotal();
+});
 </script>
 
 </body>

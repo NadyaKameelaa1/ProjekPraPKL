@@ -17,8 +17,6 @@ $dewasa = isset($_GET['dewasa']) ? intval($_GET['dewasa']) : 1;
 $anak = isset($_GET['anak']) ? intval($_GET['anak']) : 0;
 $kamar = isset($_GET['kamar']) ? intval($_GET['kamar']) : 1;
 
-
-
 // Ambil data kamar
 $query_kamar = mysqli_query($koneksi, "SELECT k.*, kg.gambarA, kg.gambarB, kg.gambarC, kg.gambarD, kg.gambarE, h.nama_hotel 
                                      FROM kamar k 
@@ -31,8 +29,6 @@ if (!$detail_kamar) {
     die("Kamar tidak ditemukan!");
 }
 
-
-
 $query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harga_terendah 
     FROM hotels
     LEFT JOIN kamar ON hotels.id_hotel = kamar.id_hotel
@@ -41,11 +37,9 @@ $query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harg
 
 $hotels = mysqli_fetch_assoc($query);
 
-// Hitung total bayar sebelum form submission
-$harga_kamar = $detail_kamar['harga_kamar'];
+$harga_kamar = isset($detail_kamar['harga_kamar']) ? $detail_kamar['harga_kamar'] : 0;
 $jumlah_hari = (new DateTime($check_out))->diff(new DateTime($check_in))->days;
 $total_bayar = $harga_kamar * $jumlah_hari * $kamar;
-
 
 // Ambil data user
 $email = $_SESSION['email_user'];
@@ -132,10 +126,9 @@ $username = $user_data['nama_user'] ?? 'User';
                 <input type="hidden" name="check_out" value="<?= $check_out ?>">
               <input type="hidden" id="hiddenDewasa" name="dewasa" value="<?= $dewasa ?>">
               <input type="hidden" id="hiddenAnak" name="anak" value="<?= $anak ?>">
-
               <input type="hidden" id="hiddenKamar" name="kamar" value="<?= $kamar ?>">
-              <input type="hidden" id="hiddenTotalBayar" name="total_bayar" value="<?= $total_bayar ?>">
-              <input type="hidden" name="jumlah_hari" value="<?= $jumlah_hari ?>">
+                <input type="hidden" id="total_bayar" name="total_bayar" value="<?= $total_bayar ?>">
+               <input type="hidden" name="jumlah_hari" value="<?= $jumlah_hari ?>">
               
             <div class="input-group">
               <label>Nama</label>
@@ -185,8 +178,6 @@ $username = $user_data['nama_user'] ?? 'User';
                   </div>
               </div>
               
-              <!-- Input hidden untuk form -->
-              
           </div>
             <div class="date-group">
               <div class="date-box">
@@ -195,29 +186,16 @@ $username = $user_data['nama_user'] ?? 'User';
               </div>
               <div class="date-box">
                   <label>Check Out</label>
-                  <input type="date" id="checkOutDate" name="check_out" value="<?= $check_out ?>" class="date-input" readonly>
+                  <input type="date" id="checkOutDate" name="check_out" value="<?= $check_out ?>" class="date-input">
               </div>
             </div>
             
-            <br>
-            
-            
-            <div class="date-group">
-    <div class="duration-container">
-        <div class="duration-box">
-            <div class="duration-counter">
-                <button type="button" class="duration-btn" id="decreaseDuration">-</button>
-                <span class="duration-value" id="durationValue"><?= $jumlah_hari ?></span>
-                <button type="button" class="duration-btn" id="increaseDuration">+</button>
-               
-            </div>
-        </div>
-    </div>
-</div>
-            <p class="total">Total Bayar : Rp. <?= number_format($total_bayar, 0, ',', '.') ?></p>
+            <br><br>
+            <p>Jumlah Hari: <strong><?= $jumlah_hari ?></strong></p>
+            <p class="total" id="total">Total Bayar : Rp. <?= number_format($total_bayar, 0, ',', '.') ?></p>
     
             
-           <button type="submit" class="lanjutkan-pembayaran" value="Lanjutkan ke pembayaran">Lanjutkan ke pembayaran </button>
+           <button type="submit" id="lanjutkan-pembayaran" class="lanjutkan-pembayaran" value="Lanjutkan ke pembayaran">Lanjutkan ke pembayaran </button>
           </form>
 
           <?php // Tambahkan ini untuk memastikan nilai:
@@ -253,10 +231,9 @@ $username = $user_data['nama_user'] ?? 'User';
             <div class="footer-links">
                 <h3>Link</h3>
                 <ul>
-                    <li><a href="home.html">Beranda</a></li>
-                    <li><a href="#">Hotel</a></li>
-                    <li><a href="tentang.html">Tentang</a></li>
-                    <li><a href="kontak_kami.html">Kontak Kami Us</a></li>
+                    <li><a href="home.php">Beranda</a></li>
+                    <li><a href="tentang.php">Tentang</a></li>
+                    <li><a href="kontak_kami.php">Kontak Kami Us</a></li>
                 </ul>
             </div>
     
@@ -271,8 +248,11 @@ $username = $user_data['nama_user'] ?? 'User';
         </div>
     </footer>
 
-
+    
     <script>
+const roomPrice = <?php echo $detail_kamar['harga_kamar']; ?>;
+const roomId = <?php echo $id_kamar; ?>;
+const hotelId = <?php echo $id_hotel; ?>;
 
 const trigger = document.getElementById('guestRoomTrigger');
         const dropdown = document.getElementById('guestRoomDropdown');
@@ -650,6 +630,585 @@ if (parseInt(durationValue.textContent) <= 1) {
     });
 
 
+// -----------------
+
+// Add this function to handle form submission with updated parameters
+// function updateURLWithNewParameters() {
+//     // Get current values from the form
+//     const dewasaValue = document.getElementById('dewasaValue').textContent;
+//     const anakValue = document.getElementById('anakValue').textContent;
+//     const kamarValue = document.getElementById('kamarValue').textContent;
+//     const checkInDate = document.getElementById('checkInDate').value;
+//     const checkOutDate = document.getElementById('checkOutDate').value;
+//     const durationValue = document.getElementById('durationValue').textContent;
+    
+//     // Get current URL parameters
+//     const urlParams = new URLSearchParams(window.location.search);
+    
+//     // Update parameters with new values
+//     urlParams.set('dewasa', dewasaValue);
+//     urlParams.set('anak', anakValue);
+//     urlParams.set('kamar', kamarValue);
+//     urlParams.set('check_in', checkInDate);
+//     urlParams.set('check_out', checkOutDate);
+//     urlParams.set('jumlah_hari', durationValue);
+    
+//     // Get other existing parameters to preserve them
+//     const idHotel = urlParams.get('id_hotel');
+//     const idKamar = urlParams.get('id_kamar');
+//     const lokasi = urlParams.get('lokasi');
+    
+//     // Construct new URL with updated parameters
+//     const newURL = `${window.location.pathname}?id_hotel=${idHotel}&id_kamar=${idKamar}&dewasa=${dewasaValue}&anak=${anakValue}&kamar=${kamarValue}&lokasi=${lokasi}&check_in=${checkInDate}&check_out=${checkOutDate}&jumlah_hari=${durationValue}`;
+    
+//     // Update the browser URL without refreshing the page
+//     window.history.replaceState({}, '', newURL);
+    
+//     // Now proceed with form submission or redirect
+//     // Option 1: Submit form to the same page with new parameters
+//     window.location.href = newURL;
+    
+//     // Option 2: If you want to redirect to a different page (like payment page)
+//     // window.location.href = 'payment.php' + '?' + urlParams.toString();
+// }
+
+// // Modify your existing button event listener
+// document.querySelector('.lanjutkan-pembayaran').addEventListener('click', function(e) {
+//     e.preventDefault(); // Prevent default form submission
+    
+//     // Validate that all required fields are filled
+//     const dewasaValue = parseInt(document.getElementById('dewasaValue').textContent);
+//     const checkInDate = document.getElementById('checkInDate').value;
+//     const checkOutDate = document.getElementById('checkOutDate').value;
+    
+//     if (!checkInDate || !checkOutDate) {
+//         alert('Mohon lengkapi tanggal check-in dan check-out');
+//         return;
+//     }
+    
+//     if (dewasaValue < 1) {
+//         alert('Minimal 1 dewasa diperlukan');
+//         return;
+//     }
+    
+//     // Update URL parameters and proceed
+//     updateURLWithNewParameters();
+// });
+
+// Alternative: If you want to update parameters in real-time as user makes changes
+// function updateParametersRealTime() {
+//     const dewasaValue = document.getElementById('dewasaValue').textContent;
+//     const anakValue = document.getElementById('anakValue').textContent;
+//     const kamarValue = document.getElementById('kamarValue').textContent;
+//     const checkInDate = document.getElementById('checkInDate').value;
+//     const checkOutDate = document.getElementById('checkOutDate').value;
+    
+//     // Only update if we have the basic required values
+//     if (dewasaValue && kamarValue && checkInDate && checkOutDate) {
+//         const urlParams = new URLSearchParams(window.location.search);
+//         urlParams.set('dewasa', dewasaValue);
+//         urlParams.set('anak', anakValue);
+//         urlParams.set('kamar', kamarValue);
+//         urlParams.set('check_in', checkInDate);
+//         urlParams.set('check_out', checkOutDate);
+        
+//         const newURL = `${window.location.pathname}?${urlParams.toString()}`;
+//         window.history.replaceState({}, '', newURL);
+//     }
+// }
+
+// If you want real-time updates, add these event listeners:
+// document.addEventListener('DOMContentLoaded', function() {
+//     // Update URL when guest/room counters change
+//     const counterButtons = document.querySelectorAll('.counter-btn');
+//     counterButtons.forEach(button => {
+//         button.addEventListener('click', function() {
+//             setTimeout(updateParametersRealTime, 100); // Small delay to ensure DOM is updated
+//         });
+//     });
+    
+//     // Update URL when dates change
+//     document.getElementById('checkInDate').addEventListener('change', updateParametersRealTime);
+//     document.getElementById('checkOutDate').addEventListener('change', updateParametersRealTime);
+// });
+
+
+// -----------------------------------------------
+// INI YA :
+// // Add this function to recalculate total payment
+// function calculateTotalPayment() {
+//     const dewasaValue = parseInt(document.getElementById('dewasaValue').textContent);
+//     const anakValue = parseInt(document.getElementById('anakValue').textContent);
+//     const kamarValue = parseInt(document.getElementById('kamarValue').textContent);
+//     const checkInDate = document.getElementById('checkInDate').value;
+//     const checkOutDate = document.getElementById('checkOutDate').value;
+    
+//     // Calculate number of days
+//     if (checkInDate && checkOutDate) {
+//         const startDate = new Date(checkInDate);
+//         const endDate = new Date(checkOutDate);
+//         const timeDiff = endDate.getTime() - startDate.getTime();
+//         const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        
+//         // Get room price from PHP (you need to make this available in JavaScript)
+//         // Option 1: Add this to your HTML head section to get the room price
+//         // const roomPrice = echo $detail_kamar['harga_kamar']; ?>;
+        
+//         // Calculate total payment: room_price * number_of_rooms * number_of_days
+//         // const totalPayment = roomPrice * kamarValue * daysDiff;
+//         const totalPayment = $harga_kamar * $jumlah_hari * $kamar;
+        
+//         // Update the total payment display
+//         const totalElement = document.querySelector('.total p');
+//         if (totalElement) {
+//             totalElement.innerHTML = `Total Bayar : Rp. ${totalPayment.toLocaleString('id-ID')}`;
+//         }
+        
+//         return totalPayment;
+//     }
+    
+//     return 0;
+// }
+
+// // Modify your existing updateURLWithNewParameters function
+// function updateURLWithNewParameters() {
+//     // Get current values from the form
+//     const dewasaValue = document.getElementById('dewasaValue').textContent;
+//     const anakValue = document.getElementById('anakValue').textContent;
+//     const kamarValue = document.getElementById('kamarValue').textContent;
+//     const checkInDate = document.getElementById('checkInDate').value;
+//     const checkOutDate = document.getElementById('checkOutDate').value;
+//     const durationValue = document.getElementById('durationValue').textContent;
+
+//     // Get current URL parameters
+//     const urlParams = new URLSearchParams(window.location.search);
+
+//     // Update parameters with new values
+//     urlParams.set('dewasa', dewasaValue);
+//     urlParams.set('anak', anakValue);
+//     urlParams.set('kamar', kamarValue);
+//     urlParams.set('check_in', checkInDate);
+//     urlParams.set('check_out', checkOutDate);
+//     urlParams.set('jumlah_hari', durationValue);
+
+//     // Get other existing parameters to preserve them
+//     const idhotel = urlParams.get('id_hotel');
+//     const idkamar = urlParams.get('id_kamar');
+//     const lokasi = urlParams.get('lokasi');
+
+//     // Construct new URL with updated parameters
+//     const newURL = `${window.location.pathname}?id_hotel=${idhotel}&id_kamar=${idkamar}&dewasa=${dewasaValue}&anak=${anakValue}&kamar=${kamarValue}&lokasi=${lokasi}&check_in=${checkInDate}&check_out=${checkOutDate}&jumlah_hari=${durationValue}`;
+
+//     // Update the browser URL without refreshing the page
+//     window.history.replaceState({}, '', newURL);
+
+//     // **ADD THIS LINE: Recalculate total payment**
+//     calculateTotalPayment();
+
+//     // Now proceed with form submission or redirect
+//     // Option 1: Submit form to the same page with new parameters
+//     window.location.href = newURL;
+
+//     // Option 2: If you want to redirect to a different page (like payment page)
+//     // window.location.href = 'payment.php' + '?' + urlParams.toString();
+// }
+
+// // Also update the real-time parameter update function
+// function updateParametersRealTime() {
+//     const checkInDate = document.getElementById('checkInDate').value;
+//     const checkOutDate = document.getElementById('checkOutDate').value;
+
+//     // Only update if we have the basic required values
+//     if (dewasaValue && kamarValue && checkInDate && checkOutDate) {
+//         const urlParams = new URLSearchParams(window.location.search);
+//         urlParams.set('dewasa', dewasaValue);
+//         urlParams.set('anak', anakValue);
+//         urlParams.set('kamar', kamarValue);
+//         urlParams.set('check_in', checkInDate);
+//         urlParams.set('check_out', checkOutDate);
+
+//         const newURL = `${window.location.pathname}?${urlParams.toString()}`;
+//         window.history.replaceState({}, '', newURL);
+        
+//         // **ADD THIS LINE: Recalculate total payment in real-time**
+//         calculateTotalPayment();
+//     }
+// }
+
+// // Add event listeners for real-time updates on date changes
+// document.getElementById('checkInDate').addEventListener('change', function() {
+//     updateCheckOutDate();
+//     updateParametersRealTime();
+// });
+
+// document.getElementById('checkOutDate').addEventListener('change', function() {
+//     updateParametersRealTime();
+// });
+
+// // Add event listeners for counter button changes
+// document.addEventListener('DOMContentLoaded', function() {
+//     const counterButtons = document.querySelectorAll('.counter-btn');
+//     counterButtons.forEach(button => {
+//         button.addEventListener('click', function() {
+//             // Small delay to ensure counter values are updated first
+//             setTimeout(function() {
+//                 calculateTotalPayment();
+//             }, 100);
+//         });
+//     });
+// });
+
+// // Function to recalculate total payment
+// function recalculateTotal() {
+//     const checkInDate = document.getElementById('checkInDate').value;
+//     const checkOutDate = document.getElementById('checkOutDate').value;
+//     const kamarValue = parseInt(document.getElementById('kamarValue').textContent);
+    
+//     if (!checkInDate || !checkOutDate) return;
+    
+//     // Calculate duration (number of days)
+//     const startDate = new Date(checkInDate);
+//     const endDate = new Date(checkOutDate);
+//     const duration = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+    
+//     if (duration <= 0) return;
+    
+//     // Get room price from PHP variable (you need to make this available in JavaScript)
+//     // Add this PHP code in your HTML section to make room price available:
+//     // const roomPrice = echo $detail_kamar['harga_kamar']; ?>;
+    
+//     // For now, I'll assume you have the room price available
+//     // You'll need to replace this with the actual room price from your PHP
+//     const roomPrice = echo isset($detail_kamar['harga_kamar']) ? $detail_kamar['harga_kamar'] : 0; ?>;
+    
+//     // Calculate new total
+//     const newTotal = roomPrice * kamarValue * duration;
+    
+//     // Update the total display
+//     document.querySelector('.total p').innerHTML = `Total Bayar : Rp. ${number_format(newTotal, 0, '.', '.')}`;
+    
+//     // Also update any hidden input that stores the total for form submission
+//     const totalBayarInput = document.getElementById('total_bayar') || document.querySelector('input[name="total_bayar"]');
+//     if (totalBayarInput) {
+//         totalBayarInput.value = newTotal;
+//     }
+// }
+
+// // Function to format numbers (similar to PHP's number_format)
+// function number_format(number, decimals = 0, dec_point = '.', thousands_sep = ',') {
+//     const n = !isFinite(+number) ? 0 : +number;
+//     const prec = !isFinite(+decimals) ? 0 : Math.abs(decimals);
+//     const sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep;
+//     const dec = (typeof dec_point === 'undefined') ? '.' : dec_point;
+    
+//     const toFixedFix = function(n, prec) {
+//         const k = Math.pow(10, prec);
+//         return '' + (Math.round(n * k) / k).toFixed(prec);
+//     };
+    
+//     const s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+//     if (s[0].length > 3) {
+//         s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+//     }
+//     if ((s[1] || '').length < prec) {
+//         s[1] = s[1] || '';
+//         s[1] += new Array(prec - s[1].length + 1).join('0');
+//     }
+//     return s.join(dec);
+// }
+
+// // Update your existing updateCounter function to include total recalculation
+// function updateCounter(type, change) {
+//     const display = document.getElementById(type + 'Value');
+//     const hiddenInput = document.getElementById('hidden' + type.charAt(0).toUpperCase() + type.slice(1));
+//     let value = parseInt(display.textContent) + change;
+
+//     // Validation
+//     if (type === 'dewasa') {
+//         if (value < 1) return; // Dewasa minimal 1
+//         if (value > 15) return; // Dewasa maksimal 15
+//     } else if (type === 'kamar') {
+//         if (value < 1) return; // Kamar minimal 1
+//         if (value > 10) return; // Kamar maksimal 10
+//     } else if (type === 'anak') {
+//         if (value < 0) return; // Anak minimal 0
+//         if (value > 6) return; // Anak maksimal 6
+//     }
+
+//     // Update nilai
+//     display.textContent = value;
+//     hiddenInput.value = value;
+
+//     // Update tombol minus dan plus
+//     updateButtonStates(type, value);
+
+//     // Update tampilan dropdown trigger
+//     updateGuestRoomDisplay();
+//     updateHiddenValues();
+    
+//     // RECALCULATE TOTAL PAYMENT
+//     recalculateTotal();
+// }
+
+// // Update your date change event listeners to include total recalculation
+// function updateCheckOutDate() {
+//     if (!checkInDate.value) return;
+
+//     const duration = parseInt(durationValue.textContent);
+//     const startDate = new Date(checkInDate.value);
+//     const endDate = new Date(startDate);
+//     endDate.setDate(startDate.getDate() + duration);
+
+//     checkOutDate.value = formatDate(endDate);
+    
+//     // RECALCULATE TOTAL PAYMENT
+//     recalculateTotal();
+// }
+
+// // Also add recalculation to duration change events
+// increaseDuration.addEventListener('click', function() {
+//     let duration = parseInt(durationValue.textContent);
+//     if (duration >= 30) return;
+//     duration++;
+//     durationValue.textContent = duration;
+//     updateCheckOutDate();
+    
+//     if (duration > 30) {
+//         increaseDuration.disabled = true;
+//     }
+    
+//     if (duration > 1) {
+//         decreaseDuration.disabled = false;
+//     }
+    
+//     // RECALCULATE TOTAL PAYMENT
+//     recalculateTotal();
+// });
+
+// decreaseDuration.addEventListener('click', function() {
+//     let duration = parseInt(durationValue.textContent);
+//     if (duration > 1) {
+//         duration--;
+//         durationValue.textContent = duration;
+//         updateCheckOutDate();
+        
+//         if (duration < 30) {
+//             increaseDuration.disabled = false;
+//         }
+        
+//         if (duration <= 1) {
+//             decreaseDuration.disabled = true;
+//         }
+        
+//         // RECALCULATE TOTAL PAYMENT
+//         recalculateTotal();
+//     }
+// });
+
+// // Add event listeners for date changes
+// checkInDate.addEventListener('change', function() {
+//     updateCheckOutDate();
+//     recalculateTotal();
+// });
+
+// // Add this to your form submission to ensure the updated total is sent
+// document.querySelector('.lanjutkan-pembayaran').addEventListener('click', function(e) {
+//     e.preventDefault();
+    
+//     // Validate that all required fields are filled
+//     const dewasaValue = parseInt(document.getElementById('dewasaValue').textContent);
+//     const checkInDate = document.getElementById('checkInDate').value;
+//     const checkOutDate = document.getElementById('checkOutDate').value;
+    
+//     if (!checkInDate || !checkOutDate) {
+//         alert('Mohon lengkapi tanggal check-in dan check-out');
+//         return;
+//     }
+    
+//     if (dewasaValue < 1) {
+//         alert('Minimal 1 dewasa diperlukan');
+//         return;
+//     }
+    
+//     // Recalculate one final time before submission
+//     recalculateTotal();
+    
+//     // Update URL parameters and proceed
+//     updateURLWithNewParameters();
+// });
+
+// ------------------------------
+// ANOTHER TRY
+
+function updateURLWithNewParameters() {
+    // Get current values from the form
+    const dewasaValue = document.getElementById('dewasaValue').textContent;
+    const anakValue = document.getElementById('anakValue').textContent;
+    const kamarValue = document.getElementById('kamarValue').textContent;
+    const checkInDate = document.getElementById('checkInDate').value;
+    const checkOutDate = document.getElementById('checkOutDate').value;
+    const durationValue = document.getElementById('durationValue').textContent;
+
+    // Get current URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+
+    // Update parameters with new values
+    urlParams.set('dewasa', dewasaValue);
+    urlParams.set('anak', anakValue);
+    urlParams.set('kamar', kamarValue);
+    urlParams.set('check_in', checkInDate);
+    urlParams.set('check_out', checkOutDate);
+    urlParams.set('jumlah_hari', durationValue);
+
+    // Get other existing parameters to preserve them
+    const idhotel = urlParams.get('id_hotel');
+    const idkamar = urlParams.get('id_kamar');
+    const lokasi = urlParams.get('lokasi');
+
+    // Construct new URL with updated parameters
+    const newURL = `${window.location.pathname}?id_hotel=${idhotel}&id_kamar=${idkamar}&dewasa=${dewasaValue}&anak=${anakValue}&kamar=${kamarValue}&lokasi=${lokasi}&check_in=${checkInDate}&check_out=${checkOutDate}&jumlah_hari=${durationValue}`;
+
+    // Update the browser URL without refreshing the page
+    window.history.replaceState({}, '', newURL);
+
+    // **ADD THIS LINE: Recalculate total payment**
+    calculateTotalPayment();
+
+    // Now proceed with form submission or redirect
+    // Option 1: Submit form to the same page with new parameters
+    window.location.href = newURL;
+}
+
+// Function to recalculate total payment
+function recalculateTotal() {
+    const checkInDate = document.getElementById('checkInDate').value;
+    const checkOutDate = document.getElementById('checkOutDate').value;
+    const kamarValue = parseInt(document.getElementById('kamarValue').textContent);
+
+    if (!checkInDate || !checkOutDate) return;
+
+    // Calculate duration (number of days)
+    const startDate = new Date(checkInDate);
+    const endDate = new Date(checkOutDate);
+    const duration = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+
+    if (duration <= 0) return;
+
+    // Calculate new total
+    const newTotal = roomPrice * kamarValue * duration;
+
+    // Update the total display
+    document.querySelector('.total p').innerHTML = `Total Bayar : Rp. ${number_format(newTotal, 0, ',', '.')}`;
+
+    // Also update any hidden input that stores the total for form submission
+    const totalBayarInput = document.getElementById('total_bayar') || document.querySelector('input[name="total_bayar"]');
+    if (totalBayarInput) {
+        totalBayarInput.value = newTotal;
+    }
+}
+
+// Function to format numbers (similar to PHP's number_format)
+function number_format(number, decimals = 0, dec_point = ',', thousands_sep = '.') {
+    const n = !isFinite(+number) ? 0 : +number;
+    const prec = !isFinite(+decimals) ? 0 : Math.abs(decimals);
+    const sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep;
+    const dec = (typeof dec_point === 'undefined') ? '.' : dec_point;
+
+    const toFixedFix = function(n, prec) {
+        const k = Math.pow(10, prec);
+        return '' + (Math.round(n * k) / k).toFixed(prec);
+    };
+
+    const s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+    if (s[0].length > 3) {
+        s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+    }
+    if ((s[1] || '').length < prec) {
+        s[1] = s[1] || '';
+        s[1] += new Array(prec - s[1].length + 1).join('0');
+    }
+    return s.join(dec);
+}
+
+// Update your existing updateCounter function to include total recalculation
+function updateCounter(type, change) {
+    const display = document.getElementById(type + 'Value');
+    const hiddenInput = document.getElementById('hidden' + type.charAt(0).toUpperCase() + type.slice(1));
+    let value = parseInt(display.textContent) + change;
+    // Validation
+    if (type === 'dewasa') {
+        if (value < 1) return; // Dewasa minimal 1
+        if (value > 15) return; // Dewasa maksimal 15
+    } else if (type === 'kamar') {
+        if (value < 1) return; // Kamar minimal 1
+        if (value > 10) return; // Kamar maksimal 10
+    } else if (type === 'anak') {
+        if (value < 0) return; // Anak minimal 0
+        if (value > 6) return; // Anak maksimal 6
+    }
+    // Update nilai
+    display.textContent = value;
+    hiddenInput.value = value;
+    // Update tombol minus dan plus
+    updateButtonStates(type, value);
+    // Update tampilan dropdown trigger
+    updateGuestRoomDisplay();
+    updateHiddenValues();
+    // RECALCULATE TOTAL PAYMENT
+    recalculateTotal();
+}
+
+// Update your date change event listeners to include total recalculation
+document.getElementById('checkInDate').addEventListener('change', function() {
+    updateCheckoutDate();
+    recalculateTotal();
+});
+
+document.getElementById('checkOutDate').addEventListener('change', function() {
+    recalculateTotal();
+});
+
+document.querySelector('.lanjutkan-pembayaran').addEventListener('click', function(e) {
+    e.preventDefault();
+    
+    // Validate that all required fields are filled
+    const dewasaValue = parseInt(document.getElementById('dewasaValue').textContent);
+    const checkInDate = document.getElementById('checkInDate').value;
+    const checkOutDate = document.getElementById('checkOutDate').value;
+    
+    if (!checkInDate || !checkOutDate) {
+        alert('Mohon lengkapi tanggal check-in dan check-out');
+        return;
+    }
+    
+    if (dewasaValue < 1) {
+        alert('Minimal 1 dewasa diperlukan');
+        return;
+    }
+    
+    // Recalculate one final time before submission
+    recalculateTotal();
+    
+    // Get the final total value
+    const totalBayar = document.getElementById('total').textContent.replace(/[^\d]/g, '');
+    
+    // Update the hidden total_bayar input
+    const totalBayarInput = document.getElementById('total_bayar');
+    if (totalBayarInput) {
+        totalBayarInput.value = totalBayar;
+    }
+    
+    // Update URL parameters and proceed
+    updateURLWithNewParameters();
+    
+    // Submit the form
+    document.querySelector('form[action="proses_pesan.php"]').submit();
+});
+
+// Make sure the recalculateTotal function is called when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+    recalculateTotal();
+});
 </script>
 
 
