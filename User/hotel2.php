@@ -75,7 +75,7 @@ $current_hotel_description = getHotelDescription($id_hotel, $hotels['nama_hotel'
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $hotels['nama_hotel'];?> | Javast</title>
-    <link rel="stylesheet" href="hotel.css">
+    <link rel="stylesheet" href="hotel2.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
@@ -305,8 +305,7 @@ $current_hotel_description = getHotelDescription($id_hotel, $hotels['nama_hotel'
           <div class="box-button">
               <div class="price">Rp. <?= number_format($data_kamar['harga_kamar'], 0, ',', '.') ?></div><br>
               <div class="btn-pilih-kamar">
-              <a href="detail_kamar.php?id_hotel=<?= $data_kamar['id_hotel'] ?>&id_kamar=<?= $data_kamar['id_kamar'] ?>&check_in=<?= htmlspecialchars($check_in) ?>&check_out=<?= htmlspecialchars($check_out) ?>&dewasa=<?=(int)$dewasa ?>&anak=<?=(int)$anak ?>&kamar=<?=(int)$kamar ?>" 
-       class="btn-pilih">Pilih Kamar</a>
+              <a href="#" onclick="showNotification()">Pilih Kamar</a>
               </div>
               <br>
               
@@ -506,6 +505,13 @@ $current_hotel_description = getHotelDescription($id_hotel, $hotels['nama_hotel'
         
     </footer>
 
+<script>
+    function showNotification() {
+    alert("Isi search bar terlebih dahulu!");
+    // Optional: If you still want to redirect after the alert
+    window.location.href = "home.php";
+}
+</script>
 
 </body>
 </html>

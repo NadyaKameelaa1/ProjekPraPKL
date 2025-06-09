@@ -1,3 +1,5 @@
+
+/* navbar */
 .navbar {
     position: fixed;
     top: 0;
@@ -7,10 +9,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #ffffff;
+    background-color: #fff;
     padding: 15px 30px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
+    z-index: 1000; 
     
 }
 
@@ -85,6 +87,8 @@
 }
 
 .header {
+    position: relative;
+    text-align: center;
     background-image: url('gambar/GambarKota/background\ header.jpeg');
     background-size: cover;
     background-position: center;
