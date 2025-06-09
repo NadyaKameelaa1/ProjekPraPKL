@@ -162,15 +162,30 @@ body {
   }
   
   .thumbnails label {
+    /* cursor: pointer;
+    width: calc(20% - 8px); */
+
     cursor: pointer;
     width: calc(20% - 8px);
+    aspect-ratio: 4 / 3;         /* ✅ Tambahkan ini agar proporsional */
+    overflow: hidden;            /* ✅ Supaya gambar tidak keluar dari frame */
+    border-radius: 8px;
+    position: relative;
   }
   
   .thumbnails img {
+    /* width: 100%;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    transition: 0.3s; */
+
     width: 100%;
+    height: 100%;
+    object-fit: cover;           /* ✅ Gambar akan isi frame tanpa distorsi */
     border-radius: 8px;
     border: 2px solid transparent;
     transition: 0.3s;
+    display: block;
   }
   
   .thumbnails img:hover {
