@@ -22,7 +22,7 @@ $anak = isset($_GET['anak']) ? intval($_GET['anak']) : 0;
 $kamar = isset($_GET['kamar']) ? intval($_GET['kamar']) : 1;
 
 $id_hotel = isset($_GET['id_hotel']) ? intval($_GET['id_hotel']) : 0;
-
+$id_kamar = isset($_GET['id_kamar']) ? intval($_GET['id_kamar']) : 0;
 
 // Query untuk hotel
 $query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harga_terendah 
@@ -269,6 +269,39 @@ $query_kamar = mysqli_query($koneksi, "SELECT
               <br>
 
               <span><?= $data_kamar['jumlah_dewasa'] + $data_kamar['jumlah_anak'] ?> Tamu</span>
+
+              <br> 
+              <br>
+              
+              <b>Ketersediaan kamar</b>
+              <br>
+          <?php
+// Get room availability - UPDATED SOLUTION
+if ($id_kamar > 0) {
+    // Method 1: Get specific room availability
+    $stmt = mysqli_prepare($koneksi, "SELECT jumlah_kamar FROM kamar WHERE id_kamar = ?");
+    mysqli_stmt_bind_param($stmt, 'i', $id_kamar);
+} else {
+    // Method 2: Get total available rooms for the hotel if no specific room selected
+    $stmt = mysqli_prepare($koneksi, "SELECT jumlah_kamar AS jumlah_kamar FROM kamar WHERE id_hotel = ?");
+    mysqli_stmt_bind_param($stmt, 'i', $id_hotel);
+}
+
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+
+if ($result && $row = mysqli_fetch_assoc($result)) {
+    $jumlah_kamar = (int)$row['jumlah_kamar'];
+    error_log("Room availability found: $jumlah_kamar");
+} else {
+    $jumlah_kamar = 0;
+    error_log("No room availability data found");
+}
+mysqli_stmt_close($stmt);
+?>
+
+
+              <span><?= $jumlah_kamar ?> Kamar </span>
           </div>
 
           <div class="box-button">

@@ -143,17 +143,14 @@ $pending_count = mysqli_fetch_assoc($result_pending)['pending_count'];
         <div class="stat-card total-card">
           <h3 class="total">TOTAL BOOKING</h3>
           <div class="total-value"><?= $total_stats['total_count'] ?></div>
-          <div class="total-amount">RP. <?= number_format($total_stats['total_amount'], 0, ',', '.') ?></div>
         </div>
         <div class="stat-card">
           <h3 class="bookingAktif">BOOKING AKTIF</h3>
           <div class="bookingAktif-value"><?= $active_stats['active_count'] ?></div>
-          <div class="bookingAktif-amount">RP. <?= number_format($active_stats['active_amount'], 0, ',', '.') ?></div>
         </div>
         <div class="stat-card">
           <h3 class="bookingBatal">BOOKING DIBATALKAN</h3>
           <div class="bookingBatal-value"><?= $cancelled_stats['cancelled_count'] ?></div>
-          <div class="bookingBatal-amount">RP. <?= number_format($cancelled_stats['cancelled_amount'], 0, ',', '.') ?></div>
         </div>
       </div>
   
