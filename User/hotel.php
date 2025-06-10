@@ -126,10 +126,13 @@ $current_hotel_description = getHotelDescription($id_hotel, $hotels['nama_hotel'
 </head>
 <body>
      
+
   <?php include 'navbar.php'; ?>
+
 
     <!-- <div class="container-header"> 
 </div> -->
+
       <div class="hotel-container">
       <!-- Sidebar -->
       <div class="sidebar">

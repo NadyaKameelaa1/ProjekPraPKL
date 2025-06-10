@@ -206,7 +206,7 @@ $hotels = mysqli_fetch_all($result, MYSQLI_ASSOC);
                 <ul>
                     <li><a href="home.php">Beranda</a></li>
                     <li><a href="tentang.php">Tentang</a></li>
-                    <li><a href="kontak_kami.php">Kontak Kami Us</a></li>
+                    <li><a href="kontak_kami.php">Kontak Kami</a></li>
                 </ul>
             </div>
     
