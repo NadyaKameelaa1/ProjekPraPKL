@@ -36,30 +36,7 @@ while ($row = mysqli_fetch_assoc($query)) {
 </head>
 <body>
 
-
-    <div class="navbar">
-        <div class="logo">
-            <img src="logo/Logo_Javast.png" alt="Logo_Javast">
-
-        </div>
-        <div class="menu">
-            <a href="home.php">Beranda</a>
-            <a href="tentang.php">Tentang</a>
-            <a href="kontak_kami.php">Kontak Kami</a>
-
-        </div>
-
-        <div class="dropdown">
-            <button class="dropdown-btn"> 
-                <i class="fas fa-user"></i> <?= htmlspecialchars($username) ?> ▼
-            </button>
-            <div class="dropdown-menu">
-                <a href="profil.php">Profil</a>
-                <a href="booking.php">Booking</a>
-                <a href="logout.php">Logout</a>
-            </div>
-        </div>
-    </div>
+    <?php include 'navbar.php'; ?>
 
     <header class="header">
         <h5>Hotel Jawa Tengah</h5>
