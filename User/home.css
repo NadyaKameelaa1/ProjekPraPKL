@@ -106,7 +106,7 @@
     background-size: cover;
     background-position: center;
     text-align: center;
-    padding: 100px 0;
+    padding: 150px 0;
     color: white;
 }
 
@@ -131,7 +131,7 @@
     border-radius: 12px;
     box-shadow: 0 5px 8px rgba(0, 0, 0, 0.6);
     font-family: 'Segoe UI', Arial, sans-serif;
-    margin-top: -100px;
+    margin-top: -90px;
     height: 350px;
     position: relative;
 } 
