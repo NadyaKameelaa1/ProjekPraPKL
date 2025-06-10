@@ -8,7 +8,7 @@ body {
 }
 
 /* navbar */
-.navbar {
+/* .navbar {
     position: fixed;
     top: 0;
     left: 0;
@@ -92,6 +92,27 @@ body {
 
 .dropdown-menu a:hover {
     color: #774C1C;
+} */
+
+.header {
+  background-image: url('gambar/GambarKota/background\ header.jpeg');
+  background-size: cover;
+  background-position: center;
+  text-align: center;
+  padding: 150px 0;
+  color: white;
+}
+
+.header h1 {
+  font-size: 36px;
+  margin: 0;
+}
+.header hr{
+  width: 40%; 
+  border: none;
+  height: 1px;
+  background-color: #ffffff; 
+  margin: 5px auto; 
 }
 
 /* Gaya Dasar */

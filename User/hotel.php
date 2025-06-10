@@ -124,7 +124,8 @@ $current_hotel_description = getHotelDescription($id_hotel, $hotels['nama_hotel'
 </head>
 <body>
      
-  <div class="navbar">
+    <?php include 'navbar.php'; ?>
+  <!-- <div class="navbar">
     <div class="logo">
         <img src="logo/Logo_Javast.png" alt="Logo_Javast">
 
@@ -138,7 +139,7 @@ $current_hotel_description = getHotelDescription($id_hotel, $hotels['nama_hotel'
 
     <div class="dropdown">
         <button class="dropdown-btn"> 
-            <i class="fas fa-user"></i> <?= htmlspecialchars($username) ?> ▼
+            <i class="fas fa-user"></i>  ▼
         </button>
         <div class="dropdown-menu">
             <a href="profil.php">Profil</a>
@@ -146,10 +147,11 @@ $current_hotel_description = getHotelDescription($id_hotel, $hotels['nama_hotel'
             <a href="logout.php">Logout</a>
         </div>
     </div>   
-</div>
+</div> -->
 
     <!-- <div class="container-header"> 
 </div> -->
+
       <div class="hotel-container">
       <!-- Sidebar -->
       <div class="sidebar">
