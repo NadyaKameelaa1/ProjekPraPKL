@@ -146,8 +146,8 @@ $username = $user_data['nama_user'] ?? 'User';
           <h4><b>Deskripsi Kamar</b></h4>
           <p><?= htmlspecialchars($data_kamar['deskripsi_kamar']) ?></p>
           <hr>
-          <p>Mulai dari :</p>
-          <p class="harga"><b>Rp. <?= number_format($data_kamar['harga_kamar'], 0, ',', '.') ?> </b><span>/ malam</span></p>
+          <p>mulai dari</p>
+          <p class="harga"><b>Rp. <?= number_format($data_kamar['harga_kamar'], 0, ',', '.') ?> </b><span>/ kamar / malam</span></p>
             <a href="pesan.php?id_hotel=<?= $data_kamar['id_hotel'] ?>&id_kamar=<?= $data_kamar['id_kamar'] ?>&check_in=<?= htmlspecialchars($check_in) ?>&check_out=<?= htmlspecialchars($check_out) ?>&dewasa=<?= $dewasa ?>&anak=<?= $anak ?>&kamar=<?= $kamar ?>" 
        class="btn-pilih">
                 <button class="pesan">Pesan</button>
