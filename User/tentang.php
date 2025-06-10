@@ -34,10 +34,10 @@ $total_kostumer = $kostumer_data['total_kostumer'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tentang | Javast</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="tentang.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body>
 
@@ -68,15 +68,22 @@ $total_kostumer = $kostumer_data['total_kostumer'];
     </div>
 
     <header class="header">
-        <img src="ornamen/ornament-top.png" class="ornament ornament-top">
-        <h5>Javast</h5>
-        <h2>Tentang</h2>
-        <hr>
-        
-        <p>Selamat datang di platform Javast, tempat terbaik untuk memesan hotel <br> hampir di seluruh kota di Jawa Tengah.
+
+    <div class="bg-[url('Gambar/Tentang/background_tentang.png')] bg-cover bg-center h-screen flex items-center justify-center text-white text-center px-4">
+      <div class=" bg-opacity-50 p-8 rounded-lg max-w-4xl animate-slide-down">
+        <img src="ornamen/ornament-top.png" alt="Ornamen" class="mx-auto mb-4 w-32 h-auto" />
+        <h5 class="text-2xl font-bold mb-2">Javast</h5>
+        <h2 class="text-3xl font-semibold mb-4">Tentang</h2>
+        <hr class="border-gray-300 mb-4 w-2/3 mx-auto" />
+        <p class="text-lg leading-relaxed">
+            Selamat datang di platform Javast, tempat terbaik untuk memesan hotel hampir di seluruh kota di Jawa Tengah.
             Website ini dirancang khusus untuk memudahkan Anda dalam menemukan <br>dan memesan akomodasi sesuai dengan kebutuhan, baik
-            untuk keperluan bisnis maupun liburan.</p>
-        <img src="ornamen/ornament-bottom.png" class="ornament ornament-bottom">
+            untuk keperluan bisnis maupun liburan.
+        </p>
+        <img src="ornamen/ornament-bottom.png" alt="Ornamen" class="mx-auto mt-6 w-32 h-auto" />
+      </div>
+        
+       </div>
     </header>
 
 
@@ -100,17 +107,17 @@ $total_kostumer = $kostumer_data['total_kostumer'];
     <section class="stats">
         <div class="stat-box">
             <div class="stat-header"></div>
-            <img src="Gambar/Tentang/kota.png" alt="Kota">
+            <img src="Gambar/Tentang/kota.png" alt="Kota" class="ml-13">
             <p><b><?= $total_kota ?>+ Kota</b></p>
         </div>
         <div class="stat-box">
             <div class="stat-header"></div>
-            <img src="Gambar/Tentang/hotel.png" alt="Hotel">
+            <img src="Gambar/Tentang/hotel.png" alt="Hotel " class="ml-13">
             <p><b><?= $total_hotel ?>+ Hotel</b></p>
         </div>
         <div class="stat-box">
             <div class="stat-header"></div>
-            <img src="Gambar/Tentang/users.png" alt="Kostumer">
+            <img src="Gambar/Tentang/users.png" alt="Kostumer" class="ml-13">
             <p><b><?= $total_kostumer ?>+ Kostumer</b></p>
         </div>
     </section>
