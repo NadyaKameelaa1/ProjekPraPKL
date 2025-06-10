@@ -87,6 +87,8 @@ $username = $user_data['nama_user'] ?? 'User';
                 <i class="fab fa-instagram"></i>
                 <i class="fab fa-twitter"></i>
             </div>
+
+            
         </div>
 
         <div class="card contact-form">
@@ -108,6 +110,20 @@ $username = $user_data['nama_user'] ?? 'User';
                 <input type="submit" class="button" value="Kirim" name="tambahPesan">
             </form>
             
+        </div>
+
+        
+    </div>
+
+    <div class="card qr-container">
+        <div class="qr-content">
+            <div class="qr-image">
+                <img src="/JAVAST/User/QR/QRCode.jpg" alt="QR Code Javast" width="300">
+            </div>
+            <div class="qr-text">
+                <h3>Scan Kode QR Kami!</h3>
+                <p>Scan kode QR ini berguna untuk mengakses google form kami <br> sebagai tempat untuk menyampaikan Kritik dan Saran anda pada website Javast.</p>
+            </div>
         </div>
     </div>
 
