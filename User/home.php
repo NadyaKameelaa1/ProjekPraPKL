@@ -262,6 +262,52 @@ while ($row = mysqli_fetch_assoc($query)) {
         <br><br> -->
     </section>
 
+
+    <section class="advantages-container">
+    <div class="advantages-section">
+        <h2>Mengapa Memesan Penginapan di Javast?</h2>
+        
+        <div class="advantages-grid">
+            <div class="advantage-item">
+                <h3><i class="fa-solid fa-hotel"></i><br> Beragam Pilihan Akomodasi</h3>
+                <p>Pilihan hotel, villa dan resort dari budget pas-pasan hingga mewah tersedia khusus untukmu!</p>
+            </div>
+            
+            <div class="advantage-item">
+                <h3><i class="fa-solid fa-magnifying-glass-location"></i><br> Pencarian Lokasi Strategis</h3>
+                <p>Temukan penginapan di lokasi strategis dekat dengan pusat kota</p>
+            </div>
+            
+            <div class="advantage-item">
+                <h3><i class="fa-solid fa-bolt"></i><br> Booking Mudah dan Cepat</h3>
+                <p>Proses pemesanan dan pembayaran yang simpel dan hanya dalam beberapa langkah saja.</p>
+            </div>
+            
+            <div class="advantage-item">
+                <h3><i class="fa-solid fa-money-check-dollar"></i><br> Berbagai Cara Bayar Fleksibel</h3>
+                <p>Kemudahan bertransaksi dengan berbagai metode pembayaran mulai dari E-wallet hingga Pay at Hotel.</p>
+            </div>
+        </div>
+    </div>
+    
+    
+</section>
+
+<div class="transition-container">
+            <div class="fade-to-image"></div>
+            <div class="background-image-section" id="animated-bg">
+                <div class="newsletter-overlay">
+                    <h2>Dapatkan akses sepenuhnya di website kami dengan mendaftar!</h2>
+                    <div class="newsletter-form">
+                        <button onclick="window.location.href='daftar.php'">Daftar disini!</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
     <footer>
         <div class="footer-container">
             <div class="footer-logo">
@@ -293,6 +339,22 @@ while ($row = mysqli_fetch_assoc($query)) {
         </div>
     </footer>
     <script>
+         document.addEventListener('DOMContentLoaded', function() {
+            const bgSection = document.getElementById('animated-bg');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1 // Trigger ketika 10% element terlihat
+            });
+
+            observer.observe(bgSection);
+        });
+
         setTimeout(() => {
             document.querySelector('.intro-container').style.opacity = 0;
             document.querySelector('.main-content').style.display = 'block';

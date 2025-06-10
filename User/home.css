@@ -763,6 +763,220 @@ h4 {
     background-color: #5a3a1a; 
 }
 
+.transition-container {
+    position: relative;
+    margin-top: -50px; /* Sesuaikan sesuai kebutuhan */
+}
+
+.advantages-section {
+    padding: 60px 20px 100px;
+    background: linear-gradient(to bottom, #ffffff 0%, rgba(255,255,255,0.9) 80%, rgba(255,255,255,0) 100%);
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.advantages-section h2 {
+    color: #69452d;
+    margin-bottom: 40px;
+    font-size: 32px;
+}
+
+.advantages-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.advantages-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.advantage-item {
+    flex: 1 1 250px;
+    max-width: 280px;
+    padding: 25px 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.advantage-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+}
+
+.advantage-item h3 {
+    color: #646464;
+    margin: 15px 0;
+    font-size: 20px;
+}
+
+.advantage-item i{
+    font-size: 36px;
+    color: #e2c000;
+}
+
+.advantage-item h3:hover{
+    transform: translateY(-3px);
+    color: #e2c000;
+}
+
+.advantage-item p:hover{
+    color: #6b6b6b;
+}
+
+.advantage-item p {
+    color: #7f8c8d;
+    font-size: 15px;
+    line-height: 1.6;
+    
+}
+
+@media (max-width: 768px) {
+    .advantages-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .advantage-item {
+        width: 100%;
+        max-width: 350px;
+    }
+}
+
+
+.transition-container {
+            position: relative;
+            margin-top: -50px;
+        }
+
+        .fade-to-image {
+            height: 150px;
+            width: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .background-image-section {
+            position: relative;
+            z-index: 1;
+            padding-top: 100px;
+            height: 400px;
+            background-image: url('https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0; /* Awalnya tersembunyi */
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .background-image-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .newsletter-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 12px;
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .newsletter-overlay h2 {
+            color: #2d3e50;
+            margin-bottom: 25px;
+            font-size: 24px;
+        }
+
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .newsletter-form input {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .newsletter-form button {
+            padding: 15px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .newsletter-form button:hover {
+            background: #c0392b;
+        }
+
+        @media (max-width: 768px) {
+            .advantages-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .advantage-item {
+                width: 100%;
+                max-width: 350px;
+            }
+            
+            .newsletter-overlay {
+                width: 90%;
+                padding: 25px;
+            }
+            
+            .newsletter-overlay h2 {
+                font-size: 20px;
+            }
+        }
+
+@keyframes fadeIn {
+    from { 
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from { 
+        opacity: 0;
+        transform: translate(-50%, -30%);
+    }
+    to { 
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
 
 
 /* footer */
