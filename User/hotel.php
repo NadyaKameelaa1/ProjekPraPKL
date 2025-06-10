@@ -125,29 +125,7 @@ $current_hotel_description = getHotelDescription($id_hotel, $hotels['nama_hotel'
 <body>
      
     <?php include 'navbar.php'; ?>
-  <!-- <div class="navbar">
-    <div class="logo">
-        <img src="logo/Logo_Javast.png" alt="Logo_Javast">
-
-    </div>
-    <div class="menu">
-        <a href="home.php">Beranda</a>
-        <a href="tentang.php">Tentang</a>
-        <a href="kontak_kami.php">Kontak Kami</a>
-
-    </div>
-
-    <div class="dropdown">
-        <button class="dropdown-btn"> 
-            <i class="fas fa-user"></i>  ▼
-        </button>
-        <div class="dropdown-menu">
-            <a href="profil.php">Profil</a>
-            <a href="booking.php">Booking</a>
-            <a href="logout.php">Logout</a>
-        </div>
-    </div>   
-</div> -->
+ 
 
     <!-- <div class="container-header"> 
 </div> -->
