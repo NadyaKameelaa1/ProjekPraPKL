@@ -1,8 +1,107 @@
+ /* Fixed background layer */
+        .bg-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+
+        }
+        
+        /* Blurry overlay - THIS WILL WORK NOW */
+        .intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px); /* For Safari */
+            z-index: 999;
+            opacity: 1;
+            transition: opacity 1.5s ease-out;
+        }
+        
+        .intro-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 1;
+            transition: opacity 1s ease-in-out;
+        }
+        
+        .logoo {
+            width: 190px;
+            opacity: 0;
+            transform: scale(0.5);
+            animation: logoReveal 2.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            filter: drop-shadow(0 0 10px rgb(255, 203, 33));
+        }
+        
+        .welcome-text {
+            color: #855935;
+            margin-top: 30px;
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: bold;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: textReveal 1.5s ease-out 1.5s forwards;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+        
+        .progress-bar {
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #fde71d, transparent);
+            margin-top: 10px;
+            animation: progress 2.8s ease-in-out forwards;
+        }
+        
+        @keyframes logoReveal {
+            0% { opacity: 0; transform: scale(0.5) rotate(-15deg); }
+            60% { opacity: 1; transform: scale(1.1) rotate(5deg); }
+            100% { opacity: 1; transform: scale(1) rotate(0deg); }
+        }
+        
+        @keyframes textReveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes progress {
+            to { width: 300px; }
+        }
+        
+        /* Main content styling */
+        .main-content {
+            opacity: 0;
+            transition: opacity 0.5s ease-in 1s;
+        }
+        
+        /* Class to fade out intro */
+        .fade-out {
+            opacity: 0 !important;
+        }
+        /* Hide intro elements by default */
+        .intro-overlay, .intro-container {
+            display: none;
+        }
+        
+
 
 /* header */
+
 .header {
-    position: relative;
-    text-align: center;
     background-image: url('gambar/GambarKota/background\ header.jpeg');
     background-size: cover;
     background-position: center;
@@ -407,7 +506,7 @@
 
 /* hotel */
 
-.container-hotel{
+body {
     font-family: Roboto, sans-serif;
     background-color: #f5efe4;
     margin: 0;

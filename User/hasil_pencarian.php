@@ -21,7 +21,6 @@ $anak = isset($_GET['anak']) ? intval($_GET['anak']) : 0;
 $kamar = isset($_GET['kamar']) ? intval($_GET['kamar']) : 1;
 
 // Query pencarian hotel dengan filter kapasitas
-// Query pencarian hotel yang sudah diperbaiki
 $query = "SELECT
     h.*,
     MIN(k.harga_kamar) AS harga_terendah,

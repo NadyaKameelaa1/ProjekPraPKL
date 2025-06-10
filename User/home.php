@@ -29,17 +29,27 @@ while ($row = mysqli_fetch_assoc($query)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Beranda | Javast</title>
     <link rel="stylesheet" href="home.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
+    
+
 
     <?php include 'navbar.php'; ?>
 
+    <!-- <div class="intro-container">
+        <img src="Logo/Logo_Javast.png" alt="Hotel Logo" class="logoo">
+         <div class="welcome-text">Selamat datang, htmlspecialchars($username) ?>!</div>
+        <div class="progress-bar"></div> -->
+     
+
+    
+
     <header class="header">
-        <h5>Hotel Jawa Tengah</h5>
+        <h5>Hotel untuk seluruh Jawa Tengah</h5>
         <h2>SELAMAT DATANG</h2>
         <hr>
     </header>
@@ -247,9 +257,9 @@ while ($row = mysqli_fetch_assoc($query)) {
     </div>
 
         <!-- <div class="button-container">
-            <button class="kota-button" >Lihat Hotel Lainnya >></button>
-        </div> -->
-
+            <button class="kota-button" onclick="window.location.href='home2.php'">Lihat Hotel Lainnya >></button>
+        </div>
+        <br><br> -->
     </section>
 
     <footer>
@@ -282,9 +292,16 @@ while ($row = mysqli_fetch_assoc($query)) {
             </div>
         </div>
     </footer>
-       
     <script>
-
+        setTimeout(() => {
+            document.querySelector('.intro-container').style.opacity = 0;
+            document.querySelector('.main-content').style.display = 'block';
+            
+            setTimeout(() => {
+                document.querySelector('.intro-container').remove();
+                document.querySelector('.main-content').style.opacity = 1;
+            }, 1000);
+        }, 4500);
 
         function updateGuestRoomDisplay() {
             const dewasa = document.getElementById('dewasa').value;
@@ -531,6 +548,7 @@ if (parseInt(durationValue.textContent) <= 1) {
     });
     </script>
 
+</div>
 </body>
 </html>
 
