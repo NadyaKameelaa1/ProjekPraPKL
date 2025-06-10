@@ -23,18 +23,6 @@ if ($result->num_rows == 0) {
 $user = $result->fetch_assoc();
 $id_user = $user['id_user'];
 
-// Ambil data dari form
-// $id_hotel = intval($_POST['id_hotel']);
-// $id_kamar = intval($_POST['id_kamar']);
-// $check_in = isset($_GET['check_in']) ? $_GET['check_in'] : date('Y-m-d');
-// $check_out = isset($_GET['check_out']) ? $_GET['check_out'] : date('Y-m-d', strtotime('+1 day'));
-// $dewasa = intval($_POST['dewasa']);
-// $anak = intval($_POST['anak']);
-// $total_bayar = intval($_POST['total_bayar']);
-// $jumlah_kamar = intval($_POST['kamar']);
-// $jumlah_hari = isset($_GET['jumlah_hari']) ? intval($_GET['jumlah_hari']) : 0;
-// $total_bayar = isset($_GET['total_bayar']) ? intval($_GET['total_bayar']) : 0;
-
 $id_hotel = intval($_POST['id_hotel']);
 $id_kamar = intval($_POST['id_kamar']);
 $check_in = $_POST['check_in'];
