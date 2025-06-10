@@ -272,6 +272,38 @@ textarea {
     color: #28a745;
 }
 
+.qr-container {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+    width: 80%;
+    max-width: 870px;
+    margin-left: 240px;
+}
+
+.qr-content {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.qr-image {
+    flex: 0 0 auto;
+}
+
+.qr-text {
+    flex: 1;
+    margin: 10px 0;
+    font-size: 14px;
+    color: #696969;
+}
+
+@media (max-width: 768px) {
+    .qr-content {
+        flex-direction: column;
+        text-align: center;
+    }
+}
 
 
 
