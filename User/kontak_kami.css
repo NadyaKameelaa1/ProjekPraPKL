@@ -165,6 +165,7 @@ body {
     gap: 20px;
     width: 80%;
     max-width: 900px;
+    margin-top: -150px;
 }
 
 .card {
