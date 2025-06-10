@@ -7,6 +7,14 @@ if (!isset($_SESSION['email_user'])) {
     header("Location: login.php");
     exit;
 }
+
+if (isset($_SESSION['email_user']) && !isset($_SESSION['nama_user'])) {
+    $email = $_SESSION['email_user'];
+    $user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_user = '$email'");
+    $user_data = mysqli_fetch_assoc($user_query);
+    $_SESSION['nama_user'] = $user_data['nama_user'] ?? 'User';
+}
+
 // Ambil parameter
 $id_hotel = isset($_GET['id_hotel']) ? intval($_GET['id_hotel']) : 0;
 $id_kamar = isset($_GET['id_kamar']) ? intval($_GET['id_kamar']) : 0;
@@ -101,30 +109,7 @@ $username = $user_data['nama_user'] ?? 'User';
 </head>
 <body>
     
-    <div class="navbar">
-        <div class="logo">
-            <img src="logo/Logo_Javast.png" alt="Logo_Javast">
-
-        </div>
-        <div class="menu">
-            <a href="home.php">Beranda</a>
-            <a href="tentang.php">Tentang</a>
-            <a href="kontak_kami.php">Kontak Kami</a>
-
-        </div>
-
-        <div class="dropdown">
-            <button class="dropdown-btn"> 
-                <i class="fas fa-user"></i> <?= htmlspecialchars($username) ?> ▼
-            </button>
-            <div class="dropdown-menu">
-                <a href="profil.php">Profil</a>
-                <a href="booking.php">Booking</a>
-                <a href="logout.php">Logout</a>
-            </div>
-        </div>
-        
-    </div>
+    <?php include 'navbar.php'; ?>
     
     <br>
     <br>

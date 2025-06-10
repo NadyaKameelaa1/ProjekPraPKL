@@ -8,6 +8,10 @@ if (!isset($_SESSION['email_user'])) {
 }
 
 $email = $_SESSION['email_user'];
+$sql = "SELECT * FROM users WHERE email_user = '$email'";
+$result = mysqli_query($koneksi, $sql);
+$user = mysqli_fetch_assoc($result);
+
 $user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_user = '$email'");
 $user_data = mysqli_fetch_assoc($user_query);
 $username = $user_data['nama_user'] ?? 'User';

@@ -2,12 +2,12 @@
 session_start();
 require_once '../Koneksi/koneksi.php';
 
-if (!isset($_SESSION['email_user'])) {
-    header("Location: login.php");
-    exit;
-}
+$email = isset($_SESSION['email_user']);
 
-$email = $_SESSION['email_user'];
+$sql = "SELECT * FROM users WHERE email_user = '$email'";
+$result = mysqli_query($koneksi, $sql);
+$user = mysqli_fetch_assoc($result);
+
 $user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_user = '$email'");
 $user_data = mysqli_fetch_assoc($user_query);
 $username = $user_data['nama_user'] ?? 'User';
@@ -28,31 +28,7 @@ $username = $user_data['nama_user'] ?? 'User';
 </head>
 <body>
 
-    <div class="navbar">
-        <div class="logo">
-            <img src="logo/Logo_Javast.png" alt="Logo_Javast">
-
-        </div>
-        <div class="menu">
-            <a href="home.php">Beranda</a>
-            <a href="tentang.php">Tentang</a>
-            <a href="kontak_kami.php">Kontak Kami</a>
-
-        </div>
-
-        <div class="dropdown">
-            <button class="dropdown-btn"> 
-                <i class="fas fa-user"></i> <?= htmlspecialchars($username) ?> ▼
-            </button>
-            <div class="dropdown-menu">
-                <a href="profil.php">Profil</a>
-                <a href="booking.php">Booking</a>
-                <a href="logout.php">Logout</a>
-            </div>
-        </div>
-        
-
-    </div>
+     <?php include 'navbar.php'; ?>
 
     <header class="header">
         <img src="ornamen/ornament-top.png" class="ornament ornament-top">
@@ -96,15 +72,15 @@ $username = $user_data['nama_user'] ?? 'User';
             <form action="kontak_proses_tambah.php" method="post">
                 <div class="form-group">
                     <label><i class="fas fa-user"></i> Nama</label>
-                    <input type="text" name="nama_pengirim" placeholder="Tulis nama...">
+                    <input type="text" name="nama_pengirim" placeholder="Tulis nama..." required>
                 </div>
                 <div class="form-group">
                     <label><i class="fas fa-envelope"></i> Email</label>
-                    <input type="email" name="email_pengirim" placeholder="Tulis email...">
+                    <input type="email" name="email_pengirim" placeholder="Tulis email..." required>
                 </div>
                 <div class="form-group">
                     <label><i class="fas fa-comment"></i> Pesan</label>
-                    <textarea name="pesan_pengirim" placeholder="Tulis pesan..."></textarea>
+                    <textarea name="pesan_pengirim" placeholder="Tulis pesan..." required></textarea>
                    
                 </div>
                 <input type="submit" class="button" value="Kirim" name="tambahPesan">

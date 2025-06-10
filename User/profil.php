@@ -4,7 +4,30 @@ require_once '../koneksi/koneksi.php';
 
 // Pastikan user sudah login
 if (!isset($_SESSION['email_user'])) {
-    header("Location: login.php");
+     $_SESSION['error_message'] = "Anda harus login terlebih dahulu untuk mengakses profil!";
+    echo '
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        Swal.fire({
+            title: "Perhatian!",
+            text: "'.$_SESSION['error_message'].'",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Login Sekarang",
+            cancelButtonText: "Nanti Saja",
+            allowOutsideClick: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "login.php";
+            } else{
+             window.location.href = "home.php";
+            }
+        });
+    });
+    </script>
+    ';
+    unset($_SESSION['error_message']);
     exit;
 }
 

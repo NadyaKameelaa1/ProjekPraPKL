@@ -2,10 +2,18 @@
 session_start();
 require_once '../koneksi/koneksi.php';
 
-// Cek login
 if (!isset($_SESSION['email_user'])) {
     header("Location: login.php");
     exit;
+}
+
+
+// Cek login
+if (isset($_SESSION['email_user']) && !isset($_SESSION['nama_user'])) {
+    $email = $_SESSION['email_user'];
+    $user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_user = '$email'");
+    $user_data = mysqli_fetch_assoc($user_query);
+    $_SESSION['nama_user'] = $user_data['nama_user'] ?? 'User';
 }
 
 // Ambil parameter
@@ -46,9 +54,9 @@ $email = $_SESSION['email_user'];
 $query_user = mysqli_query($koneksi, "SELECT nama_user, no_telp, alamat_user FROM users WHERE email_user = '$email'");
 $user = mysqli_fetch_assoc($query_user);
 
-$user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_user = '$email'");
-$user_data = mysqli_fetch_assoc($user_query);
-$username = $user_data['nama_user'] ?? 'User';
+// $user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_user = '$email'");
+// $user_data = mysqli_fetch_assoc($user_query);
+// $username = $user_data['nama_user'] ?? 'User';
 ?>
 
 
@@ -65,30 +73,7 @@ $username = $user_data['nama_user'] ?? 'User';
 </head>
 <body>
     
-    <div class="navbar">
-        <div class="logo">
-            <img src="logo/Logo_Javast.png" alt="Logo_Javast">
-
-        </div>
-        <div class="menu">
-        <a href="home.php">Beranda</a>
-        <a href="tentang.php">Tentang</a>
-        <a href="kontak_kami.php">Kontak Kami</a>
-
-    </div>
-
-    <div class="dropdown">
-        <button class="dropdown-btn"> 
-            <i class="fas fa-user"></i> <?= htmlspecialchars($username) ?> ▼
-        </button>
-        <div class="dropdown-menu">
-            <a href="profil.php">Profil</a>
-            <a href="booking.php">Booking</a>
-            <a href="logout.php">Logout</a>
-        </div>
-    </div>
-        
-    </div>
+    <?php include 'navbar.php'; ?>
 
     <br>
     <br>
@@ -115,6 +100,17 @@ $username = $user_data['nama_user'] ?? 'User';
           <br>
           <h4><b><?= htmlspecialchars($detail_kamar['nama_kamar']) ?></b></h4>
             <p class="price">Rp. <?= number_format($detail_kamar['harga_kamar'], 0, ',', '.') ?></p>
+            <div class="rating">
+                            <?php echo str_repeat("★", $hotels['bintang_hotel']); ?>
+                            <i class="fa-solid fa-thumbs-up"></i>
+            </div>
+            <span class="hotel-type">
+                        <i class="fa-solid fa-location-dot"></i> <?php echo  $hotels['lokasi_hotel']; ?>
+                    </span>
+
+                    <span class="hotel-alamat">
+                        <?php echo  $hotels['alamat_hotel']; ?>
+                    </span>
         </div>
     
         <div class="order-box">
@@ -195,14 +191,6 @@ $username = $user_data['nama_user'] ?? 'User';
             
            <button type="submit" id="lanjutkan-pembayaran" class="lanjutkan-pembayaran" value="Lanjutkan ke pembayaran">Lanjutkan ke pembayaran </button>
           </form>
-
-          <?php // Tambahkan ini untuk memastikan nilai:
-// echo "<pre>Debug Values:";
-// echo "\nHarga Kamar: " . $detail_kamar['harga_kamar'];
-// echo "\nJumlah Hari: " . $jumlah_hari;
-// echo "\nJumlah Kamar: " . $kamar;
-// echo "\nTotal Bayar: " . $total_bayar;
-// echo "</pre>";?>
           
         </div>
       </div>

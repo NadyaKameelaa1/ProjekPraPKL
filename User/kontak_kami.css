@@ -266,6 +266,7 @@ textarea {
     width: 100%;
     max-width: 900px; /* sesuaikan dengan lebar card Anda */
     box-sizing: border-box;
+    margin-bottom: 200px;
 }
 
 .success-message i {

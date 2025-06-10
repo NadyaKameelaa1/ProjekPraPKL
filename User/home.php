@@ -2,15 +2,12 @@
 session_start();
 require_once '../Koneksi/koneksi.php';
 
-if (!isset($_SESSION['email_user'])) {
-    header("Location: login.php");
-    exit;
+if (isset($_SESSION['email_user']) && !isset($_SESSION['nama_user'])) {
+    $email = $_SESSION['email_user'];
+    $user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_user = '$email'");
+    $user_data = mysqli_fetch_assoc($user_query);
+    $_SESSION['nama_user'] = $user_data['nama_user'] ?? 'User';
 }
-
-$email = $_SESSION['email_user'];
-$user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_user = '$email'");
-$user_data = mysqli_fetch_assoc($user_query);
-$username = $user_data['nama_user'] ?? 'User';
 
 $query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harga_terendah 
     FROM hotels
@@ -40,17 +37,13 @@ while ($row = mysqli_fetch_assoc($query)) {
 
     <?php include 'navbar.php'; ?>
 
-    <!-- <div class="intro-container">
-        <img src="Logo/Logo_Javast.png" alt="Hotel Logo" class="logoo">
-         <div class="welcome-text">Selamat datang, htmlspecialchars($username) ?>!</div>
-        <div class="progress-bar"></div> -->
-     
 
     
 
     <header class="header">
-        <h5>Hotel untuk seluruh Jawa Tengah</h5>
-        <h2>SELAMAT DATANG</h2>
+        <h5>Javast</h5>
+        <h2>Selamat Datang</h2>
+        <h4>Website booking hotel khusus daerah Jawa Tengah.</h4>
         <hr>
     </header>
     <br>

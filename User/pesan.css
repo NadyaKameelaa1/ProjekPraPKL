@@ -458,4 +458,28 @@ footer {
     font-size: 14px;
 }
 
+.rating {
+    margin-top: -10px;
+    color: orange;
+    font-size: 18px;
+}
 
+.rating i{
+  color: orange;
+}
+
+.hotel-type {
+    order: 3; 
+    display: block;
+    font-size: 16px;
+    color: #505050;
+    margin-bottom: 1px;
+}
+
+.hotel-alamat {
+    order: 3; 
+    display: block;
+    font-size: 14px;
+    color: #999999;
+    margin-bottom: 1px;
+}

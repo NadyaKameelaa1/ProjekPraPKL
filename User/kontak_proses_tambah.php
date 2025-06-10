@@ -2,6 +2,35 @@
 session_start();
 require_once '../koneksi/koneksi.php';
 
+if (!isset($_SESSION['email_user']) || empty($_SESSION['email_user'])) {
+     $_SESSION['error_message'] = "Anda harus login terlebih dahulu!";
+    echo '
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        Swal.fire({
+            title: "Perhatian!",
+            text: "'.$_SESSION['error_message'].'",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Login Sekarang",
+            cancelButtonText: "Nanti Saja",
+            allowOutsideClick: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "login.php";
+            } else{
+             window.location.href = "home.php";
+            }
+        });
+    });
+    </script>
+    ';
+    unset($_SESSION['error_message']);
+    exit;
+}
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tambahPesan'])){
     // Sanitasi input - PASTIKAN NAMA FIELD SESUAI FORM
     $nama_pengirim = mysqli_real_escape_string($koneksi, $_POST['nama_pengirim'] ?? '');

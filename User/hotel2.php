@@ -2,15 +2,15 @@
 session_start();
 require_once '../koneksi/koneksi.php';
 
-if (!isset($_SESSION['email_user'])) {
-    header("Location: login.php");
-    exit;
-}
+$email = isset($_SESSION['email_user']);
+$sql = "SELECT * FROM users WHERE email_user = '$email'";
+$result = mysqli_query($koneksi, $sql);
+$user = mysqli_fetch_assoc($result);
 
-$email = $_SESSION['email_user'];
 $user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_user = '$email'");
 $user_data = mysqli_fetch_assoc($user_query);
 $username = $user_data['nama_user'] ?? 'User';
+
 
 // Ambil parameter pencarian
 $lokasi = isset($_GET['lokasi']) ? mysqli_real_escape_string($koneksi, $_GET['lokasi']) : '';
@@ -124,30 +124,8 @@ $current_hotel_description = getHotelDescription($id_hotel, $hotels['nama_hotel'
 </head>
 <body>
      
-  <div class="navbar">
-    <div class="logo">
-        <img src="logo/Logo_Javast.png" alt="Logo_Javast">
-
-    </div>
-    <div class="menu">
-        <a href="home.php">Beranda</a>
-        <a href="tentang.php">Tentang</a>
-        <a href="kontak_kami.php">Kontak Kami</a>
-
-    </div>
-
-    <div class="dropdown">
-        <button class="dropdown-btn"> 
-            <i class="fas fa-user"></i> <?= htmlspecialchars($username) ?> ▼
-        </button>
-        <div class="dropdown-menu">
-            <a href="profil.php">Profil</a>
-            <a href="booking.php">Booking</a>
-            <a href="logout.php">Logout</a>
-        </div>
-    </div>
-    
-</div>
+   <?php include 'navbar.php'; ?>
+   <br><br><br><br>
 
     <!-- <div class="container-header"> 
 </div> -->
