@@ -145,8 +145,7 @@ $current_hotel_description = getHotelDescription($id_hotel, $hotels['nama_hotel'
             <a href="booking.php">Booking</a>
             <a href="logout.php">Logout</a>
         </div>
-    </div>
-    
+    </div>   
 </div>
 
     <!-- <div class="container-header"> 
