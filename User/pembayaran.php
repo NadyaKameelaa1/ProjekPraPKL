@@ -41,7 +41,7 @@ $query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harg
 $hotels = mysqli_fetch_assoc($query);
 
 // IMPORTANT: Calculate total payment here
-$harga_kamar = $hotels['harga_kamar'];
+// $harga_kamar = $detail_kamar['harga_kamar'];
 
 // Calculate number of days if not provided
 if ($jumlah_hari <= 0) {
@@ -50,12 +50,12 @@ if ($jumlah_hari <= 0) {
 }
 
 // Recalculate total payment
-$recalculated_total = $harga_kamar * $jumlah_hari * $jumlah_kamar;
+// $recalculated_total = $harga_kamar * $jumlah_hari * $jumlah_kamar;
 
 // Use recalculated total if it differs from the passed parameter
-if ($total_bayar != $recalculated_total || $total_bayar == 0) {
-    $total_bayar = $recalculated_total;
-}
+// if ($total_bayar != $recalculated_total || $total_bayar == 0) {
+//     $total_bayar = $recalculated_total;
+// }
 
 $query_pesanan = "SELECT p.*, k.nama_kamar, k.harga_kamar, h.nama_hotel 
                   FROM pesanan p 
@@ -274,10 +274,9 @@ $username = $user_data['nama_user'] ?? 'User';
             <div class="footer-links">
                 <h3>Link</h3>
                 <ul>
-                    <li><a href="home.html">Beranda</a></li>
-                    <li><a href="#">Hotel</a></li>
-                    <li><a href="tentang.html">Tentang</a></li>
-                    <li><a href="kontak_kami.html">Kontak Kami Us</a></li>
+                    <li><a href="home.php">Beranda</a></li>
+                    <li><a href="tentang.php">Tentang</a></li>
+                    <li><a href="kontak_kami.php">Kontak Kami</a></li>
                 </ul>
             </div>
     

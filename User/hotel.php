@@ -113,8 +113,8 @@ $current_hotel_description = getHotelDescription($id_hotel, $hotels['nama_hotel'
     <div class="container-gumaya">
       
     <div class="hotel-card">
-      <div class="container-header">
-      <a href="hasil_pencarian.php?<?php
+      <!-- <div class="container-header">
+      <a href="hasil_pencarian.php?
         echo http_build_query([
             'lokasi' => $_GET['lokasi'] ?? '',
             'check_in' => $_GET['check_in'] ?? '',
@@ -126,7 +126,7 @@ $current_hotel_description = getHotelDescription($id_hotel, $hotels['nama_hotel'
     ?>" class="back-button">
         <i class="fa-solid fa-arrow-left"></i> Kembali
     </a>
-    </div>
+    </div> -->
         <div class="hotel-info">
             <div class="description">
               <div class="header-container">

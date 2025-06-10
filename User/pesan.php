@@ -143,11 +143,9 @@ $username = $user_data['nama_user'] ?? 'User';
               <div class="guest-room-section">
               <label>Tamu dan Kamar</label>
               <div class="guest-room-container">
-                  <div class="guest-room-trigger" id="guestRoomTrigger">
-                      <span id="guestRoomDisplay"><?= "$dewasa Dewasa, $anak Anak, $kamar Kamar" ?></span>
-                      <i class="fas fa-chevron-down"></i>
-                  </div>
                   
+                    <input type="text" id="guestRoomDisplay" value="<?= "$dewasa Dewasa, $anak Anak, $kamar Kamar" ?>" readonly>
+
                   <div class="guest-room-dropdown" id="guestRoomDropdown">
                       <div class="guest-room-item">
                           <div class="guest-room-label"><b>Dewasa</b></div>
@@ -182,11 +180,11 @@ $username = $user_data['nama_user'] ?? 'User';
             <div class="date-group">
               <div class="date-box">
                   <label>Check In</label>
-                  <input type="date" id="checkInDate" name="check_in" value="<?= $check_in ?>" class="date-input">
+                  <input type="date" id="checkInDate" name="check_in" value="<?= $check_in ?>" class="date-input" readonly>
               </div>
               <div class="date-box">
                   <label>Check Out</label>
-                  <input type="date" id="checkOutDate" name="check_out" value="<?= $check_out ?>" class="date-input">
+                  <input type="date" id="checkOutDate" name="check_out" value="<?= $check_out ?>" class="date-input" readonly>
               </div>
             </div>
             

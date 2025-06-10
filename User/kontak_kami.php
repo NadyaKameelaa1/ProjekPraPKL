@@ -46,7 +46,7 @@ $username = $user_data['nama_user'] ?? 'User';
             </button>
             <div class="dropdown-menu">
                 <a href="profil.php">Profil</a>
-                <a href="booking.html">Booking</a>
+                <a href="booking.php">Booking</a>
                 <a href="logout.php">Logout</a>
             </div>
         </div>

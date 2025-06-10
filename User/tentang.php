@@ -12,6 +12,20 @@ $user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_us
 $user_data = mysqli_fetch_assoc($user_query);
 $username = $user_data['nama_user'] ?? 'User';
 
+// Get count of distinct cities
+$kota_query = mysqli_query($koneksi, "SELECT COUNT(DISTINCT kota_hotel) as total_kota FROM hotels");
+$kota_data = mysqli_fetch_assoc($kota_query);
+$total_kota = $kota_data['total_kota'];
+
+// Get count of hotels
+$hotel_query = mysqli_query($koneksi, "SELECT COUNT(*) as total_hotel FROM hotels");
+$hotel_data = mysqli_fetch_assoc($hotel_query);
+$total_hotel = $hotel_data['total_hotel'];
+
+// Get count of users
+$kostumer_query = mysqli_query($koneksi, "SELECT COUNT(*) as total_kostumer FROM users");
+$kostumer_data = mysqli_fetch_assoc($kostumer_query);
+$total_kostumer = $kostumer_data['total_kostumer'];
 ?>
 
 <!DOCTYPE html>
@@ -45,7 +59,7 @@ $username = $user_data['nama_user'] ?? 'User';
             </button>
             <div class="dropdown-menu">
                 <a href="profil.php">Profil</a>
-                <a href="booking.html">Booking</a>
+                <a href="booking.php">Booking</a>
                 <a href="logout.php">Logout</a>
             </div>
         </div>
@@ -87,17 +101,17 @@ $username = $user_data['nama_user'] ?? 'User';
         <div class="stat-box">
             <div class="stat-header"></div>
             <img src="Gambar/Tentang/kota.png" alt="Kota">
-            <p><b>20+ Kota</b></p>
+            <p><b><?= $total_kota ?>+ Kota</b></p>
         </div>
         <div class="stat-box">
             <div class="stat-header"></div>
             <img src="Gambar/Tentang/hotel.png" alt="Hotel">
-            <p><b>10+ Hotel</b></p>
+            <p><b><?= $total_hotel ?>+ Hotel</b></p>
         </div>
         <div class="stat-box">
             <div class="stat-header"></div>
             <img src="Gambar/Tentang/users.png" alt="Kostumer">
-            <p><b>100+ Kostumer</b></p>
+            <p><b><?= $total_kostumer ?>+ Kostumer</b></p>
         </div>
     </section>
 
@@ -121,10 +135,9 @@ $username = $user_data['nama_user'] ?? 'User';
             <div class="footer-links">
                 <h3>Link</h3>
                 <ul>
-                    <li><a href="#">Beranda</a></li>
-                    <li><a href="#">Hotel</a></li>
-                    <li><a href="tentang.html">Tentang</a></li>
-                    <li><a href="kontak_kami.html">Kontak Kami Us</a></li>
+                    <li><a href="home.php">Beranda</a></li>
+                    <li><a href="tentang.php">Tentang</a></li>
+                    <li><a href="kontak_kami.php">Kontak Kami</a></li>
                 </ul>
             </div>
     

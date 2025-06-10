@@ -86,8 +86,7 @@ while ($row = mysqli_fetch_assoc($query)) {
                     $query = "SELECT DISTINCT kota_hotel, 
                             (SELECT COUNT(*) FROM hotels WHERE kota_hotel = h.kota_hotel) as jumlah_hotel
                             FROM hotels h
-                            ORDER BY jumlah_hotel DESC
-                            LIMIT 4";
+                            ORDER BY jumlah_hotel DESC";
                     $result = mysqli_query($koneksi, $query);
                     
                     while ($row = mysqli_fetch_assoc($result)) {
@@ -187,7 +186,7 @@ while ($row = mysqli_fetch_assoc($query)) {
 
                 <div class="container">
                 <?php foreach ($hotels as $hotel): ?>
-                <a href="hotel.php?id_hotel=<?php echo $hotel['id_hotel']; ?>" class="hotel-link">
+                <a href="hotel2.php?id_hotel=<?php echo $hotel['id_hotel']; ?>" class="hotel-link">
                     <div class="hotel-card">
                         <img src="/JAVAST/Admin/Gambar/Hotel/<?php echo $hotel['gambar_hotel']; ?>" alt="<?php echo $hotel['nama_hotel']; ?>" class="hotel-image">
                         <div class="hotel-info">

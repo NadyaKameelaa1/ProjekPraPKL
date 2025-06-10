@@ -34,7 +34,7 @@ while ($row = mysqli_fetch_assoc($query)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yogyakarta | Javast</title>
-    <link rel="stylesheet" href="yogyakarta.css">
+    <link rel="stylesheet" href="jogja.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
@@ -112,6 +112,12 @@ while ($row = mysqli_fetch_assoc($query)) {
                         <div class="hotel-booking">
                             <div class="price">1 malam <br><strong>Rp <?= number_format($hotel['harga_terendah'], 0, ',', '.') ?></strong></div>
                             <div class="note">Di luar pajak & biaya</div>
+
+                            <div>
+                            <a href="hotel2.php?id_hotel=<?php echo $hotel['id_hotel']; ?>">
+                            <button class="button">Pilih Kamar</button>
+                            </a>
+                            </div>
                         </div>
                     </div>
                 <?php endforeach; ?>
