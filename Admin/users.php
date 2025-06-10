@@ -56,7 +56,7 @@ $query = mysqli_query($koneksi,$sql);
             <div class="menu-item" onclick="window.location.href='hotels.php'">
                 <i class="fas fa-hotel"></i> Hotel
             </div>
-            <div class="menu-item" onclick="window.location.href='user.php'">
+            <div class="menu-item" onclick="window.location.href='kamar.php'">
                 <i class="fas fa-bed"></i> Kamar
             </div>
             <div class="menu-item" onclick="window.location.href='kontak.php'">

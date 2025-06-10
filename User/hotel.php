@@ -149,27 +149,51 @@ $current_hotel_description = getHotelDescription($id_hotel, $hotels['nama_hotel'
     
 </div>
 
-    <!-- <div class="container-header">
-    
+    <!-- <div class="container-header"> 
 </div> -->
+      <div class="hotel-container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="card">
+          <h5>Check-in</h5>
+          <input type="text" value="<?= $check_in ?>" readonly>
+        </div>
+        <div class="card">
+          <h5>Check-out</h5>
+          <input type="text" value="<?= $check_out ?>" readonly>
+        </div>
+        <div class="card">
+          <h5>Fasilitas Hotel</h5>
+          <ul>
+            
+              <?php while ($f_hotel = mysqli_fetch_assoc($query_fasilitas_hotel)): ?>
+              <?php
+              $fasilitas = explode(',', $f_hotel['fasilitas_hotel']);
+              foreach ($fasilitas as $item) {
+                  $item = trim($item);
+                  if (!empty($item)) {
+                      echo '<li>'.htmlspecialchars($item).'</li> ';
+                  }
+              }
+              ?>
+              <?php endwhile ?>
+          </ul>
+        </div>
+        <div class="card">
+          <h5>Dewasa</h5>
+          <input type="number" value="<?= $_GET['dewasa'] ?? '1' ?>" readonly>
+        </div>
+        <div class="card">
+          <h5>Anak - anak</h5>
+          <input type="number" value="<?= $_GET['anak'] ?? '0' ?>" readonly>
+        </div>
+      </div>
 
-    <div class="container-gumaya">
+
+<div class="main-content" style="flex-direction: column; gap:20px; width:100%;">
       
     <div class="hotel-card">
-      <!-- <div class="container-header">
-      <a href="hasil_pencarian.php?
-        echo http_build_query([
-            'lokasi' => $_GET['lokasi'] ?? '',
-            'check_in' => $_GET['check_in'] ?? '',
-            'check_out' => $_GET['check_out'] ?? '',
-            'dewasa' => $_GET['dewasa'] ?? 1,
-            'anak' => $_GET['anak'] ?? 0,
-            'kamar' => $_GET['kamar'] ?? 1
-        ]);
-    ?>" class="back-button">
-        <i class="fa-solid fa-arrow-left"></i> Kembali
-    </a>
-    </div> -->
+
         <div class="hotel-info">
             <div class="description">
               <div class="header-container">
@@ -210,13 +234,8 @@ $current_hotel_description = getHotelDescription($id_hotel, $hotels['nama_hotel'
         </div>
     </div>
     </div>
-</div>
-
 
     
-    <br>
-    
-
     <!-- deskripsi singkat -->
 
     <div class="description-card">
@@ -233,47 +252,11 @@ $current_hotel_description = getHotelDescription($id_hotel, $hotels['nama_hotel'
     
 
 
-    <div class="container-sidebar">
-      <!-- Sidebar -->
-      <div class="sidebar">
-        <div class="card">
-          <h5>Check-in</h5>
-          <input type="text" value="<?= $check_in ?>" readonly>
-        </div>
-        <div class="card">
-          <h5>Check-out</h5>
-          <input type="text" value="<?= $check_out ?>" readonly>
-        </div>
-        <div class="card">
-          <h5>Fasilitas Hotel</h5>
-          <ul>
-            
-              <?php while ($f_hotel = mysqli_fetch_assoc($query_fasilitas_hotel)): ?>
-              <?php
-              $fasilitas = explode(',', $f_hotel['fasilitas_hotel']);
-              foreach ($fasilitas as $item) {
-                  $item = trim($item);
-                  if (!empty($item)) {
-                      echo '<li>'.htmlspecialchars($item).'</li> ';
-                  }
-              }
-              ?>
-              <?php endwhile ?>
-          </ul>
-        </div>
-        <div class="card">
-          <h5>Dewasa</h5>
-          <input type="number" value="<?= $_GET['dewasa'] ?? '1' ?>" readonly>
-        </div>
-        <div class="card">
-          <h5>Anak - anak</h5>
-          <input type="number" value="<?= $_GET['anak'] ?? '0' ?>" readonly>
-        </div>
-      </div>
+    
     
       <!-- Konten kamar -->
-<div class="kamar-content">
-  <?php while ($data_kamar = mysqli_fetch_assoc($query_kamar)): ?>
+  <div class="kamar-content">
+    <?php while ($data_kamar = mysqli_fetch_assoc($query_kamar)): ?>
     <?php
     // Cari gambar pertama yang tersedia
     $thumbnail = "";
@@ -357,166 +340,21 @@ $current_hotel_description = getHotelDescription($id_hotel, $hotels['nama_hotel'
          </div>
         </div>
          <?php endwhile; ?>
-        
-<!-- 
-        <div class="kamar-card">
-          <img src="gambar/new deluxe king bed.jpeg" alt="Kamar Hotel">
-          <div class="kamar-info">
-            <h4><b>New Deluxe King Bed</b></h4>
-
-            <div class="facilities">
-              <span>1 Ranjang Twin</span>
-
-              <br>
-              <br>
-            
-             <b>Fitur</b>
-
-             <br>
-
-              <span>Bathub</span>
-              <span>Ac</span>
-              <span>Air Panas</span>
-              <span>Kulkas</span>
-              <span>Air Panas</span>
-              <span>Smart Tv</span>
-              <span>Sandal</span>
-              <span>Handuk</span>
-            
-              <br>
-              <br>
-
-              <b>Fasilitas</b>
-              <br>
-
-              <span>Spa</span>
-              <span>Bar</span>
-
-              <br>
-              <br>
-
-              <b>Kapasitas</b>
-              <br>
-
-              <span>2 Tamu</span>
-         </div>
-
-         <div class="box-button">
-            <div class="price">Rp. 1.200.000</div>
-            <button class="btn-pilih-kamar">Pilih Kamar</button>
-
-          </div>
-          </div>
-        </div>
-    
-        <div class="kamar-card">
-          <img src="gambar/GRand deluxe twin.jpeg" alt="Kamar Hotel">
-          <div class="kamar-info">
-            <h4><b>Grand Deluxe Twin</b></h4>
-          
-            <div class="facilities">
-              <span>1 Ranjang Twin</span>
-
-              <br>
-              <br>
-            
-             <b>Fitur</b>
-
-             <br>
-
-              <span>Bathub</span>
-              <span>Ac</span>
-              <span>Air Panas</span>
-              <span>Kulkas</span>
-              <span>Air Panas</span>
-              <span>Smart Tv</span>
-              <span>Sandal</span>
-              <span>Handuk</span>
-            
-              <br>
-              <br>
-
-              <b>Fasilitas</b>
-              <br>
-
-              <span>Spa</span>
-              <span>Bar</span>
-
-              <br>
-              <br>
-
-              <b>Kapasitas</b>
-              <br>
-
-              <span>2 Tamu</span>
-         </div>
-
-         <div class="box-button">
-            <div class="price">Rp. 1.100.000</div>
-            <button class="btn-pilih-kamar">Pilih Kamar</button>
-
-            <div class="lihat-detail">
-              <a href="#">Lihat Detail >></a>
-            </div>
-          </div>
-
-          </div>
-        </div>
-
-        <div class="kamar-card">
-          <img src="gambar/tower club.jpeg" alt="Kamar Hotel">
-          <div class="kamar-info">
-            <h4><b>Tower club</b></h4>
-           
-            <div class="facilities">
-              <span>1 Ranjang Twin</span>
-
-              <br>
-              <br>
-            
-             <b>Fitur</b>
-
-             <br>
-
-              <span>Bathub</span>
-              <span>Ac</span>
-              <span>Air Panas</span>
-              <span>Kulkas</span>
-              <span>Air Panas</span>
-              <span>Smart Tv</span>
-              <span>Sandal</span>
-              <span>Handuk</span>
-            
-              <br>
-              <br>
-
-              <b>Fasilitas</b>
-              <br>
-
-              <span>Spa</span>
-              <span>Bar</span>
-
-              <br>
-              <br>
-
-              <b>Kapasitas</b>
-              <br>
-
-              <span>2 Tamu</span>
-         </div>
-
-         <div class="box-button">
-            <div class="price">Rp. 1.100.000</div>
-            <button class="btn-pilih-kamar">Pilih Kamar</button>
-
-          </div>
-          </div>
-        </div> -->
+ 
       
       </div>
     </div>
   </div>
+  </div>
 
+
+    
+    <br>
+    <br>
+    
+
+</div>       
+            
 
     <footer>
         <div class="footer-container">
