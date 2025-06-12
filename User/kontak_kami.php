@@ -94,7 +94,7 @@ $username = $user_data['nama_user'] ?? 'User';
     <div class="card qr-container">
         <div class="qr-content">
             <div class="qr-image">
-                <img src="/ProjekPraPKL/ProjekPraPKL/User/QR/QR .png" alt="QR Code Javast" width="300">
+                <img src="/JAVAST/User/QR/QRJAVAST.png" alt="QR Code Javast" width="300">
             </div>
             <div class="qr-text">
                 <h3>Scan Kode QR Kami!</h3>
