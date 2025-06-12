@@ -134,7 +134,7 @@ body {
 
   .card {
     width: 600px;
-    height: 640px;
+    height: 940px;
   }
 
   .card img {
@@ -186,6 +186,7 @@ body {
 
   .metode-pembayaran {
     margin-top: 20px;
+    
   }
 
   .metode-pembayaran h4 {
@@ -402,6 +403,10 @@ footer {
 .footer-social ul li a i {
     margin-right: 8px;
 }
+
+.hidden-checkbox {
+    display: none;
+}
 /* 
 .hidden-checkbox {
     display: none;
@@ -558,3 +563,270 @@ footer {
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
+
+.title{
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.title h4{
+    font-size: 15px;
+}
+/* 
+.payment-options {
+            margin-bottom: 20px;
+        }
+        
+        .payment-method {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .payment-method:hover {
+            border-color: #888;
+        }
+        
+        .payment-method.selected {
+            border-color: #0066cc;
+            background-color: #f0f7ff;
+        }
+        
+        .payment-method input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .payment-method img {
+            width: 50px;
+            height: 30px;
+            object-fit: contain;
+            margin-right: 10px;
+        }
+        
+        .upload-section {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px dashed #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        
+        .upload-section.active {
+            display: block;
+        }
+        
+        .file-input-wrapper {
+            margin-bottom: 15px;
+        }
+        
+        .btn-submit {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-submit:hover {
+            background-color: #0055aa;
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            color: #888;
+            position: relative;
+        }
+        
+        .divider::before, .divider::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 45%;
+            height: 1px;
+            background-color: #e0e0e0;
+        }
+        
+        .divider::before {
+            left: 0;
+        }
+        
+        .divider::after {
+            right: 0;
+        }
+        
+        .pay-at-hotel {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        
+        .pay-at-hotel:hover {
+            background-color: #f5f5f5;
+        } */
+
+.payment-container {
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    font-family: Arial, sans-serif;
+}
+
+
+/* Opsi Pembayaran */
+.payment-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+    margin-left: 0;
+    margin-right: -580px;
+}
+        
+        .payment-method {
+            display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+        }
+        
+        .payment-method:hover {
+            border-color: #888;
+        }
+        
+        .payment-method.selected {
+            border-color: #0066cc;
+            background-color: #f0f7ff;
+        }
+        
+        .payment-method input[type="radio"] {
+          margin: 0;
+    margin-right: 12px;
+    width: 16px;
+    height: 16px;
+        }
+        
+        .payment-method img {
+            width: 50px;
+            height: 30px;
+            object-fit: contain;
+            margin-right: 10px;
+        }
+        
+        .upload-section {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px dashed #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        
+    /* Bagian Upload */
+.upload-section {
+    margin-top: 25px;
+    padding: 20px;
+    border: 1px dashed #ccc;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+}
+        .file-input-wrapper {
+    margin-bottom: 15px;
+}
+
+.file-input-wrapper label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.file-input-wrapper input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+}
+        
+        .btn-submit {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-submit:hover {
+            background-color: #0055aa;
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            color: #888;
+            position: relative;
+        }
+        
+        .divider::before, .divider::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 45%;
+            height: 1px;
+            background-color: #e0e0e0;
+        }
+        
+        .divider::before {
+            left: 0;
+        }
+        
+        .divider::after {
+            right: 0;
+        }
+        
+        .pay-at-hotel-form {
+            margin-top: 20px;
+        }
+        
+        .bayar-di-hotel {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        
+        .bayar-di-hotel:hover {
+            background-color: #f5f5f5;
+        }

@@ -216,7 +216,7 @@ body {
   }
 
   .lanjutkan-pembayaran {
-    background-color:#774C1C;
+    background-color:#e6a823;
     color: white;
     padding: 5px 12px;
     border: none;
@@ -482,4 +482,13 @@ footer {
     font-size: 14px;
     color: #999999;
     margin-bottom: 1px;
+}
+
+.title{
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.title h4{
+    font-size: 15px;
 }

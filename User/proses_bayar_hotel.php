@@ -8,6 +8,8 @@ if (!isset($_SESSION['email_user'])) {
 }
 
 $id_pesanan = $_POST['id_pesanan'];
+$metode_pembayaran = 'Bayar di hotel'; // Fixed value
+
 
 // Generate unique ID Order
 $id_order = 'JVST-' . date('Ymd') . '-' . substr(md5(uniqid(mt_rand(), true)), 0, 4);
@@ -21,7 +23,7 @@ $stmt = $koneksi->prepare($query);
 $stmt->bind_param("is", $id_pesanan, $id_order);
 
 if($stmt->execute()) {
-    header("Location: hasil_transaksi.php?id_pesanan=".$id_pesanan);
+    header("Location: hasil_transaksi2.php?id_pesanan=".$id_pesanan);
 } else {
     die("Error menyimpan data pembayaran: " . $koneksi->error);
 }

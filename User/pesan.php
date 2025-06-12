@@ -2,18 +2,29 @@
 session_start();
 require_once '../koneksi/koneksi.php';
 
-if (!isset($_SESSION['email_user'])) {
-    header("Location: login.php");
-    exit;
-}
-
-
 // Cek login
 if (isset($_SESSION['email_user']) && !isset($_SESSION['nama_user'])) {
     $email = $_SESSION['email_user'];
     $user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_user = '$email'");
     $user_data = mysqli_fetch_assoc($user_query);
     $_SESSION['nama_user'] = $user_data['nama_user'] ?? 'User';
+}
+
+// Cek transaksi pending
+$block_booking = false;
+$email = $_SESSION['email_user'] ?? '';
+
+if ($email) {
+    $query_pending = mysqli_query($koneksi, "SELECT p.id_pesanan
+                                           FROM pesanan p
+                                           JOIN pembayaran pb ON p.id_pesanan = pb.id_pesanan
+                                           JOIN users u ON p.id_user = u.id_user
+                                           WHERE u.email_user = '$email'
+                                           AND pb.booking_status IN ('Belum dibayar', 'Menunggu Konfirmasi Admin')");
+    
+    if ($query_pending && mysqli_num_rows($query_pending) > 0) {
+        $block_booking = true;
+    }
 }
 
 // Ambil parameter
@@ -24,6 +35,8 @@ $check_out = isset($_GET['check_out']) ? $_GET['check_out'] : date('Y-m-d', strt
 $dewasa = isset($_GET['dewasa']) ? intval($_GET['dewasa']) : 1;
 $anak = isset($_GET['anak']) ? intval($_GET['anak']) : 0;
 $kamar = isset($_GET['kamar']) ? intval($_GET['kamar']) : 1;
+
+
 
 // Ambil data kamar
 $query_kamar = mysqli_query($koneksi, "SELECT k.*, kg.gambarA, kg.gambarB, kg.gambarC, kg.gambarD, kg.gambarE, h.nama_hotel 
@@ -73,7 +86,7 @@ $user = mysqli_fetch_assoc($query_user);
 </head>
 <body>
     
-    <?php include 'navbar.php'; ?>
+    <?php include 'navbar.php'; ?>      
 
     <br>
     <br>
@@ -98,12 +111,10 @@ $user = mysqli_fetch_assoc($query_user);
                 <img src="gambar/default-room.jpg" alt="Kamar Default" width="300">
             <?php endif; ?> 
           <br>
-          <h4><b><?= htmlspecialchars($detail_kamar['nama_kamar']) ?></b></h4>
+          <h3 class="title"><?php echo strtoupper($hotels['nama_hotel']); ?></h3>
+                    
+          <h4 class="title"><b><?= htmlspecialchars($detail_kamar['nama_kamar']) ?></b></h4>
             <p class="price">Rp. <?= number_format($detail_kamar['harga_kamar'], 0, ',', '.') ?></p>
-            <div class="rating">
-                            <?php echo str_repeat("★", $hotels['bintang_hotel']); ?>
-                            <i class="fa-solid fa-thumbs-up"></i>
-            </div>
             <span class="hotel-type">
                         <i class="fa-solid fa-location-dot"></i> <?php echo  $hotels['lokasi_hotel']; ?>
                     </span>
@@ -189,8 +200,25 @@ $user = mysqli_fetch_assoc($query_user);
             <p class="total" id="total">Total Bayar : Rp. <?= number_format($total_bayar, 0, ',', '.') ?></p>
     
             
-           <button type="submit" id="lanjutkan-pembayaran" class="lanjutkan-pembayaran" value="Lanjutkan ke pembayaran">Lanjutkan ke pembayaran </button>
+           <button type="submit" id="lanjutkan-pembayaran" class="lanjutkan-pembayaran" 
+        <?= $block_booking ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : '' ?>>
+        <?= $block_booking ? 'Selesaikan Pembayaran Sebelumnya!' : 'Lanjutkan ke pembayaran' ?>
+            </button>
+
+            <?php if ($block_booking): ?>
+                <div class="alert alert-warning" style="margin-top: 10px;">
+                    Anda masih memiliki transaksi yang belum diselesaikan oleh Admin. Silakan menunggu persetujuan admin terlebih dahulu untuk melakukan pemesanan selanjutnya.
+                </div>
+            <?php endif; ?>
           </form>
+
+          <?php // Tambahkan ini untuk memastikan nilai:
+// echo "<pre>Debug Values:";
+// echo "\nHarga Kamar: " . $detail_kamar['harga_kamar'];
+// echo "\nJumlah Hari: " . $jumlah_hari;
+// echo "\nJumlah Kamar: " . $kamar;
+// echo "\nTotal Bayar: " . $total_bayar;
+// echo "</pre>";?>
           
         </div>
       </div>
