@@ -95,12 +95,16 @@ $result = mysqli_query($koneksi, $query);
             <div class="menu-item" onclick="window.location.href='kontak.php'">
                 <i class="fas fa-envelope"></i> Kontak Kami
             </div>
+            <div class="menu-item" onclick="window.location.href='statistik.php'">
+                <i class="fa-solid fa-chart-simple"></i> Statistik
+            </div>
             <div class="menu-item active" onclick="window.location.href='booking.php'">
                 <i class="fas fa-calendar-check"></i> Booking <i class="fa-solid fa-caret-down"></i>
             </div>
             <div class="menu-item" onclick="window.location.href='booking_terbaru.php'">
                 <i class="fa-solid fa-circle-user"></i> Booking Terbaru
             </div>
+            
         </div>
     </div>
 </div>
