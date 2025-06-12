@@ -67,9 +67,14 @@ $query = mysqli_query($koneksi, $sql);
             <div class="menu-item" onclick="window.location.href='kontak.php'">
                 <i class="fas fa-envelope"></i> Kontak Kami
             </div>
+            <div class="menu-item" onclick="window.location.href='statistik.php'">
+                <i class="fa-solid fa-chart-simple"></i> Statistik
+            </div>
             <div class="menu-item" onclick="window.location.href='booking.php'">
                 <i class="fas fa-calendar-check"></i> Booking <i class="fa-solid fa-caret-up"></i>
             </div>
+
+            
         </div>
     </div>
 </div>
