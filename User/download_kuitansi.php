@@ -3,6 +3,8 @@ session_start();
 require_once '../koneksi/koneksi.php';
 require_once 'C:\xampp\htdocs\JAVAST\TCPDF-main\tcpdf.php'; // Sesuaikan path dengan lokasi TCPDF
 
+// Perubahan: Tambahkan parameter view_mode
+$view_mode = isset($_GET['view_mode']) ? $_GET['view_mode'] : 'D'; // Default download
 
 if (!isset($_SESSION['email_user'])) {
     header("Location: login.php");
@@ -55,7 +57,8 @@ $pdf->AddPage();
 $pdf->SetFont('helvetica', 'B', 16);
 
 // Judul
-$pdf->Cell(0, 10, 'JAVAST - Hotel Jawa Tengah', 0, 1, 'C');
+$pdf->Cell(0, 10, 'JAVAST', 0, 1, 'C');
+$pdf->Cell(0, 5, 'Booking Hotel Jawa Tengah', 0, 1, 'C');
 $pdf->SetFont('helvetica', 'B', 14);
 $pdf->Cell(0, 10, 'Kuitansi Riwayat Booking Hotel di JAVAST', 0, 1, 'C');
 
@@ -122,20 +125,28 @@ $html = <<<EOD
 
 <br><br>
 <div style="text-align: center;">
-    <p>Terima kasih telah memesan di JAVAST Hotel</p>
-    <p>Kuitansi ini sah dan dapat digunakan sebagai bukti transaksi</p>
+    <p>Terima kasih telah memesan di JAVAST!</p>
+    <p>Kuitansi ini sah dan dapat digunakan sebagai bukti resmi transaksi.</p>
 </div>
 EOD;
 
 // Output HTML content
 $pdf->writeHTML($html, true, false, true, false, '');
 
-// Garis tanda tangan
-// $pdf->SetY(-50);
-// $pdf->Line(50, $pdf->GetY(), 160, $pdf->GetY());
-// $pdf->SetFont('helvetica', 'I', 10);
-// $pdf->Cell(0, 5, 'Tanda Tangan', 0, 1, 'C');
+// // Garis tanda tangan
+// // $pdf->SetY(-50);
+// // $pdf->Line(50, $pdf->GetY(), 160, $pdf->GetY());
+// // $pdf->SetFont('helvetica', 'I', 10);
+// // $pdf->Cell(0, 5, 'Tanda Tangan', 0, 1, 'C');
 
-// Close and output PDF document
-$pdf->Output('kuitansi_'.$transaksi['id_order'].'.pdf', 'D');
+// // Close and output PDF document
+// $pdf->Output('kuitansi_'.$transaksi['id_order'].'.pdf', 'D');
+// Modifikasi output berdasarkan mode
+if($view_mode == 'qr_access') {
+    // Untuk akses via QR code, tampilkan langsung di browser
+    $pdf->Output('kuitansi_'.$transaksi['id_order'].'.pdf', 'I');
+} else {
+    // Untuk download manual
+    $pdf->Output('kuitansi_'.$transaksi['id_order'].'.pdf', 'D');
+}
 ?>

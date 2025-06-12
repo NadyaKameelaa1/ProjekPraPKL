@@ -7,14 +7,6 @@ if (!isset($_SESSION['email_user'])) {
     header("Location: login.php");
     exit;
 }
-
-if (isset($_SESSION['email_user']) && !isset($_SESSION['nama_user'])) {
-    $email = $_SESSION['email_user'];
-    $user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_user = '$email'");
-    $user_data = mysqli_fetch_assoc($user_query);
-    $_SESSION['nama_user'] = $user_data['nama_user'] ?? 'User';
-}
-
 // Ambil parameter
 $id_hotel = isset($_GET['id_hotel']) ? intval($_GET['id_hotel']) : 0;
 $id_kamar = isset($_GET['id_kamar']) ? intval($_GET['id_kamar']) : 0;
@@ -27,7 +19,7 @@ $jumlah_hari = isset($_GET['jumlah_hari']) ? intval($_GET['jumlah_hari']) : 0;
 $total_bayar = isset($_GET['total_bayar']) ? intval($_GET['total_bayar']) : 0;
 
 $id_pesanan = intval($_GET['id_pesanan']);
-
+$metode = $_POST['metode_pembayaran'] ?? '';
 // Ambil data kamar
 $query_kamar = mysqli_query($koneksi, "SELECT k.*, kg.gambarA, kg.gambarB, kg.gambarC, kg.gambarD, kg.gambarE, h.nama_hotel 
                                      FROM kamar k 
@@ -48,22 +40,10 @@ $query = mysqli_query($koneksi, "SELECT hotels.*, MIN(kamar.harga_kamar) AS harg
     GROUP BY hotels.id_hotel");
 $hotels = mysqli_fetch_assoc($query);
 
-// IMPORTANT: Calculate total payment here
-// $harga_kamar = $detail_kamar['harga_kamar'];
-
-// Calculate number of days if not provided
 if ($jumlah_hari <= 0) {
     $harga_kamar = isset($hotels['harga_kamar']) ? $hotels['harga_kamar'] : 0;
     $jumlah_hari = (new DateTime($check_out))->diff(new DateTime($check_in))->days;
 }
-
-// Recalculate total payment
-// $recalculated_total = $harga_kamar * $jumlah_hari * $jumlah_kamar;
-
-// Use recalculated total if it differs from the passed parameter
-// if ($total_bayar != $recalculated_total || $total_bayar == 0) {
-//     $total_bayar = $recalculated_total;
-// }
 
 $query_pesanan = "SELECT p.*, k.nama_kamar, k.harga_kamar, h.nama_hotel 
                   FROM pesanan p 
@@ -84,7 +64,6 @@ $email = $_SESSION['email_user'];
 $query_user = mysqli_query($koneksi, "SELECT nama_user, no_telp, alamat_user FROM users WHERE email_user = '$email'");
 $user = mysqli_fetch_assoc($query_user);
 
-
 $user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_user = '$email'");
 $user_data = mysqli_fetch_assoc($user_query);
 $username = $user_data['nama_user'] ?? 'User';
@@ -92,6 +71,7 @@ $username = $user_data['nama_user'] ?? 'User';
  $jumlah_hari = $pesanan['jumlah_hari'];
  $total_bayar = $pesanan['total_bayar'];
 
+// ---------
 
 ?>
 
@@ -134,31 +114,66 @@ $username = $user_data['nama_user'] ?? 'User';
                 <img src="gambar/default-room.jpg" alt="Kamar Default" width="300">
             <?php endif; ?> 
           <br>
-          <h4><b><?= htmlspecialchars($detail_kamar['nama_kamar']) ?></b></h4>
+          <h3 class="title"><?php echo strtoupper($hotels['nama_hotel']); ?></h3>
+          <h4 class="title"><b><?= htmlspecialchars($detail_kamar['nama_kamar']) ?></b></h4>
             <p class="price">Rp. <?= number_format($detail_kamar['harga_kamar'], 0, ',', '.') ?></p>
     
           <div class="metode-pembayaran">
             <h5><b>Metode Pembayaran</b></h5>
             <p>Pilih salah satu metode pembayaran dibawah :</p>
             <hr>
-            <div class="card-opsi">
-                <div class="opsi-metode">
-                  <label for="popupBukti" class="metode-btn" onclick="setMetode('BRI')">
+
+    <div class="payment-options">
+        <form action="proses_upload.php" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="metode_pembayaran" id="metode_pembayaran">
+            <input type="hidden" name="id_pesanan" value="<?= $_GET['id_pesanan'] ?>">
+
+            <div class="payment-method">
+                <input type="radio" name="metode_pembayaran" value="BRI" required>
+                <img src="gambar/pembayaran/logo_BRI.png" alt="BRI">
+                <label for="bri">BANK BRI</label>
+            </div>
+            
+            <div class="payment-method">
+                <input type="radio" name="metode_pembayaran" value="BCA">
+                <img src="gambar/pembayaran/logo-bank-bca.png" alt="BCA">
+                <label for="bca">BCA</label>
+            </div>
+            
+            <div class="payment-method">
+                <input type="radio" name="metode_pembayaran" value="Dana">
+                <img src="gambar/pembayaran/logo-bank-dana.png" alt="DANA">
+                <label for="dana">DANA</label>
+            </div>
+            
+            <div class="payment-method">
+                <input type="radio" name="metode_pembayaran" value="Gopay">
+                <img src="gambar/pembayaran/logo-gopay-vector.png" alt="GOPAY">
+                <label for="gopay">GOPAY</label>
+            </div>
+        
+            <div class="file-input-wrapper">
+                <label for="bukti_pembayaran">Upload Bukti Pembayaran:</label>
+                <input type="file" name="bukti_pembayaran" id="bukti_pembayaran" accept="image/*">
+            </div>
+           
+            <button type="submit" name="submit" class="btn-submit">Upload Bukti</button>
+        </form>
+    </div>
+        <!-- <label for="popupBukti" class="metode-btn" onclick="setMetode('BRI')">
                       <img src="gambar/pembayaran/logo_BRI.png" alt="BANK_BRI">
                   </label>
                   <label for="popupBukti" class="metode-btn" onclick="setMetode('BCA')">
                       <img src="gambar/pembayaran/logo-bank-bca.png" alt="BCA">
                   </label>
-                  <label for="popupBukti" class="metode-btn" onclick="setMetode('DANA')">
+                  <label for="popupBukti" class="metode-btn" onclick="setMetode('Dana')">
                       <img src="gambar/pembayaran/logo-bank-dana.png" alt="DANA">
                   </label>
-                  <label for="popupBukti" class="metode-btn" onclick="setMetode('GOPAY')">
+                  <label for="popupBukti" class="metode-btn" onclick="setMetode('Gopay')">
                       <img src="gambar/pembayaran/logo-gopay-vector.png" alt="GOPAY">
-                  </label>
-              </div>    
-            </div>
-
-            <div class="atau">Atau</div>
+                  </label> -->
+                
+            <div class="atau divider">Atau</div>
             <div class="card-byr-hotel">
               <form action="proses_bayar_hotel.php" method="post">
                   <input type="hidden" name="id_pesanan" value="<?= $id_pesanan ?>">
@@ -214,7 +229,7 @@ $username = $user_data['nama_user'] ?? 'User';
     
     
       <!-- Tambahkan ini di bagian atas body -->
-<input type="checkbox" id="popupBukti" class="hidden-checkbox">
+
 
 <div class="popup-overlay"></div>
 <div class="popup-upload">
@@ -287,6 +302,78 @@ function setMetode(metode) {
     header.innerHTML = `Upload Bukti Pembayaran <span style="color: #FFA500">${metode}</span>`;
     header.style.marginBottom = '10px';
 }
+
+document.getElementById('paymentForm').addEventListener('submit', function(e) {
+    const selectedMethod = document.querySelector('input[name="metode_pembayaran"]:checked');
+    if (!selectedMethod) {
+        e.preventDefault();
+        alert('Silakan pilih metode pembayaran terlebih dahulu');
+    }
+});
+
+// function setMetode(metode) {
+//     // Mapping untuk menyesuaikan dengan enum di database
+//     const metodeMapping = {
+//         'BRI': 'BRI',
+//         'BCA': 'BCA',
+//         'D': 'Dana',       // Perbaikan dari 'B' ke 'Dana'
+//         'GOPAY': 'Gopay'   // Perbaikan dari 'GOPAY' ke 'Gopay'
+//     };
+    
+//     // Dapatkan nilai yang sesuai dengan database
+//     const metodeDatabase = metodeMapping[metode];
+    
+//     if (!metodeDatabase) {
+//         console.error('Metode tidak valid:', metode);
+//         return;
+//     }
+
+//     // Set nilai ke input hidden
+//     document.getElementById('metodePembayaran').value = metodeDatabase;
+    
+//     // Perbaiki template string dan warna
+//     const header = document.querySelector('.popup-content h4');
+//     header.innerHTML = `Upload Bukti Pembayaran <span style="color: #FFA500">${metode}</span>`;
+//     header.style.marginBottom = '10px';
+// }
+
+
+// function setMetode(metode) {
+//     // Simpan metode yang dipilih ke input hidden
+//     document.getElementById('metodePembayaran').value = metode;
+    
+//     // Update teks di popup
+//     const header = document.querySelector('.popup-content h4');
+//     header.innerHTML = 'Upload Bukti Pembayaran <span style="color: #FFA500">' + metode + '</span>';
+//     header.style.marginBottom = '10px';
+    
+//     // Tampilkan popup (pastikan Anda memiliki mekanisme untuk menampilkan popup)
+//     document.getElementById('popupBukti').style.display = 'block';
+// }
+
+// function setMetode(metode) {
+//     // Mapping metode ke format yang sesuai dengan enum database
+//     const metodeMapping = {
+//         'BRI': 'BRI',
+//         'BCA': 'BCA',
+//         'DANA': 'Dana',
+//         'GOPAY': 'Gopay'
+//     };
+    
+//     const metodeFormatted = metodeMapping[metode] || metode;
+    
+//     // Simpan metode yang dipilih ke input hidden
+//     document.getElementById('metodePembayaran').value = metodeFormatted;
+    
+//     // Update teks di popup
+//     const header = document.querySelector('.popup-content h4');
+//     header.innerHTML = 'Upload Bukti Pembayaran <span style="color: #FFA500">' + metode + '</span>';
+//     header.style.marginBottom = '10px';
+    
+//     // Tampilkan popup
+//     document.getElementById('popupBukti').style.display = 'block';
+// }
+
 
 const bookingData = {
     roomPrice: <?= $harga_kamar ?>,

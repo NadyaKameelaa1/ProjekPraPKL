@@ -107,7 +107,7 @@ $hotels = mysqli_fetch_all($result, MYSQLI_ASSOC);
     <div class="search-bar">
         <div class="location-group">
                <label><i class="fa-solid fa-location-dot"></i></label> 
-              <input type="text" class="location-input" id="locationInput" placeholder="Kota, hotel" autocomplete="off" value="<?= htmlspecialchars($lokasi) ?>">
+              <input type="text" class="location-input" id="locationInput" placeholder="Kota, hotel" autocomplete="off" value="<?= htmlspecialchars($lokasi) ?>" readonly>
               <div class="input-wrapper">
                 <div id="locationDropdown">
                     <h4 class="dropdown-title">Kota yang tersedia</h4>
@@ -118,11 +118,11 @@ $hotels = mysqli_fetch_all($result, MYSQLI_ASSOC);
 </div>
            
                 <div class="date-box">
-              <input type="date"  class="date-input" placeholder="Check-in" value="<?= $check_in ?>">
+              <input type="date"  class="date-input" placeholder="Check-in" value="<?= $check_in ?>" readonly>
               </div>
 
               <div class="date-box">
-              <input type="date"  class="date-input" placeholder="Check-out" value="<?= $check_out ?>">   
+              <input type="date"  class="date-input" placeholder="Check-out" value="<?= $check_out ?>" readonly>   
               </div>
     
               <label><i class="fa-solid fa-user-check"></i> </label>

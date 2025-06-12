@@ -40,11 +40,6 @@ if (!$transaksi) {
 }
 
 
-// $email = $_SESSION['email_user'];
-// $user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_user = '$email'");
-// $user_data = mysqli_fetch_assoc($user_query);
-// $username = $user_data['nama_user'] ?? 'User';
-
 $check_in = date('d-m-Y', strtotime($transaksi['check_in']));
 $check_out = date('d-m-Y', strtotime($transaksi['check_out']));
 $tanggal_bayar = date('d-m-Y', strtotime($transaksi['tanggal_bayar']));
@@ -55,6 +50,22 @@ $stmt_user = $koneksi->prepare($query_user);
 $stmt_user->bind_param("s", $_SESSION['email_user']);
 $stmt_user->execute();
 $user_data = $stmt_user->get_result()->fetch_assoc();
+
+// Data untuk QR Code
+// $dataPemesanan = "ID Order: ".$transaksi['id_order']."\n";
+// $dataPemesanan .= "Nama: ".$user_data['nama_user']."\n";
+// $dataPemesanan .= "Kota: ".$transaksi['kota_hotel']."\n";
+// $dataPemesanan .= "Hotel: ".$transaksi['nama_hotel']."\n";
+// $dataPemesanan .= "Kamar: ".$transaksi['nama_kamar']."\n";
+// $dataPemesanan .= "Harga Kamar: Rp ".number_format($transaksi['harga_kamar'], 0, ',', '.')."\n";
+// $dataPemesanan .= "Check-in: ".$check_in."\n";
+// $dataPemesanan .= "Check-out: ".$check_out."\n";
+// $dataPemesanan .= "Total: Rp ".number_format($transaksi['total_bayar'], 0, ',', '.')."\n"; 
+// $dataPemesanan .= "Metode: ".$transaksi['metode_pembayaran']."\n";
+
+// // Generate URL QR Code
+// $qrUrl = "https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=".urlencode($dataPemesanan);
+
 ?>
 
 
@@ -65,7 +76,7 @@ $user_data = $stmt_user->get_result()->fetch_assoc();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hasil Transaksi | Javast</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="hasil_transaksi.css">
+    <link rel="stylesheet" href="hasil_transaksi2.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
@@ -79,26 +90,22 @@ $user_data = $stmt_user->get_result()->fetch_assoc();
             <div class="arrow"><i class="fa-solid fa-right-long"></i></div>
             <div class="step <?= $bayar_di_hotel ? 'active' : 'active' ?>">Bayar</div>
             <div class="arrow"><i class="fa-solid fa-right-long"></i></div>
-            <div class="step active">Upload Bukti</div>
+            <div class="step <?= $bayar_di_hotel ? 'bayar-di-hotel' : 'inactive' ?>">Upload Bukti</div>
             <div class="arrow"><i class="fa-solid fa-right-long"></i></div>
             <div class="step active">Tunggu</div>
         </div>
 
-        <?php if ($bayar_di_hotel): ?>
+        
             <div class="success-notification">
                 <h2>Pesanan dan Pembayaran berhasil!</h2>
             </div>
-        <?php else: ?>
-            <div class="success-notification">
-                <h2>Berhasil mengupload bukti!</h2>
-            </div>
-        <?php endif; ?>
+        
     
     <div class="booking-container">
         <!-- Card 1 -->
         <div class="booking-card">
             <h3><?= htmlspecialchars($transaksi['kota_hotel']) ?></h3>
-            <!-- <p><b>Nama Pemesan:</b> <?= htmlspecialchars($user_data['nama_user']) ?></p> -->
+            <!-- <p><b>Nama Pemesan:</b> htmlspecialchars($user_data['nama_user']) ?></p> -->
             <h4><?= htmlspecialchars($transaksi['nama_hotel']) ?></h4>
             <p><b><?= htmlspecialchars($transaksi['nama_kamar']) ?></b></p>
             <p>Rp. <?= number_format($transaksi['harga_kamar'], 0, ',', '.') ?> / kamar / malam</p>
@@ -109,10 +116,8 @@ $user_data = $stmt_user->get_result()->fetch_assoc();
             <p><b>Metode pembayaran:</b> <?= htmlspecialchars($transaksi['metode_pembayaran']) ?></p>
 
             <?php if (!$bayar_di_hotel): ?>
-            <p><b>Bukti Foto:</b> <?= htmlspecialchars(basename($transaksi['upload_bukti'])) ?></p>
+            <p><b>Bukti Foto:</b> Tidak ada bukti foto.</p>
             <?php endif;?>
-            <br>
-
             <?php
             // Generate URL untuk kuitansi PDF
             $pdfUrl = 'http://'.$_SERVER['HTTP_HOST'].'/JAVAST/User/download_kuitansi.php?id_pesanan='.$transaksi['id_pesanan'].'&view_mode=qr_access';
@@ -122,14 +127,30 @@ $user_data = $stmt_user->get_result()->fetch_assoc();
             ?>
             <img src="<?= $qrUrl ?>" alt="Kuitansi QR Code" width="150">
             <h6 class="keterangan">Tunjukkan QR Code resmi di atas saat anda melakukan check-in di hotel.</h6>
-
             <span class="status pending" value="<?= $transaksi['booking_status'] == 'Menunggu Konfirmasi Admin' ?>">
                 <?= htmlspecialchars($transaksi['booking_status']) ?><br></span>
             <input type="button" value="Riwayat Booking" class="buttonn-download" onclick="window.location.href='booking.php'">
 
         </div>
 
-       
+         <!-- <div class="qr-code-section">
+            <h4>QR Code Booking</h4>
+            
+
+            <div class="qr-container">
+                <h4>Scan untuk Kuitansi</h4>
+                <img src="= $qrUrl ?>" alt="Kuitansi QR Code" width="200">
+                <p>Scan QR code untuk melihat kuitansi resmi</p>
+                <small>Atau <a href="download_kuitansi.php?id_pesanan=?= $transaksi['id_pesanan'] ?>">download langsung</a></small>
+            </div> -->
+            <!--  if(isset($qrUrl)): ?>
+                <img src=" htmlspecialchars($qrUrl) ?>" alt="QR Code Booking" width="200">
+                <p>Scan untuk verifikasi booking</p>
+             else: ?>
+                <p class="error">QR Code tidak dapat ditampilkan</p>
+            endif; ?> -->
+        </div>
+        
         </div>
 
 

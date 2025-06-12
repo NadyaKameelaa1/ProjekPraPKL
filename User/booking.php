@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once '../koneksi/koneksi.php';
+require_once 'C:\xampp\htdocs\JAVAST\TCPDF-main\tcpdf.php';
 
 if (!isset($_SESSION['email_user'])) {
     header("Location: login.php");
@@ -53,31 +54,7 @@ $user_data = $stmt_user->get_result()->fetch_assoc();
 </head>
 <body>
 
-    <div class="navbar">
-        <div class="logo">
-            <img src="logo/Logo_Javast.png" alt="Logo_Javast">
-
-        </div>
-        <div class="menu">
-            <a href="home.php">Beranda</a>
-            <a href="tentang.php">Tentang</a>
-            <a href="kontak_kami.php">Kontak Kami</a>
-
-        </div>
-
-        <div class="dropdown">
-            <button class="dropdown-btn"> 
-                <i class="fas fa-user"></i> <?= htmlspecialchars($username) ?> ▼
-            </button>
-            <div class="dropdown-menu">
-                <a href="profil.php">Profil</a>
-                <a href="booking.php">Booking</a>
-                <a href="logout.php">Logout</a>
-            </div>
-        </div>
-        
-
-    </div>
+    <?php include 'navbar.php'; ?>
 
     <header class="header">
         <img src="ornamen/ornament-top.png" class="ornament ornament-top">
@@ -106,7 +83,7 @@ $user_data = $stmt_user->get_result()->fetch_assoc();
                     <h3><?= htmlspecialchars($transaksi['kota_hotel']) ?></h3>
                     <h4><?= htmlspecialchars($transaksi['nama_hotel']) ?></h4>
                     <p><b><?= htmlspecialchars($transaksi['nama_kamar']) ?></b></p>
-                    <p>Rp. <?= number_format($transaksi['harga_kamar'], 0, ',', '.') ?> /Malam</p>
+                    <p>Rp. <?= number_format($transaksi['harga_kamar'], 0, ',', '.') ?> / kamar / malam</p>
                     <p><b>Check-out:</b> <?= $check_out ?></p>
                     <p><b>Check-in:</b> <?= $check_in ?></p>
                     <p><b>Total Bayar:</b> Rp. <?= number_format($transaksi['total_bayar'], 0, ',', '.') ?></p>
@@ -120,7 +97,16 @@ $user_data = $stmt_user->get_result()->fetch_assoc();
                     <?php endif; ?>
                     
                     <p><b>ID Order:</b> <?= htmlspecialchars($transaksi['id_order']) ?></p>
+                    <?php
+                    // Generate URL untuk kuitansi PDF
+                    $pdfUrl = 'http://'.$_SERVER['HTTP_HOST'].'/JAVAST/User/download_kuitansi.php?id_pesanan='.$transaksi['id_pesanan'].'&view_mode=qr_access';
                     
+                    // Generate QR Code
+                    $qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=".urlencode($pdfUrl);
+                    ?>
+                    <img src="<?= $qrUrl ?>" alt="Kuitansi QR Code" width="150">
+                    <h6 class="keterangan">Tunjukkan QR Code resmi di atas saat anda melakukan check-in di hotel.</h6>
+
                     <span class="status <?php
                         if ($transaksi['booking_status'] == 'Menunggu Konfirmasi Admin') {
                             echo 'pending';
