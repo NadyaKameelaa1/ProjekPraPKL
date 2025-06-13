@@ -112,17 +112,17 @@
          
 
         <!-- Charts Section -->
-        <div class="charts-grid">
+        <div class="charts-grid single-chart">
             <!-- Grafik Pendapatan Bulanan -->
-            <div class="chart-card">
+            <!-- <div class="chart-card">
                 <h3>Tren Pendapatan Bulanan</h3>
                 <div class="chart-container">
                     <canvas id="monthlyRevenueChart"></canvas>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Grafik Pendapatan per Hotel -->
-            <div class="chart-card">
+            <div class="chart-card ">
                 <h3>Pendapatan per Hotel</h3>
                 <div class="chart-container">
                     <canvas id="hotelRevenueChart"></canvas>
@@ -214,238 +214,194 @@
     <script>
     // Data untuk berbagai periode
     const periodData = {
-        3: {
-            stats: {
-                totalRevenue: 'Rp 510.000.000',
-                totalBooking: '2,465',
-                bookingSukses: '2,150',
-                successRate: '87.2%',
-                period: '3 bulan terakhir'
-            },
-            monthly: {
-                labels: ['April', 'Mei', 'Juni'],
-                values: [161000000, 175000000, 174000000]
-            },
-            hotels: [
-                { name: 'Grand Hotel Jakarta', revenue: 160000000, booking: 625, selesai: 550, rate: '88.0%' },
-                { name: 'Luxury Resort Bali', revenue: 140000000, booking: 490, selesai: 425, rate: '86.7%' },
-                { name: 'Beach Hotel Lombok', revenue: 116000000, booking: 560, selesai: 475, rate: '84.8%' },
-                { name: 'City Inn Surabaya', revenue: 94000000, booking: 790, selesai: 700, rate: '88.6%' }
-            ]
+    3: {
+        stats: {
+            totalRevenue: 'Rp 510.000.000',
+            totalBooking: '2,465',
+            bookingSukses: '2,150',
+            successRate: '87.2%',
+            period: '3 bulan terakhir'
         },
-        6: {
-            stats: {
-                totalRevenue: 'Rp 1.020.000.000',
-                totalBooking: '4,930',
-                bookingSukses: '4,300',
-                successRate: '87.2%',
-                period: '6 bulan terakhir'
-            },
-            monthly: {
-                labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'],
-                values: [140000000, 157000000, 161000000, 175000000, 187000000, 200000000]
-            },
-            hotels: [
-                { name: 'Grand Hotel Jakarta', revenue: 320000000, booking: 1250, selesai: 1100, rate: '88.0%' },
-                { name: 'Luxury Resort Bali', revenue: 280000000, booking: 980, selesai: 850, rate: '86.7%' },
-                { name: 'Beach Hotel Lombok', revenue: 232000000, booking: 1120, selesai: 950, rate: '84.8%' },
-                { name: 'City Inn Surabaya', revenue: 188000000, booking: 1580, selesai: 1400, rate: '88.6%' }
-            ]
+        monthly: {
+            labels: ['April', 'Mei', 'Juni'],
+            values: [161000000, 175000000, 174000000]
         },
-        12: {
-            stats: {
-                totalRevenue: 'Rp 2.040.000.000',
-                totalBooking: '9,860',
-                bookingSukses: '8,600',
-                successRate: '87.2%',
-                period: '1 tahun terakhir'
+        hotels: [
+            { name: 'Grand Hotel Jakarta', revenue: 160000000, booking: 625, selesai: 550, rate: '88.0%' },
+            { name: 'Luxury Resort Bali', revenue: 140000000, booking: 490, selesai: 425, rate: '86.7%' },
+            { name: 'Beach Hotel Lombok', revenue: 116000000, booking: 560, selesai: 475, rate: '84.8%' },
+            { name: 'City Inn Surabaya', revenue: 94000000, booking: 790, selesai: 700, rate: '88.6%' }
+        ]
+    },
+    6: {
+        stats: {
+            totalRevenue: 'Rp 1.020.000.000',
+            totalBooking: '4,930',
+            bookingSukses: '4,300',
+            successRate: '87.2%',
+            period: '6 bulan terakhir'
+        },
+        monthly: {
+            labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'],
+            values: [140000000, 157000000, 161000000, 175000000, 187000000, 200000000]
+        },
+        hotels: [
+            { name: 'Grand Hotel Jakarta', revenue: 320000000, booking: 1250, selesai: 1100, rate: '88.0%' },
+            { name: 'Luxury Resort Bali', revenue: 280000000, booking: 980, selesai: 850, rate: '86.7%' },
+            { name: 'Beach Hotel Lombok', revenue: 232000000, booking: 1120, selesai: 950, rate: '84.8%' },
+            { name: 'City Inn Surabaya', revenue: 188000000, booking: 1580, selesai: 1400, rate: '88.6%' }
+        ]
+    },
+    12: {
+        stats: {
+            totalRevenue: 'Rp 2.040.000.000',
+            totalBooking: '9,860',
+            bookingSukses: '8,600',
+            successRate: '87.2%',
+            period: '1 tahun terakhir'
+        },
+        monthly: {
+            labels: ['Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des', 'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
+            values: [120000000, 135000000, 145000000, 155000000, 165000000, 175000000, 140000000, 157000000, 161000000, 175000000, 187000000, 200000000]
+        },
+        hotels: [
+            { name: 'Grand Hotel Jakarta', revenue: 640000000, booking: 2500, selesai: 2200, rate: '88.0%' },
+            { name: 'Luxury Resort Bali', revenue: 560000000, booking: 1960, selesai: 1700, rate: '86.7%' },
+            { name: 'Beach Hotel Lombok', revenue: 464000000, booking: 2240, selesai: 1900, rate: '84.8%' },
+            { name: 'City Inn Surabaya', revenue: 376000000, booking: 3160, selesai: 2800, rate: '88.6%' }
+        ]
+    }
+};
+
+// HANYA VARIABLE UNTUK HOTEL CHART (monthly chart dihapus)
+let hotelChart;
+
+// Fungsi untuk format rupiah
+function formatRupiah(angka) {
+    return 'Rp ' + angka.toLocaleString('id-ID');
+}
+
+// Fungsi untuk update statistik
+function updateStats(period) {
+    const data = periodData[period];
+    
+    // Update stats cards
+    document.querySelector('.stats-value.stats-green').textContent = data.stats.totalRevenue;
+    document.querySelector('.stats-value.stats-blue').textContent = data.stats.totalBooking;
+    document.querySelector('.stats-value.stats-purple').textContent = data.stats.bookingSukses;
+    
+    // Update subtext
+    document.querySelector('.stats-green').nextElementSibling.textContent = data.stats.period;
+}
+
+// Fungsi untuk update tabel
+function updateTable(period) {
+    const data = periodData[period];
+    const tbody = document.querySelector('tbody');
+    
+    tbody.innerHTML = '';
+    
+    data.hotels.forEach(hotel => {
+        const avgPerBooking = hotel.selesai > 0 ? formatRupiah(hotel.revenue / hotel.selesai) : 'Rp 0';
+        const statusClass = parseFloat(hotel.rate) >= 85 ? 'status-high' : 'status-medium';
+        
+        const row = `
+            <tr>
+                <td class="text-left">
+                    <div class="hotel-name">${hotel.name}</div>
+                </td>
+                <td class="text-right">
+                    <div class="revenue-value">${formatRupiah(hotel.revenue)}</div>
+                </td>
+                <td class="text-right">${hotel.booking.toLocaleString('id-ID')}</td>
+                <td class="text-right">${hotel.selesai.toLocaleString('id-ID')}</td>
+                <td class="text-right">${avgPerBooking}</td>
+                <td class="text-right">
+                    <span class="status-badge ${statusClass}">${hotel.rate}</span>
+                </td>
+            </tr>
+        `;
+        tbody.innerHTML += row;
+    });
+}
+
+// Fungsi untuk update charts (HANYA HOTEL CHART)
+function updateCharts(period) {
+    const data = periodData[period];
+    
+    // HAPUS BAGIAN MONTHLY CHART - HANYA UPDATE HOTEL CHART
+    hotelChart.data.labels = data.hotels.map(h => h.name);
+    hotelChart.data.datasets[0].data = data.hotels.map(h => h.revenue);
+    hotelChart.update();
+}
+
+// Inisialisasi charts (HANYA HOTEL CHART)
+function initCharts() {
+    // HAPUS BAGIAN MONTHLY CHART INITIALIZATION
+    
+    // Chart Pendapatan per Hotel
+    const hotelCtx = document.getElementById('hotelRevenueChart').getContext('2d');
+    const backgroundColors = [
+        'rgba(49, 130, 206, 0.8)',
+        'rgba(56, 161, 105, 0.8)',
+        'rgba(221, 107, 32, 0.8)',
+        'rgba(197, 48, 48, 0.8)'
+    ];
+
+    hotelChart = new Chart(hotelCtx, {
+        type: 'bar',
+        data: {
+            labels: periodData[6].hotels.map(h => h.name),
+            datasets: [{
+                label: 'Pendapatan (Rp)',
+                data: periodData[6].hotels.map(h => h.revenue),
+                backgroundColor: backgroundColors,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return 'Rp ' + (value / 1000000).toFixed(0) + 'M';
+                        }
+                    }
+                }
             },
-            monthly: {
-                labels: ['Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des', 'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
-                values: [120000000, 135000000, 145000000, 155000000, 165000000, 175000000, 140000000, 157000000, 161000000, 175000000, 187000000, 200000000]
-            },
-            hotels: [
-                { name: 'Grand Hotel Jakarta', revenue: 640000000, booking: 2500, selesai: 2200, rate: '88.0%' },
-                { name: 'Luxury Resort Bali', revenue: 560000000, booking: 1960, selesai: 1700, rate: '86.7%' },
-                { name: 'Beach Hotel Lombok', revenue: 464000000, booking: 2240, selesai: 1900, rate: '84.8%' },
-                { name: 'City Inn Surabaya', revenue: 376000000, booking: 3160, selesai: 2800, rate: '88.6%' }
-            ]
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return 'Pendapatan: Rp ' + context.parsed.y.toLocaleString('id-ID');
+                        }
+                    }
+                },
+                legend: {
+                    display: false
+                }
+            }
         }
-    };
+    });
+}
 
-    let monthlyChart, hotelChart;
-
-    // Fungsi untuk format rupiah
-    function formatRupiah(angka) {
-        return 'Rp ' + angka.toLocaleString('id-ID');
-    }
-
-    // Fungsi untuk update statistik
-    function updateStats(period) {
-        const data = periodData[period];
-        
-        // Update stats cards
-        document.querySelector('.stats-value.stats-green').textContent = data.stats.totalRevenue;
-        document.querySelector('.stats-value.stats-blue').textContent = data.stats.totalBooking;
-        document.querySelector('.stats-value.stats-purple').textContent = data.stats.bookingSukses;
-        
-        // Update subtext
-        document.querySelector('.stats-green').nextElementSibling.textContent = data.stats.period;
-    }
-
-    // Fungsi untuk update tabel
-    function updateTable(period) {
-        const data = periodData[period];
-        const tbody = document.querySelector('tbody');
-        
-        tbody.innerHTML = '';
-        
-        data.hotels.forEach(hotel => {
-            const avgPerBooking = hotel.selesai > 0 ? formatRupiah(hotel.revenue / hotel.selesai) : 'Rp 0';
-            const statusClass = parseFloat(hotel.rate) >= 85 ? 'status-high' : 'status-medium';
-            
-            const row = `
-                <tr>
-                    <td class="text-left">
-                        <div class="hotel-name">${hotel.name}</div>
-                    </td>
-                    <td class="text-right">
-                        <div class="revenue-value">${formatRupiah(hotel.revenue)}</div>
-                    </td>
-                    <td class="text-right">${hotel.booking.toLocaleString('id-ID')}</td>
-                    <td class="text-right">${hotel.selesai.toLocaleString('id-ID')}</td>
-                    <td class="text-right">${avgPerBooking}</td>
-                    <td class="text-right">
-                        <span class="status-badge ${statusClass}">${hotel.rate}</span>
-                    </td>
-                </tr>
-            `;
-            tbody.innerHTML += row;
-        });
-    }
-
-    // Fungsi untuk update charts
-    function updateCharts(period) {
-        const data = periodData[period];
-        
-        // Update monthly chart
-        monthlyChart.data.labels = data.monthly.labels;
-        monthlyChart.data.datasets[0].data = data.monthly.values;
-        monthlyChart.update();
-        
-        // Update hotel chart
-        hotelChart.data.labels = data.hotels.map(h => h.name);
-        hotelChart.data.datasets[0].data = data.hotels.map(h => h.revenue);
-        hotelChart.update();
-    }
-
-    // Inisialisasi charts
-    function initCharts() {
-        // Chart Pendapatan Bulanan
-        const monthlyCtx = document.getElementById('monthlyRevenueChart').getContext('2d');
-        monthlyChart = new Chart(monthlyCtx, {
-            type: 'line',
-            data: {
-                labels: periodData[6].monthly.labels,
-                datasets: [{
-                    label: 'Pendapatan (Rp)',
-                    data: periodData[6].monthly.values,
-                    borderColor: '#3182ce',
-                    backgroundColor: 'rgba(49, 130, 206, 0.1)',
-                    tension: 0.4,
-                    fill: true,
-                    pointBackgroundColor: '#3182ce',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2,
-                    pointRadius: 5
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return 'Rp ' + (value / 1000000).toFixed(0) + 'M';
-                            }
-                        }
-                    }
-                },
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return 'Pendapatan: Rp ' + context.parsed.y.toLocaleString('id-ID');
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        // Chart Pendapatan per Hotel
-        const hotelCtx = document.getElementById('hotelRevenueChart').getContext('2d');
-        const backgroundColors = [
-            'rgba(49, 130, 206, 0.8)',
-            'rgba(56, 161, 105, 0.8)',
-            'rgba(221, 107, 32, 0.8)',
-            'rgba(197, 48, 48, 0.8)'
-        ];
-
-        hotelChart = new Chart(hotelCtx, {
-            type: 'bar',
-            data: {
-                labels: periodData[6].hotels.map(h => h.name),
-                datasets: [{
-                    label: 'Pendapatan (Rp)',
-                    data: periodData[6].hotels.map(h => h.revenue),
-                    backgroundColor: backgroundColors,
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return 'Rp ' + (value / 1000000).toFixed(0) + 'M';
-                            }
-                        }
-                    }
-                },
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return 'Pendapatan: Rp ' + context.parsed.y.toLocaleString('id-ID');
-                            }
-                        }
-                    },
-                    legend: {
-                        display: false
-                    }
-                }
-            }
-        });
-    }
-
-    // Event listener untuk dropdown
-    document.addEventListener('DOMContentLoaded', function() {
-        initCharts();
-        
-        const periodFilter = document.getElementById('periodFilter');
+// Event listener untuk dropdown
+document.addEventListener('DOMContentLoaded', function() {
+    initCharts();
+    
+    const periodFilter = document.getElementById('periodFilter');
+    if (periodFilter) {
         periodFilter.addEventListener('change', function() {
             const selectedPeriod = parseInt(this.value);
             updateStats(selectedPeriod);
             updateTable(selectedPeriod);
-            updateCharts(selectedPeriod);
+            updateCharts(selectedPeriod); // Sekarang hanya update hotel chart
         });
-    });
+    }
+});
 </script>
 </body>
 </html>
