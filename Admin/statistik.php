@@ -89,7 +89,7 @@ function formatRupiah($amount) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laporan Pendapatan Hotel - Admin Dashboard</title>
     <link rel="stylesheet" href="statistik.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -121,9 +121,9 @@ function formatRupiah($amount) {
                 <option value="20">Top 20 Hotel</option>
             </select>
 
-            <button class="btn btn-primary">
+            <!-- <button class="btn btn-primary">
                 <i class="fas fa-download"></i> Export Excel
-            </button>
+            </button> -->
         </div>
         <div>
             <button class="button" onclick="window.location.href='login.php'"> 
@@ -139,7 +139,7 @@ function formatRupiah($amount) {
      <div class="dashboard-container">
         <div class="sidebar">
         <div class="sidebar-header">
-            <br><br><br><br><br>
+            <br><br><br><br><br><br><br>
             <h1>ADMIN PANEL</h1>
         </div>
             <div class="sidebar-menu">
@@ -159,7 +159,7 @@ function formatRupiah($amount) {
                     <i class="fas fa-envelope"></i> Kontak Kami
                 </div>
                 <div class="menu-item active" onclick="window.location.href='statistik.php'">
-                    <i class="fa-solid fa-chart-simple"></i> Statistik
+                    <i class="fas fa-chart-simple"></i> Statistik
                 </div>
                 <div class="menu-item" onclick="window.location.href='booking.php'">
                     <i class="fas fa-calendar-check"></i> Booking <i class="fa-solid fa-caret-up"></i>
@@ -170,6 +170,9 @@ function formatRupiah($amount) {
 
 
     <div class="main-content">
+    <br>
+    <br>
+    <br>
     <br>
     <br>
     <br>
