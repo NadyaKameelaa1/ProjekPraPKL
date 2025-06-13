@@ -62,7 +62,7 @@ $user_data = $stmt_user->get_result()->fetch_assoc();
         <h2>Booking</h2>
         <hr>
         
-        <p>Halaman ini menunjukkan riwayat bookingmu.</p>
+        <p class="slide-down">Halaman ini menunjukkan riwayat bookingmu.</p>
         <img src="ornamen/ornament-bottom.png" class="ornament ornament-bottom">
     </header>
 
