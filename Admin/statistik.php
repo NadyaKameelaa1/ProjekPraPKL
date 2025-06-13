@@ -1,3 +1,13 @@
+<?php
+session_start();
+require_once '../Koneksi/koneksi.php';
+
+if (!isset($_SESSION['email_user'])) {
+    header("Location: login.php");
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -82,14 +92,14 @@
         <h1>Dashboard Admin - Statistik & Analisis Pendapatan</h1>
     </div>
 
-    <div class="table-controls">
+    <!-- <div class="table-controls">
         <div class="search-bar">
             <i class="fas fa-search"></i>
             <input type="text" id="userSearch" placeholder="Cari id pengirim, nama pengirim, email pengirim, pesan, waktu,...">
         </div>
 
 
-    </div>
+    </div> -->
 
     <main class="container">
         <!-- Statistik Overview -->
