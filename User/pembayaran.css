@@ -184,6 +184,18 @@ body {
     margin-top: 10px;
   }
 
+  .money{
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .jumlah{
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    color: rgb(202, 138, 0);
+  
+  }
   .metode-pembayaran {
     margin-top: 20px;
     
