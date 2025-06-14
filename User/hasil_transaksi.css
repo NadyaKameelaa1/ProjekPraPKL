@@ -329,3 +329,7 @@ footer {
     font-style: italic;
     color: gray;
 }
+
+.booking-card i{
+    color: #696969;
+}

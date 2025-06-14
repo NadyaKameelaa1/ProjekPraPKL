@@ -304,7 +304,9 @@ footer {
     margin-right: 8px;
 }
 
-
+.booking-card i{
+    color: #696969;
+}
   .qr-code-section {
     /* margin: 20px 0;
     padding: 15px; */

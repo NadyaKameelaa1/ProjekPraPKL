@@ -250,6 +250,10 @@ body {
     gap: 5px;
 }
 
+.booking-card i{
+    color: #696969;
+}
+
 /* Judul kota */
 .booking-card h3 {
     font-size: 16px;

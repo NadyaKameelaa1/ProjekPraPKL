@@ -104,19 +104,19 @@ $user_data = $stmt_user->get_result()->fetch_assoc();
     <div class="booking-container">
         <!-- Card 1 -->
         <div class="booking-card">
-            <h3><?= htmlspecialchars($transaksi['kota_hotel']) ?></h3>
+            <h3><i class="fa-solid fa-house-chimney-user"></i>  <?= htmlspecialchars($transaksi['kota_hotel']) ?></h3>
             <!-- <p><b>Nama Pemesan:</b> htmlspecialchars($user_data['nama_user']) ?></p> -->
             <h4><?= htmlspecialchars($transaksi['nama_hotel']) ?></h4>
             <p><b><?= htmlspecialchars($transaksi['nama_kamar']) ?></b></p>
-            <p>Rp. <?= number_format($transaksi['harga_kamar'], 0, ',', '.') ?> / kamar / malam</p>
-            <p><b>Check-out:</b> <?= $check_out ?></p>
-            <p><b>Check-in:</b> <?= $check_in ?></p>
-            <p><b>Jumlah:</b> Rp. <?= number_format($transaksi['total_bayar'], 0, ',', '.') ?></p>
-            <p><b>Tanggal:</b> <?= $tanggal_bayar ?></p>
-            <p><b>Metode pembayaran:</b> <?= htmlspecialchars($transaksi['metode_pembayaran']) ?></p>
+            <p><i class="fa-solid fa-money-bill-1-wave"></i>  Rp. <?= number_format($transaksi['harga_kamar'], 0, ',', '.') ?> / kamar / malam</p>
+            <p><b><i class="fa-regular fa-calendar"></i> Check-out:</b> <?= $check_out ?></p>
+            <p><b><i class="fa-regular fa-calendar"></i> Check-in:</b> <?= $check_in ?></p>
+            <p><b><i class="fa-solid fa-hand-holding-dollar"></i> Total Bayar:</b> Rp. <?= number_format($transaksi['total_bayar'], 0, ',', '.') ?></p>
+            <p><b><i class="fa-solid fa-clock"></i> Tanggal:</b> <?= $tanggal_bayar ?></p>
+            <p><b><i class="fa-solid fa-wallet"></i> Metode pembayaran:</b> <?= htmlspecialchars($transaksi['metode_pembayaran']) ?></p>
 
             <?php if (!$bayar_di_hotel): ?>
-            <p><b>Bukti Foto:</b> Tidak ada bukti foto.</p>
+            <p><b><i class="fa-solid fa-image"></i> Bukti Foto:</b> Tidak ada bukti foto.</p>
             <?php endif;?>
             <?php
             // Generate URL untuk kuitansi PDF
