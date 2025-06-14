@@ -54,7 +54,7 @@ while ($row = mysqli_fetch_assoc($query)) {
             <input type="hidden" name="dewasa" id="hiddenDewasa" value="2">
             <input type="hidden" name="anak" id="hiddenAnak" value="0">
             <input type="hidden" name="kamar" id="hiddenKamar" value="1">
-            <div class="section-title">Kota, atau nama hotel</div>
+            <div class="section-title"><i class="fa-solid fa-location-dot"></i>   Kota, atau nama hotel</div>
             <input type="text" class="location-input" id="locationInput" name="lokasi" placeholder="Kota, hotel" autocomplete="off" required />
             
             <div class="input-wrapper">
@@ -103,7 +103,7 @@ while ($row = mysqli_fetch_assoc($query)) {
             </div>
         </div>
 
-        <div class="section-title">Tamu dan Kamar</div>
+        <div class="section-title"><i class="fa-solid fa-building-user"></i> Tamu dan Kamar</div>
         <div class="search-row">
         <div class="guest-room-box" id="guestRoomTrigger">
             <form action="hasil_pencarian.php" method="GET">
@@ -115,7 +115,7 @@ while ($row = mysqli_fetch_assoc($query)) {
 
             <div class="guest-room-dropdown" id="guestRoomDropdown">
                 <div class="guest-room-item">   
-                    <div class="guest-room-label">Dewasa</div>
+                    <div class="guest-room-label"><i class="fa-solid fa-people-group"></i> Dewasa</div>
                     <div class="counter">
                         <button type="button" class="counter-btn" onclick="updateCounter('dewasa', -1)" disabled>-</button>
                         <span class="counter-value" id="dewasaValue">1</span>
@@ -124,7 +124,7 @@ while ($row = mysqli_fetch_assoc($query)) {
                 </div>
                 
                 <div class="guest-room-item">
-                    <div class="guest-room-label">Anak</div>
+                    <div class="guest-room-label"><i class="fa-solid fa-baby"></i> Anak</div>
                     <div class="counter">
                         <button type="button" class="counter-btn" onclick="updateCounter('anak', -1)" disabled>-</button>
                         <span class="counter-value" id="anakValue">0</span>
@@ -133,7 +133,7 @@ while ($row = mysqli_fetch_assoc($query)) {
                 </div>
                 
                 <div class="guest-room-item">
-                    <div class="guest-room-label">Kamar</div>
+                    <div class="guest-room-label"><i class="fa-solid fa-door-open"></i> Kamar</div>
                     <div class="counter">
                         <button type="button" class="counter-btn" onclick="updateCounter('kamar', -1)" disabled>-</button>
                         <span class="counter-value" id="kamarValue">1</span>
@@ -332,6 +332,43 @@ while ($row = mysqli_fetch_assoc($query)) {
         </div>
     </footer>
     <script>
+        // Fungsi untuk animasi hotel cards
+function animateHotelCards() {
+    // Cari semua hotel cards
+    const hotelCards = document.querySelectorAll('.hotel-card');
+    
+    // Buat observer untuk memantau ketika card masuk viewport
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Tambahkan class fade-in ketika card terlihat
+                entry.target.classList.add('fade-in');
+                
+                // Berhenti mengobservasi card ini setelah animasi
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        // Mulai animasi ketika 30% card terlihat
+        threshold: 0.3,
+        // Margin untuk trigger lebih awal
+        rootMargin: '0px 0px -100px 0px'
+    });
+    
+    // Mulai observe setiap hotel card
+    hotelCards.forEach(card => {
+        observer.observe(card);
+    });
+}
+
+// Jalankan ketika halaman sudah dimuat
+document.addEventListener('DOMContentLoaded', animateHotelCards);
+
+// Backup untuk halaman yang sudah dimuat
+if (document.readyState === 'complete') {
+    animateHotelCards();
+}
+// -----------------------------------------------------------------------------
          document.addEventListener('DOMContentLoaded', function() {
             const bgSection = document.getElementById('animated-bg');
             

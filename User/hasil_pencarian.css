@@ -98,7 +98,10 @@
     text-align: center;
     padding: 50px 0;
     color: white;
+    animation: fadeInScale 1.2s ease-in forwards;
+    opacity: 0;
   }
+
   
   @keyframes fadeInScale {
     from {
@@ -198,8 +201,25 @@
     box-shadow: 0 5px 8px rgba(0, 0, 0, 0.6);
     font-family: 'Segoe UI', Arial, sans-serif;
     margin-top: -15px;
+    animation: slideUpBounce 1s ease-out 0.8s forwards;
+    opacity: 0;
+    transform: translateY(50px);
   }
   
+  @keyframes slideUpBounce {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    70% {
+        opacity: 1;
+        transform: translateY(-5px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
   .section-title {
     display: flex;
     margin-bottom: 8px;
@@ -296,6 +316,9 @@
     color: #8b5e3c;
   }
 
+  .date-box i{
+    color: #8b5e3c;
+  }
  
 
 .location-suggestions {
@@ -423,6 +446,9 @@
     margin: 5px auto; 
     padding: 160px; 
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+   animation: slideUpBounce 1s ease-out 0.8s forwards;
+    opacity: 0; 
+    transform: translateY(50px);
   }
   
   
@@ -440,7 +466,39 @@
     box-shadow: 0 5px 8px rgba(0, 0, 0, 0.6);
     box-sizing: border-box;
     margin-bottom: 20px;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.6s ease-out;
   }
+
+  .hotel-card.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.hotel-card:nth-child(1) { transition-delay: 0.1s; }
+.hotel-card:nth-child(2) { transition-delay: 0.2s; }
+.hotel-card:nth-child(3) { transition-delay: 0.3s; }
+.hotel-card:nth-child(4) { transition-delay: 0.4s; }
+.hotel-card:nth-child(5) { transition-delay: 0.5s; }
+.hotel-card:nth-child(6) { transition-delay: 0.6s; }
+.hotel-card:nth-child(7) { transition-delay: 0.7s; }
+.hotel-card:nth-child(8) { transition-delay: 0.8s; }
+.hotel-card:nth-child(9) { transition-delay: 0.9s; }
+.hotel-card:nth-child(10) { transition-delay: 0.10s; }
+.hotel-card:nth-child(11) { transition-delay: 0.11s; }
+.hotel-card:nth-child(12) { transition-delay: 0.12s; }
+.hotel-card:nth-child(13) { transition-delay: 0.13s; }
+.hotel-card:nth-child(14) { transition-delay: 0.14s; }
+.hotel-card:nth-child(15) { transition-delay: 0.15s; }
+.hotel-card:nth-child(16) { transition-delay: 0.16s; }
+.hotel-card:nth-child(17) { transition-delay: 0.17s; }
+.hotel-card:nth-child(18) { transition-delay: 0.18s; }
+.hotel-card:nth-child(19) { transition-delay: 0.19s; }
+.hotel-card:nth-child(20) { transition-delay: 0.20s; }
+.hotel-card:nth-child(21) { transition-delay: 0.21s; }
+.hotel-card:nth-child(22) { transition-delay: 0.22s; }
+.hotel-card:nth-child(23) { transition-delay: 0.23s; }
   
   .hotel-card:hover {
     transform: translateY(-5px);
