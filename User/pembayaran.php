@@ -194,13 +194,13 @@ $username = $user_data['nama_user'] ?? 'User';
         <div class="order-box">
           <h4><b>Bayar</b></h4>
           <form>
-            <label>Nama</label>
+            <label><i class="fa-solid fa-circle-user"></i> Nama</label>
             <input type="text" value="<?= htmlspecialchars($user['nama_user']) ?>" readonly>
     
-            <label>No. Telp</label>
+            <label><i class="fa-solid fa-phone"></i> No. Telp</label>
             <input type="text" value="<?= htmlspecialchars($user['no_telp']) ?>" readonly>
     
-            <label>Alamat</label>
+            <label><i class="fa-solid fa-map-location-dot"></i> Alamat</label>
             <input type="text" value="<?= htmlspecialchars($user['alamat_user']) ?>" readonly>
     
             <label>Tamu</label>
@@ -210,18 +210,18 @@ $username = $user_data['nama_user'] ?? 'User';
     
             <div class="date-group">
               <div>
-                <label>Check In</label>
+                <label><i class="fa-regular fa-calendar"></i> Check In</label>
                 <input type="date" name="check_in" value="<?= $check_in ?>" class="date-input" readonly>
               </div>
               <div>
-                <label>Check Out</label>
+                <label><i class="fa-regular fa-calendar"></i> Check Out</label>
                 <input type="date"name="check_out" value="<?= $check_out ?>" class="date-input" readonly>
               </div>
             </div>
               <br>
               <br><br><br><br><br>
-            <p>Jumlah Hari: <strong><?= $jumlah_hari ?></strong></p>
-            <p class="total">Total Bayar : <span id="total_bayar">Rp. <?= number_format($total_bayar, 0, ',', '.') ?></span></p>
+            <p><strong> Jumlah Hari : <?= $jumlah_hari ?></strong></p>
+            <p class="total">Total Bayar : <span id="total_bayar">Rp. <span class="money"><?= number_format($total_bayar, 0, ',', '.') ?></span>  <i class="fa-solid fa-money-bill-1-wave"></i></span></p>
             
           </form>
         </div>

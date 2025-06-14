@@ -118,14 +118,14 @@ $hotels = mysqli_fetch_all($result, MYSQLI_ASSOC);
 </div>
            
                 <div class="date-box">
-              <input type="date"  class="date-input" placeholder="Check-in" value="<?= $check_in ?>" readonly>
+              <i class="fa-regular fa-calendar"></i><input type="date"  class="date-input" placeholder="Check-in" value="<?= $check_in ?>" readonly>
               </div>
 
               <div class="date-box">
-              <input type="date"  class="date-input" placeholder="Check-out" value="<?= $check_out ?>" readonly>   
+              <i class="fa-regular fa-calendar"></i><input type="date"  class="date-input" placeholder="Check-out" value="<?= $check_out ?>" readonly>   
               </div>
     
-              <label><i class="fa-solid fa-user-check"></i> </label>
+              <label><i class="fa-solid fa-building-user"></i> </label>
               <div class="guest-summary">
                 <?= $_GET['dewasa'] ?? '1' ?> Dewasa, 
                 <?= $_GET['anak'] ?? '0' ?> Anak, 
@@ -223,6 +223,44 @@ $hotels = mysqli_fetch_all($result, MYSQLI_ASSOC);
        
    
     <script>
+        // Fungsi animasi hotel card
+function initHotelCardAnimation() {
+    // Ambil semua hotel card
+    const hotelCards = document.querySelectorAll('.hotel-card');
+    
+    // Buat Intersection Observer
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Tambahkan class animate-in ketika card terlihat
+                entry.target.classList.add('animate-in');
+                
+                // Optional: Hentikan observasi setelah animasi berjalan
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        // Trigger animasi ketika 20% card terlihat
+        threshold: 0.2,
+        // Margin tambahan untuk trigger lebih awal
+        rootMargin: '0px 0px -50px 0px'
+    });
+    
+    // Observasi setiap hotel card
+    hotelCards.forEach(card => {
+        observer.observe(card);
+    });
+}
+
+// Jalankan ketika DOM sudah siap
+document.addEventListener('DOMContentLoaded', initHotelCardAnimation);
+
+// Untuk compatibility dengan dynamic content loading
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHotelCardAnimation);
+} else {
+    initHotelCardAnimation();
+}
         // Guest Room Dropdown Functionality
 
         const trigger = document.getElementById('guestRoomTrigger');
