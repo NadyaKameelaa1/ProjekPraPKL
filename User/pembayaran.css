@@ -134,7 +134,8 @@ body {
 
   .card {
     width: 600px;
-    height: 940px;
+    /* height: 940px; */
+    height: auto;
   }
 
   .card img {
