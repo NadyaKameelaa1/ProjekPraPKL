@@ -203,7 +203,7 @@ $username = $user_data['nama_user'] ?? 'User';
             <label><i class="fa-solid fa-map-location-dot"></i> Alamat</label>
             <input type="text" value="<?= htmlspecialchars($user['alamat_user']) ?>" readonly>
     
-            <label>Tamu</label>
+            <label><i class="fa-solid fa-people-group"></i> Tamu dan Kamar</label>
             
               <input type="text" value="<?= "{$pesanan['jumlah_dewasa']} Dewasa, {$pesanan['jumlah_anak']} Anak, {$pesanan['jumlah_kamar']} Kamar" ?>" readonly>
          

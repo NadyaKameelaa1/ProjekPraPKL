@@ -104,7 +104,10 @@ body {
     text-align: center;
     padding: 100px 0;
     color: white;
+    animation: fadeInScale 1.2s ease-in forwards;
+    opacity: 0;
 }
+
 
 @keyframes fadeInScale {
     from {

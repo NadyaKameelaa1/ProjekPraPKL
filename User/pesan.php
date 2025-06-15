@@ -138,17 +138,17 @@ $user = mysqli_fetch_assoc($query_user);
                <input type="hidden" name="jumlah_hari" value="<?= $jumlah_hari ?>">
               
             <div class="input-group">
-              <label>Nama</label>
+              <label><i class="fa-solid fa-circle-user"></i> Nama</label>
               <input type="text" value="<?= htmlspecialchars($user['nama_user']) ?>" readonly>
-              <label>No. Telp</label>
+              <label><i class="fa-solid fa-phone"></i> No. Telp</label>
               <input type="text" value="<?= htmlspecialchars($user['no_telp']) ?>" readonly>
             </div>
     
-            <label>Alamat</label>
+            <label><i class="fa-solid fa-map-location-dot"></i> Alamat</label>
             <input type="text" value="<?= htmlspecialchars($user['alamat_user']) ?>" readonly>
 
               <div class="guest-room-section">
-              <label>Tamu dan Kamar</label>
+              <label><i class="fa-solid fa-people-group"></i> Tamu dan Kamar</label>
               <div class="guest-room-container">
                   
                     <input type="text" id="guestRoomDisplay" value="<?= "$dewasa Dewasa, $anak Anak, $kamar Kamar" ?>" readonly>
@@ -186,18 +186,18 @@ $user = mysqli_fetch_assoc($query_user);
           </div>
             <div class="date-group">
               <div class="date-box">
-                  <label>Check In</label>
+                  <label><i class="fa-regular fa-calendar"></i> Check In</label>
                   <input type="date" id="checkInDate" name="check_in" value="<?= $check_in ?>" class="date-input" readonly>
               </div>
               <div class="date-box">
-                  <label>Check Out</label>
+                  <label><i class="fa-regular fa-calendar"></i> Check Out</label>
                   <input type="date" id="checkOutDate" name="check_out" value="<?= $check_out ?>" class="date-input" readonly>
               </div>
             </div>
             
             <br><br>
             <p>Jumlah Hari: <strong><?= $jumlah_hari ?></strong></p>
-            <p class="total" id="total">Total Bayar : Rp. <?= number_format($total_bayar, 0, ',', '.') ?></p>
+            <p class="total" id="total">Total Bayar : Rp. <?= number_format($total_bayar, 0, ',', '.') ?> <i class="fa-solid fa-money-bill-1-wave"></i></p>
     
             
            <button type="submit" id="lanjutkan-pembayaran" class="lanjutkan-pembayaran" 

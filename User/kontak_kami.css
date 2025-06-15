@@ -106,6 +106,8 @@ body {
     text-align: center;
     padding: 100px 0;
     color: white;
+    animation: fadeInScale 1.2s ease-in forwards;
+    opacity: 0;
 }
 
 @keyframes fadeInScale {
@@ -219,6 +221,25 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     flex: 1;
+    animation: slideUpBounce 1s ease-out 0.8s forwards;
+    opacity: 0;
+    transform: translateY(50px);
+}
+
+
+@keyframes slideUpBounce {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    70% {
+        opacity: 1;
+        transform: translateY(-5px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .contact-info {
