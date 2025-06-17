@@ -9,11 +9,6 @@ if (isset($_SESSION['email_user']) && !isset($_SESSION['nama_user'])) {
     $_SESSION['nama_user'] = $user_data['nama_user'] ?? 'User';
 }
 
-// $email = $_SESSION['email_user'];
-// $user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_user = '$email'");
-// $user_data = mysqli_fetch_assoc($user_query);
-// $username = $user_data['nama_user'] ?? 'User';
-
 // Ambil parameter pencarian
 $lokasi = isset($_GET['lokasi']) ? mysqli_real_escape_string($koneksi, $_GET['lokasi']) : '';
 $check_in = isset($_GET['check_in']) ? $_GET['check_in'] : date('Y-m-d');
@@ -238,7 +233,21 @@ $current_hotel_description = getHotelDescription($id_hotel, $hotels['nama_hotel'
     
       <!-- Konten kamar -->
   <div class="kamar-content">
-    <?php while ($data_kamar = mysqli_fetch_assoc($query_kamar)): ?>
+    <?php while ($data_kamar = mysqli_fetch_assoc($query_kamar)): 
+        
+        $cek_booking = mysqli_query($koneksi, "SELECT SUM(jumlah_kamar) as total_booked 
+                                          FROM pesanan p
+                                          JOIN pembayaran pb ON p.id_pesanan = pb.id_pesanan  
+                                          WHERE p.id_kamar = {$data_kamar['id_kamar']}
+                                          AND pb.booking_status IN ('Dibayar', 'Menunggu Konfirmasi Admin')
+                                          AND (p.check_in <= '$check_out' AND p.check_out >= '$check_in')");
+    
+    $booking_data = mysqli_fetch_assoc($cek_booking);
+    $kamar_terboking = $booking_data['total_booked'] ?? 0;
+    $kamar_tersedia = $data_kamar['jumlah_kamar'] - $kamar_terboking;
+    
+    ?>
+
     <?php
     // Cari gambar pertama yang tersedia
     $thumbnail = "";
@@ -312,9 +321,20 @@ $current_hotel_description = getHotelDescription($id_hotel, $hotels['nama_hotel'
 
           <div class="box-button">
               <div class="price">Rp. <?= number_format($data_kamar['harga_kamar'], 0, ',', '.') ?></div><br>
-              <div class="btn-pilih-kamar">
+
+              
+                <?php if ($data_kamar['jumlah_kamar'] == 0): ?>
+        <!-- Pesan kamar penuh dengan style seperti referensi -->
+        <div style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 8px 12px; color: #856404; text-align: center; font-size: 14px;">
+            <strong>Kamar Penuh</strong><br>
+            <small>Kamar tidak tersedia, silahkan pilih kamar yang berbeda.</small>
+        </div>
+        
+        <?php else: ?>
+            <div class="btn-pilih-kamar">
               <a href="detail_kamar.php?id_hotel=<?= $data_kamar['id_hotel'] ?>&id_kamar=<?= $data_kamar['id_kamar'] ?>&check_in=<?= htmlspecialchars($check_in) ?>&check_out=<?= htmlspecialchars($check_out) ?>&dewasa=<?=(int)$dewasa ?>&anak=<?=(int)$anak ?>&kamar=<?=(int)$kamar ?>" 
        class="btn-pilih">Pilih Kamar</a>
+       <?php endif; ?>
               </div>
               <br>
               

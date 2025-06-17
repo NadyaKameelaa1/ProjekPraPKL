@@ -308,10 +308,21 @@ $current_hotel_description = getHotelDescription($id_hotel, $hotels['nama_hotel'
 
           <div class="box-button">
               <div class="price">Rp. <?= number_format($data_kamar['harga_kamar'], 0, ',', '.') ?></div><br>
+
+              <?php if ($data_kamar['jumlah_kamar'] == 0): ?>
+        <!-- Pesan kamar penuh dengan style seperti referensi -->
+        <div style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 8px 12px; color: #856404; text-align: center; font-size: 14px;">
+            <strong>Kamar Penuh</strong><br>
+            <small>Kamar tidak tersedia, silahkan pilih kamar yang berbeda.</small>
+        </div>
+        
+        <?php else: ?>
+            
+       
               <div class="btn-pilih-kamar">
                 <a href="#" onclick="showNotification()">Pilih Kamar</a>
               </div>
-              
+              <?php endif; ?>
               <br>
 
               

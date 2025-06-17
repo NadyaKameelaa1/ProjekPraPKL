@@ -53,6 +53,26 @@ $totalHotels = $totalHotelsStmt->fetch(PDO::FETCH_ASSOC)['total'];
 
 
 // Query untuk mengambil detail pendapatan per hotel
+// $query_tabel = "
+//     SELECT 
+//         h.nama_hotel,
+//         COALESCE(SUM(pes.total_bayar), 0) as total_pendapatan,
+//         COUNT(p.id_pembayaran) as total_booking,
+//         COUNT(CASE WHEN p.booking_status = 'Selesai' THEN 1 END) as booking_selesai,
+//         CASE 
+//             WHEN COUNT(p.id_pembayaran) > 0 
+//             THEN COALESCE(SUM(pes.total_bayar), 0) / COUNT(p.id_pembayaran)
+//             ELSE 0 
+//         END as rata_rata_per_booking
+//     FROM hotels h
+//     LEFT JOIN pesanan pes ON h.id_hotel = pes.id_hotel
+//     LEFT JOIN pembayaran p ON pes.id_pesanan = p.id_pesanan
+//     GROUP BY h.id_hotel, h.nama_hotel
+//     HAVING total_pendapatan > 0 OR total_booking > 0
+//     ORDER BY total_pendapatan DESC
+//     LIMIT 40
+// ";
+
 $query_tabel = "
     SELECT 
         h.nama_hotel,
@@ -62,16 +82,16 @@ $query_tabel = "
         CASE 
             WHEN COUNT(p.id_pembayaran) > 0 
             THEN COALESCE(SUM(pes.total_bayar), 0) / COUNT(p.id_pembayaran)
-            ELSE 0 
+            ELSE 0
         END as rata_rata_per_booking
     FROM hotels h
     LEFT JOIN pesanan pes ON h.id_hotel = pes.id_hotel
     LEFT JOIN pembayaran p ON pes.id_pesanan = p.id_pesanan
     GROUP BY h.id_hotel, h.nama_hotel
-    HAVING total_pendapatan > 0 OR total_booking > 0
     ORDER BY total_pendapatan DESC
-    LIMIT 40
+    LIMIT 50
 ";
+
 
 $stmt = $pdo->prepare($query_tabel);
 $stmt->execute();
@@ -80,6 +100,7 @@ $hotelDetails = $stmt->fetchAll(PDO::FETCH_ASSOC);
 function formatRupiah($amount) {
     return "Rp " . number_format($amount, 0, ',', '.');
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -103,8 +124,8 @@ function formatRupiah($amount) {
         <div class="navbar-actions">
             <select id="periodFilter">
                 <option value="all">Semua Periode</option>
-               <option value="2024">Tahun 2024</option>
-                <option value="2023">Tahun 2023</option>
+               <!-- <option value="2024">Tahun 2024</option>
+                <option value="2023">Tahun 2023</option> -->
                 <option value="month">Bulan Ini</option>
                 <option value="week">Minggu Ini</option>
             </select>
@@ -119,6 +140,7 @@ function formatRupiah($amount) {
                 <option value="10">Top 10 Hotel</option>
                 <option value="15">Top 15 Hotel</option>
                 <option value="20">Top 20 Hotel</option>
+                
             </select>
 
             <!-- <button class="btn btn-primary">
@@ -220,7 +242,7 @@ function formatRupiah($amount) {
                         <!-- <p class="stats-subtext">6 bulan terakhir</p> -->
                     </div>
                     <div class="stats-icon bg-green">
-                        <i class="fas fa-money-bill-wave"></i>
+                        <i class="fa-solid fa-chart-line"></i>
                     </div>
                 </div>
                 <div class="stats-content">
@@ -232,7 +254,7 @@ function formatRupiah($amount) {
                         
                     </div>
                     <div class="stats-icon bg-green">
-                        <i class="fas fa-money-bill-wave"></i>
+                        <i class="fa-solid fa-building-wheat"></i>
                     </div>
                 </div>
                 <div class="stats-content">
@@ -244,7 +266,7 @@ function formatRupiah($amount) {
                         <!-- <p class="stats-subtext">6 bulan terakhir</p> -->
                     </div>
                     <div class="stats-icon bg-green">
-                        <i class="fas fa-money-bill-wave"></i>
+                        <i class="fa-solid fa-hotel"></i>
                     </div>
                 </div>
             </div>
@@ -320,7 +342,7 @@ function formatRupiah($amount) {
                 </table>
             </div>
         </div>
-        <br><br><br><br>
+        <br><br><br><br><br><br><br><br>
     </div>
 
     <script>

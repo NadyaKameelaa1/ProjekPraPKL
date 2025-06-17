@@ -122,6 +122,7 @@ $user = mysqli_fetch_assoc($query_user);
                     <span class="hotel-alamat">
                         <?php echo  $hotels['alamat_hotel']; ?>
                     </span>
+                    
         </div>
     
         <div class="order-box">

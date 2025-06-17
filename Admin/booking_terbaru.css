@@ -148,7 +148,7 @@
 .header h1 {
     font-size: 28px;
     color: #3b2613;
-    font-weight: 750; /* Lebih bold */
+    font-weight: 600; /* Lebih bold */
     margin-bottom: 20px;
     text-transform: uppercase; /* Huruf kapital semua */
 } 

@@ -186,7 +186,14 @@ $hotels = mysqli_fetch_all($result, MYSQLI_ASSOC);
     
     <?php else: ?>
     <div class="no-results">
-        <p>Maaf, tidak ditemukan hotel yang sesuai dengan kriteria pencarian Anda.</p>
+        <div class="error-container">
+            <div class="error-img">
+                <img src="/JAVAST/User/Error/Error.png" alt="Error">
+            </div>
+            <div class="error-message">
+                <p>Maaf, tidak ditemukan hotel yang sesuai dengan kriteria pencarian Anda.</p>
+            </div>
+        </div>
     </div>
     <?php endif; ?>
     
@@ -223,6 +230,7 @@ $hotels = mysqli_fetch_all($result, MYSQLI_ASSOC);
        
    
     <script>
+        
         // Fungsi animasi hotel card
 function initHotelCardAnimation() {
     // Ambil semua hotel card

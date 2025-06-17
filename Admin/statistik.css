@@ -155,7 +155,7 @@
 .header h1 {
     font-size: 28px;
     color: #3b2613;
-    font-weight: 750; /* Lebih bold */
+    font-weight: 600; /* Lebih bold */
     margin-bottom: 20px;
     text-transform: uppercase; /* Huruf kapital semua */
 } 
@@ -477,7 +477,10 @@
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    margin-bottom: 30px;
+    margin-top: -60px;
+    margin-bottom: 50px;
+    height: 2190px;
+
 }
 
 .table-header {
@@ -654,4 +657,12 @@ tr:hover {
         .stat-label {
             font-size: 12px;
             opacity: 0.8;
+        }
+
+
+
+
+        .table-responsive th{
+          background-color: #8d4d1e;
+          color: white;
         }

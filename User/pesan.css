@@ -128,7 +128,7 @@ body {
     padding: 10px;
     box-shadow: 0 5px 8px rgba(0, 0, 0, 0.6);
     width: 600px;
-    height: 640px;
+    height: auto;
   }
   
   .card img {

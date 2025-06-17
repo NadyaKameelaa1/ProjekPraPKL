@@ -114,8 +114,20 @@ $user_data = $stmt_user->get_result()->fetch_assoc();
             <br>
 
             <?php
+
+            function getServerIP() {
+                // Untuk development lokal
+                if (isset($_SERVER['SERVER_ADDR'])) {
+                    return $_SERVER['SERVER_ADDR'];
+                }
+                // Alternatif
+                return gethostbyname(gethostname());
+            }
+            
+            // Generate URL untuk QR Code
+            $serverIP = getServerIP();
             // Generate URL untuk kuitansi PDF
-            $pdfUrl = 'http://'.$_SERVER['HTTP_HOST'].'/JAVAST/User/download_kuitansi.php?id_pesanan='.$transaksi['id_pesanan'].'&view_mode=qr_access';
+            $pdfUrl = "http://$serverIP/JAVAST/User/download_kuitansi.php?id_pesanan=".$transaksi['id_pesanan'].'&view_mode=qr_access';
             
             // Generate QR Code
             $qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=".urlencode($pdfUrl);
