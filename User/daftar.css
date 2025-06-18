@@ -28,12 +28,13 @@ body {
 
 .container h2 {
     font-weight: 600;
+    font-size: 18px;
     color: #6b3f1d;
     margin-bottom: 10px;
 }
 
 .container p {
-    font-size: 14px;
+    font-size: 10px;
     color: #7a7a7a;
     margin-bottom: 20px;
 }
@@ -44,7 +45,7 @@ body {
 }
 
 .input-group label {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
     color: #6b3f1d;
     display: flex;
@@ -53,7 +54,7 @@ body {
 
 .input-group label i {
     margin-right: 8px;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .input-group input, 
@@ -63,7 +64,7 @@ body {
     border-radius: 8px;
     border: 1px solid #ccc;
     outline: none;
-    font-size: 14px;
+    font-size: 10px;
 }
 
 .input-group textarea {
@@ -78,7 +79,7 @@ body {
     border: none;
     width: 100%;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 600;
     cursor: pointer;
     transition: 0.3s;
@@ -92,7 +93,7 @@ body {
 .button-login {
     background: #7a7a7a;
     color: #fff;
-    padding: 12px;
+    padding: 5px 12px;
     border: none;
     width: 100%;
     border-radius: 8px;

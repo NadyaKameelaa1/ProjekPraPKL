@@ -36,7 +36,7 @@ unset($_SESSION['old_input']);
     <div class="container">
         <img src="Logo/Logo_Javast.png" alt="Logo Javast" class="logo">
         <h2>Daftar</h2>
-        <p>Anda perlu login/daftar terlebih dahulu untuk mengakses website kami.</p>
+        <p>Anda perlu login/daftar terlebih dahulu untuk mengakses website kami lebih.</p>
 
         <hr>
         <br>
@@ -99,7 +99,6 @@ unset($_SESSION['old_input']);
 
         <button type="submit" class="button">Daftar!</button>
         </form>
-        <br>
         <br>
         <hr>
         <p class="daftar-link">Sudah mendaftar?</p>

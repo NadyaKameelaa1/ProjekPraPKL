@@ -10,6 +10,7 @@ if (!isset($_SESSION['email_user'])) {
 // Query untuk mengambil data pesanan
 $query = "SELECT p.*,
     h.nama_hotel,
+    p.jumlah_kamar,
     k.nama_kamar, k.harga_kamar,
     u.nama_user, u.no_telp,
     py.metode_pembayaran, py.booking_status, py.tanggal_bayar
@@ -143,11 +144,13 @@ $result = mysqli_query($koneksi, $query);
                             </td>
                             <td>
                                 <strong>Kamar:</strong> <?= htmlspecialchars($pesanan['nama_kamar']) ?><br>
-                                <strong>Harga:</strong> Rp. <?= number_format($pesanan['harga_kamar'], 0, ',', '.') ?>
+                                <strong>Harga Kamar:</strong> Rp. <?= number_format($pesanan['harga_kamar'], 0, ',', '.') ?><br>
+                                
                             </td>
                             <td>
                                 <strong>Check-In:</strong> <?= $check_in ?><br>
                                 <strong>Check-Out:</strong> <?= $check_out ?><br>
+                                <strong>Jumlah Kamar:</strong> <?= htmlspecialchars($pesanan['jumlah_kamar']) ?><br>
                                 <strong>Bayar:</strong> Rp. <?= number_format($pesanan['total_bayar'], 0, ',', '.') ?><br>
                                 <strong>Waktu:</strong> <?= htmlspecialchars($pesanan['tanggal_bayar']) ?>
                             </td>
