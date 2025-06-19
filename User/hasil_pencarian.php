@@ -2,33 +2,33 @@
 session_start();
 require_once '../Koneksi/Koneksi.php';
 
-if (!isset($_SESSION['email_user'])) {
-    $_SESSION['error_message'] = "Anda harus login terlebih dahulu!";
-    echo '
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        Swal.fire({
-            title: "Perhatian!",
-            text: "'.$_SESSION['error_message'].'",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Login Sekarang",
-            cancelButtonText: "Nanti Saja",
-            allowOutsideClick: false
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = "login.php";
-            } else{
-             window.location.href = "home.php";
-            }
-        });
-    });
-    </script>
-    ';
-    unset($_SESSION['error_message']);
-    exit;
-}
+// if (!isset($_SESSION['email_user'])) {
+//     $_SESSION['error_message'] = "Anda harus login terlebih dahulu!";
+//     echo '
+//     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+//     <script>
+//     document.addEventListener("DOMContentLoaded", function() {
+//         Swal.fire({
+//             title: "Perhatian!",
+//             text: "'.$_SESSION['error_message'].'",
+//             icon: "warning",
+//             showCancelButton: true,
+//             confirmButtonText: "Login Sekarang",
+//             cancelButtonText: "Nanti Saja",
+//             allowOutsideClick: false
+//         }).then((result) => {
+//             if (result.isConfirmed) {
+//                 window.location.href = "login.php";
+//             } else{
+//              window.location.href = "home.php";
+//             }
+//         });
+//     });
+//     </script>
+//     ';
+//     unset($_SESSION['error_message']);
+//     exit;
+// }
 
 if (isset($_SESSION['email_user']) && !isset($_SESSION['nama_user'])) {
     $email = $_SESSION['email_user'];
@@ -68,8 +68,8 @@ $query = "SELECT
         )
         AND pb.booking_status != 'Dibatalkan'
     )
-    AND k.jumlah_dewasa >= $dewasa
-    AND (k.jumlah_dewasa + k.jumlah_anak) >= ($dewasa + $anak)
+    -- AND k.jumlah_dewasa >= $dewasa
+    -- AND (k.jumlah_dewasa + k.jumlah_anak) >= ($dewasa + $anak)
     AND k.jumlah_kamar >= $kamar
     GROUP BY h.id_hotel
     ORDER BY h.bintang_hotel DESC, harga_terendah ASC";

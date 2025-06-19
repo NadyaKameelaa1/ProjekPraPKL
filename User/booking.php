@@ -9,9 +9,6 @@ if (!isset($_SESSION['email_user'])) {
 }
 
 $email = $_SESSION['email_user'];
-$sql = "SELECT * FROM users WHERE email_user = '$email'";
-$result = mysqli_query($koneksi, $sql);
-$user = mysqli_fetch_assoc($result);
 
 $user_query = mysqli_query($koneksi, "SELECT nama_user FROM users WHERE email_user = '$email'");
 $user_data = mysqli_fetch_assoc($user_query);
@@ -31,12 +28,13 @@ $query = "SELECT p.*, h.nama_hotel, h.kota_hotel, k.nama_kamar, k.harga_kamar,
 
 $result = mysqli_query($koneksi, $query);
 
-// Ambil data tambahan user
-$query_user = "SELECT nama_user FROM users WHERE email_user = ?";
-$stmt_user = $koneksi->prepare($query_user);
-$stmt_user->bind_param("s", $_SESSION['email_user']);
-$stmt_user->execute();
-$user_data = $stmt_user->get_result()->fetch_assoc();
+
+// // Ambil data tambahan user
+// $query_user = "SELECT nama_user FROM users WHERE email_user = ?";
+// $stmt_user = $koneksi->prepare($query_user);
+// $stmt_user->bind_param("s", $_SESSION['email_user']);
+// $stmt_user->execute();
+// $user_data = $stmt_user->get_result()->fetch_assoc();
 ?>
 
 <!DOCTYPE html>

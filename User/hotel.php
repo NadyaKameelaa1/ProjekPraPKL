@@ -329,6 +329,13 @@ $current_hotel_description = getHotelDescription($id_hotel, $hotels['nama_hotel'
             <strong>Kamar Penuh</strong><br>
             <small>Kamar tidak tersedia, silahkan pilih kamar yang berbeda.</small>
         </div>
+
+        <?php elseif (!isset($_SESSION['email_user']) || !isset($_SESSION['nama_user'])): ?>
+<!-- Pesan login terlebih dahulu dengan style yang sama -->
+<div style="background-color: #fff3cd; border: 1px solid #ffea7; border-radius: 8px; padding: 8px 12px; color: #856404; text-align: center; font-size: 14px;">
+    <strong>Login Terlebih Dahulu</strong><br>
+    <small>Silahkan login untuk dapat memilih kamar.</small>
+</div>
         
         <?php else: ?>
             <div class="btn-pilih-kamar">

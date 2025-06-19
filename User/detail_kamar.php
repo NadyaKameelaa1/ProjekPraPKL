@@ -127,10 +127,21 @@ $hotels = mysqli_fetch_assoc($query);
           <hr>
           <p>mulai dari</p>
           <p class="harga"><b>Rp. <?= number_format($data_kamar['harga_kamar'], 0, ',', '.') ?> </b><span>/ kamar / malam</span></p>
+
+          <?php if (!isset($_SESSION['email_user']) || !isset($_SESSION['nama_user'])): ?>
+<!-- Pesan login terlebih dahulu dengan style yang sama -->
+<div style="background-color: #fff3cd; border: 1px solid #ffea7; border-radius: 8px; padding: 8px 12px; color: #856404; text-align: center; font-size: 14px;">
+    <strong>Login Terlebih Dahulu</strong><br>
+    <small>Silahkan login untuk dapat memilih kamar.</small>
+</div>
+        
+        <?php else: ?>
             <a href="pesan.php?id_hotel=<?= $data_kamar['id_hotel'] ?>&id_kamar=<?= $data_kamar['id_kamar'] ?>&check_in=<?= htmlspecialchars($check_in) ?>&check_out=<?= htmlspecialchars($check_out) ?>&dewasa=<?= $dewasa ?>&anak=<?= $anak ?>&kamar=<?= $kamar ?>" 
        class="btn-pilih">
                 <button class="pesan">Pesan</button>
             </a>
+        
+            <?php endif; ?>
         </div>
       </div>
 
